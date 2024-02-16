@@ -1,0 +1,1085 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		39D455872B7FF38300901E0D /* TVChartApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D455862B7FF38300901E0D /* TVChartApp.swift */; };
+		39D455892B7FF38300901E0D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D455882B7FF38300901E0D /* ContentView.swift */; };
+		39D4558B2B7FF38400901E0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39D4558A2B7FF38400901E0D /* Assets.xcassets */; };
+		39D4558E2B7FF38400901E0D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39D4558D2B7FF38400901E0D /* Preview Assets.xcassets */; };
+		39D455982B7FF38400901E0D /* TVChartAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D455972B7FF38400901E0D /* TVChartAppTests.swift */; };
+		39D455A22B7FF38400901E0D /* TVChartAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D455A12B7FF38400901E0D /* TVChartAppUITests.swift */; };
+		39D455A42B7FF38400901E0D /* TVChartAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D455A32B7FF38400901E0D /* TVChartAppUITestsLaunchTests.swift */; };
+		39D455B72B7FF55500901E0D /* TVChartAppWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D455B62B7FF55500901E0D /* TVChartAppWatchApp.swift */; };
+		39D455B92B7FF55500901E0D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D455B82B7FF55500901E0D /* ContentView.swift */; };
+		39D455BB2B7FF55600901E0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39D455BA2B7FF55600901E0D /* Assets.xcassets */; };
+		39D455BE2B7FF55600901E0D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39D455BD2B7FF55600901E0D /* Preview Assets.xcassets */; };
+		39D455C82B7FF55600901E0D /* TVChartAppWatch_Watch_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D455C72B7FF55600901E0D /* TVChartAppWatch_Watch_AppTests.swift */; };
+		39D455D22B7FF55600901E0D /* TVChartAppWatch_Watch_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D455D12B7FF55600901E0D /* TVChartAppWatch_Watch_AppUITests.swift */; };
+		39D455D42B7FF55600901E0D /* TVChartAppWatch_Watch_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D455D32B7FF55600901E0D /* TVChartAppWatch_Watch_AppUITestsLaunchTests.swift */; };
+		39D455D72B7FF55600901E0D /* TVChartAppWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 39D455B42B7FF55500901E0D /* TVChartAppWatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		39D455E62B7FF8C000901E0D /* Backend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D455E52B7FF8C000901E0D /* Backend.swift */; };
+		39D455EA2B7FFA5B00901E0D /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 39D455E92B7FFA5B00901E0D /* Quick */; };
+		39D455ED2B7FFAC600901E0D /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 39D455EC2B7FFAC600901E0D /* Nimble */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		39D455942B7FF38400901E0D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 39D4557B2B7FF38200901E0D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 39D455822B7FF38300901E0D;
+			remoteInfo = TVChartApp;
+		};
+		39D4559E2B7FF38400901E0D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 39D4557B2B7FF38200901E0D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 39D455822B7FF38300901E0D;
+			remoteInfo = TVChartApp;
+		};
+		39D455C42B7FF55600901E0D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 39D4557B2B7FF38200901E0D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 39D455B32B7FF55500901E0D;
+			remoteInfo = "TVChartAppWatch Watch App";
+		};
+		39D455CE2B7FF55600901E0D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 39D4557B2B7FF38200901E0D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 39D455B32B7FF55500901E0D;
+			remoteInfo = "TVChartAppWatch Watch App";
+		};
+		39D455D52B7FF55600901E0D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 39D4557B2B7FF38200901E0D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 39D455B32B7FF55500901E0D;
+			remoteInfo = "TVChartAppWatch Watch App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		39D455DB2B7FF55700901E0D /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				39D455D72B7FF55600901E0D /* TVChartAppWatch Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		39D455832B7FF38300901E0D /* TVChartApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TVChartApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		39D455862B7FF38300901E0D /* TVChartApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVChartApp.swift; sourceTree = "<group>"; };
+		39D455882B7FF38300901E0D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		39D4558A2B7FF38400901E0D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		39D4558D2B7FF38400901E0D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		39D455932B7FF38400901E0D /* TVChartAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TVChartAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		39D455972B7FF38400901E0D /* TVChartAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVChartAppTests.swift; sourceTree = "<group>"; };
+		39D4559D2B7FF38400901E0D /* TVChartAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TVChartAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		39D455A12B7FF38400901E0D /* TVChartAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVChartAppUITests.swift; sourceTree = "<group>"; };
+		39D455A32B7FF38400901E0D /* TVChartAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVChartAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		39D455B42B7FF55500901E0D /* TVChartAppWatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TVChartAppWatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		39D455B62B7FF55500901E0D /* TVChartAppWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVChartAppWatchApp.swift; sourceTree = "<group>"; };
+		39D455B82B7FF55500901E0D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		39D455BA2B7FF55600901E0D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		39D455BD2B7FF55600901E0D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		39D455C32B7FF55600901E0D /* TVChartAppWatch Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TVChartAppWatch Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		39D455C72B7FF55600901E0D /* TVChartAppWatch_Watch_AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVChartAppWatch_Watch_AppTests.swift; sourceTree = "<group>"; };
+		39D455CD2B7FF55600901E0D /* TVChartAppWatch Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TVChartAppWatch Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		39D455D12B7FF55600901E0D /* TVChartAppWatch_Watch_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVChartAppWatch_Watch_AppUITests.swift; sourceTree = "<group>"; };
+		39D455D32B7FF55600901E0D /* TVChartAppWatch_Watch_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVChartAppWatch_Watch_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		39D455E52B7FF8C000901E0D /* Backend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backend.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		39D455802B7FF38300901E0D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39D455902B7FF38400901E0D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				39D455EA2B7FFA5B00901E0D /* Quick in Frameworks */,
+				39D455ED2B7FFAC600901E0D /* Nimble in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39D4559A2B7FF38400901E0D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39D455B12B7FF55500901E0D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39D455C02B7FF55600901E0D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39D455CA2B7FF55600901E0D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		39D4557A2B7FF38200901E0D = {
+			isa = PBXGroup;
+			children = (
+				39D455E32B7FF89200901E0D /* Shared */,
+				39D455E72B7FF8CA00901E0D /* SharedTests */,
+				39D455852B7FF38300901E0D /* TVChartApp */,
+				39D455962B7FF38400901E0D /* TVChartAppTests */,
+				39D455A02B7FF38400901E0D /* TVChartAppUITests */,
+				39D455B52B7FF55500901E0D /* TVChartAppWatch Watch App */,
+				39D455C62B7FF55600901E0D /* TVChartAppWatch Watch AppTests */,
+				39D455D02B7FF55600901E0D /* TVChartAppWatch Watch AppUITests */,
+				39D455842B7FF38300901E0D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		39D455842B7FF38300901E0D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				39D455832B7FF38300901E0D /* TVChartApp.app */,
+				39D455932B7FF38400901E0D /* TVChartAppTests.xctest */,
+				39D4559D2B7FF38400901E0D /* TVChartAppUITests.xctest */,
+				39D455B42B7FF55500901E0D /* TVChartAppWatch Watch App.app */,
+				39D455C32B7FF55600901E0D /* TVChartAppWatch Watch AppTests.xctest */,
+				39D455CD2B7FF55600901E0D /* TVChartAppWatch Watch AppUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		39D455852B7FF38300901E0D /* TVChartApp */ = {
+			isa = PBXGroup;
+			children = (
+				39D455862B7FF38300901E0D /* TVChartApp.swift */,
+				39D455882B7FF38300901E0D /* ContentView.swift */,
+				39D4558A2B7FF38400901E0D /* Assets.xcassets */,
+				39D4558C2B7FF38400901E0D /* Preview Content */,
+			);
+			path = TVChartApp;
+			sourceTree = "<group>";
+		};
+		39D4558C2B7FF38400901E0D /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				39D4558D2B7FF38400901E0D /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		39D455962B7FF38400901E0D /* TVChartAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				39D455972B7FF38400901E0D /* TVChartAppTests.swift */,
+			);
+			path = TVChartAppTests;
+			sourceTree = "<group>";
+		};
+		39D455A02B7FF38400901E0D /* TVChartAppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				39D455A12B7FF38400901E0D /* TVChartAppUITests.swift */,
+				39D455A32B7FF38400901E0D /* TVChartAppUITestsLaunchTests.swift */,
+			);
+			path = TVChartAppUITests;
+			sourceTree = "<group>";
+		};
+		39D455B52B7FF55500901E0D /* TVChartAppWatch Watch App */ = {
+			isa = PBXGroup;
+			children = (
+				39D455B62B7FF55500901E0D /* TVChartAppWatchApp.swift */,
+				39D455B82B7FF55500901E0D /* ContentView.swift */,
+				39D455BA2B7FF55600901E0D /* Assets.xcassets */,
+				39D455BC2B7FF55600901E0D /* Preview Content */,
+			);
+			path = "TVChartAppWatch Watch App";
+			sourceTree = "<group>";
+		};
+		39D455BC2B7FF55600901E0D /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				39D455BD2B7FF55600901E0D /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		39D455C62B7FF55600901E0D /* TVChartAppWatch Watch AppTests */ = {
+			isa = PBXGroup;
+			children = (
+				39D455C72B7FF55600901E0D /* TVChartAppWatch_Watch_AppTests.swift */,
+			);
+			path = "TVChartAppWatch Watch AppTests";
+			sourceTree = "<group>";
+		};
+		39D455D02B7FF55600901E0D /* TVChartAppWatch Watch AppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				39D455D12B7FF55600901E0D /* TVChartAppWatch_Watch_AppUITests.swift */,
+				39D455D32B7FF55600901E0D /* TVChartAppWatch_Watch_AppUITestsLaunchTests.swift */,
+			);
+			path = "TVChartAppWatch Watch AppUITests";
+			sourceTree = "<group>";
+		};
+		39D455E32B7FF89200901E0D /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				39D455E42B7FF89B00901E0D /* Backend */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		39D455E42B7FF89B00901E0D /* Backend */ = {
+			isa = PBXGroup;
+			children = (
+				39D455E52B7FF8C000901E0D /* Backend.swift */,
+			);
+			path = Backend;
+			sourceTree = "<group>";
+		};
+		39D455E72B7FF8CA00901E0D /* SharedTests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SharedTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		39D455822B7FF38300901E0D /* TVChartApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 39D455A72B7FF38400901E0D /* Build configuration list for PBXNativeTarget "TVChartApp" */;
+			buildPhases = (
+				39D4557F2B7FF38300901E0D /* Sources */,
+				39D455802B7FF38300901E0D /* Frameworks */,
+				39D455812B7FF38300901E0D /* Resources */,
+				39D455DB2B7FF55700901E0D /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				39D455D62B7FF55600901E0D /* PBXTargetDependency */,
+			);
+			name = TVChartApp;
+			productName = TVChartApp;
+			productReference = 39D455832B7FF38300901E0D /* TVChartApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		39D455922B7FF38400901E0D /* TVChartAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 39D455AA2B7FF38400901E0D /* Build configuration list for PBXNativeTarget "TVChartAppTests" */;
+			buildPhases = (
+				39D4558F2B7FF38400901E0D /* Sources */,
+				39D455902B7FF38400901E0D /* Frameworks */,
+				39D455912B7FF38400901E0D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				39D455952B7FF38400901E0D /* PBXTargetDependency */,
+			);
+			name = TVChartAppTests;
+			packageProductDependencies = (
+				39D455E92B7FFA5B00901E0D /* Quick */,
+				39D455EC2B7FFAC600901E0D /* Nimble */,
+			);
+			productName = TVChartAppTests;
+			productReference = 39D455932B7FF38400901E0D /* TVChartAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		39D4559C2B7FF38400901E0D /* TVChartAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 39D455AD2B7FF38400901E0D /* Build configuration list for PBXNativeTarget "TVChartAppUITests" */;
+			buildPhases = (
+				39D455992B7FF38400901E0D /* Sources */,
+				39D4559A2B7FF38400901E0D /* Frameworks */,
+				39D4559B2B7FF38400901E0D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				39D4559F2B7FF38400901E0D /* PBXTargetDependency */,
+			);
+			name = TVChartAppUITests;
+			productName = TVChartAppUITests;
+			productReference = 39D4559D2B7FF38400901E0D /* TVChartAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		39D455B32B7FF55500901E0D /* TVChartAppWatch Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 39D455D82B7FF55700901E0D /* Build configuration list for PBXNativeTarget "TVChartAppWatch Watch App" */;
+			buildPhases = (
+				39D455B02B7FF55500901E0D /* Sources */,
+				39D455B12B7FF55500901E0D /* Frameworks */,
+				39D455B22B7FF55500901E0D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "TVChartAppWatch Watch App";
+			productName = "TVChartAppWatch Watch App";
+			productReference = 39D455B42B7FF55500901E0D /* TVChartAppWatch Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		39D455C22B7FF55600901E0D /* TVChartAppWatch Watch AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 39D455DC2B7FF55700901E0D /* Build configuration list for PBXNativeTarget "TVChartAppWatch Watch AppTests" */;
+			buildPhases = (
+				39D455BF2B7FF55600901E0D /* Sources */,
+				39D455C02B7FF55600901E0D /* Frameworks */,
+				39D455C12B7FF55600901E0D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				39D455C52B7FF55600901E0D /* PBXTargetDependency */,
+			);
+			name = "TVChartAppWatch Watch AppTests";
+			productName = "TVChartAppWatch Watch AppTests";
+			productReference = 39D455C32B7FF55600901E0D /* TVChartAppWatch Watch AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		39D455CC2B7FF55600901E0D /* TVChartAppWatch Watch AppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 39D455DF2B7FF55700901E0D /* Build configuration list for PBXNativeTarget "TVChartAppWatch Watch AppUITests" */;
+			buildPhases = (
+				39D455C92B7FF55600901E0D /* Sources */,
+				39D455CA2B7FF55600901E0D /* Frameworks */,
+				39D455CB2B7FF55600901E0D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				39D455CF2B7FF55600901E0D /* PBXTargetDependency */,
+			);
+			name = "TVChartAppWatch Watch AppUITests";
+			productName = "TVChartAppWatch Watch AppUITests";
+			productReference = 39D455CD2B7FF55600901E0D /* TVChartAppWatch Watch AppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		39D4557B2B7FF38200901E0D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1510;
+				LastUpgradeCheck = 1510;
+				TargetAttributes = {
+					39D455822B7FF38300901E0D = {
+						CreatedOnToolsVersion = 15.1;
+					};
+					39D455922B7FF38400901E0D = {
+						CreatedOnToolsVersion = 15.1;
+						TestTargetID = 39D455822B7FF38300901E0D;
+					};
+					39D4559C2B7FF38400901E0D = {
+						CreatedOnToolsVersion = 15.1;
+						TestTargetID = 39D455822B7FF38300901E0D;
+					};
+					39D455B32B7FF55500901E0D = {
+						CreatedOnToolsVersion = 15.1;
+					};
+					39D455C22B7FF55600901E0D = {
+						CreatedOnToolsVersion = 15.1;
+						TestTargetID = 39D455B32B7FF55500901E0D;
+					};
+					39D455CC2B7FF55600901E0D = {
+						CreatedOnToolsVersion = 15.1;
+						TestTargetID = 39D455B32B7FF55500901E0D;
+					};
+				};
+			};
+			buildConfigurationList = 39D4557E2B7FF38200901E0D /* Build configuration list for PBXProject "TVChartApp" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 39D4557A2B7FF38200901E0D;
+			packageReferences = (
+				39D455E82B7FFA5B00901E0D /* XCRemoteSwiftPackageReference "Quick" */,
+				39D455EB2B7FFAC600901E0D /* XCRemoteSwiftPackageReference "Nimble" */,
+			);
+			productRefGroup = 39D455842B7FF38300901E0D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				39D455822B7FF38300901E0D /* TVChartApp */,
+				39D455922B7FF38400901E0D /* TVChartAppTests */,
+				39D4559C2B7FF38400901E0D /* TVChartAppUITests */,
+				39D455B32B7FF55500901E0D /* TVChartAppWatch Watch App */,
+				39D455C22B7FF55600901E0D /* TVChartAppWatch Watch AppTests */,
+				39D455CC2B7FF55600901E0D /* TVChartAppWatch Watch AppUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		39D455812B7FF38300901E0D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				39D4558E2B7FF38400901E0D /* Preview Assets.xcassets in Resources */,
+				39D4558B2B7FF38400901E0D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39D455912B7FF38400901E0D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39D4559B2B7FF38400901E0D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39D455B22B7FF55500901E0D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				39D455BE2B7FF55600901E0D /* Preview Assets.xcassets in Resources */,
+				39D455BB2B7FF55600901E0D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39D455C12B7FF55600901E0D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39D455CB2B7FF55600901E0D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		39D4557F2B7FF38300901E0D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				39D455892B7FF38300901E0D /* ContentView.swift in Sources */,
+				39D455872B7FF38300901E0D /* TVChartApp.swift in Sources */,
+				39D455E62B7FF8C000901E0D /* Backend.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39D4558F2B7FF38400901E0D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				39D455982B7FF38400901E0D /* TVChartAppTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39D455992B7FF38400901E0D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				39D455A22B7FF38400901E0D /* TVChartAppUITests.swift in Sources */,
+				39D455A42B7FF38400901E0D /* TVChartAppUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39D455B02B7FF55500901E0D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				39D455B92B7FF55500901E0D /* ContentView.swift in Sources */,
+				39D455B72B7FF55500901E0D /* TVChartAppWatchApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39D455BF2B7FF55600901E0D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				39D455C82B7FF55600901E0D /* TVChartAppWatch_Watch_AppTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39D455C92B7FF55600901E0D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				39D455D22B7FF55600901E0D /* TVChartAppWatch_Watch_AppUITests.swift in Sources */,
+				39D455D42B7FF55600901E0D /* TVChartAppWatch_Watch_AppUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		39D455952B7FF38400901E0D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 39D455822B7FF38300901E0D /* TVChartApp */;
+			targetProxy = 39D455942B7FF38400901E0D /* PBXContainerItemProxy */;
+		};
+		39D4559F2B7FF38400901E0D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 39D455822B7FF38300901E0D /* TVChartApp */;
+			targetProxy = 39D4559E2B7FF38400901E0D /* PBXContainerItemProxy */;
+		};
+		39D455C52B7FF55600901E0D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 39D455B32B7FF55500901E0D /* TVChartAppWatch Watch App */;
+			targetProxy = 39D455C42B7FF55600901E0D /* PBXContainerItemProxy */;
+		};
+		39D455CF2B7FF55600901E0D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 39D455B32B7FF55500901E0D /* TVChartAppWatch Watch App */;
+			targetProxy = 39D455CE2B7FF55600901E0D /* PBXContainerItemProxy */;
+		};
+		39D455D62B7FF55600901E0D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 39D455B32B7FF55500901E0D /* TVChartAppWatch Watch App */;
+			targetProxy = 39D455D52B7FF55600901E0D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		39D455A52B7FF38400901E0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		39D455A62B7FF38400901E0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		39D455A82B7FF38400901E0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"TVChartApp/Preview Content\"";
+				DEVELOPMENT_TEAM = 4ZGHKBJ8WE;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.ferbinator.TVChartApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		39D455A92B7FF38400901E0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"TVChartApp/Preview Content\"";
+				DEVELOPMENT_TEAM = 4ZGHKBJ8WE;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.ferbinator.TVChartApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		39D455AB2B7FF38400901E0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4ZGHKBJ8WE;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.ferbinator.TVChartAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TVChartApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TVChartApp";
+			};
+			name = Debug;
+		};
+		39D455AC2B7FF38400901E0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4ZGHKBJ8WE;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.ferbinator.TVChartAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TVChartApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TVChartApp";
+			};
+			name = Release;
+		};
+		39D455AE2B7FF38400901E0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4ZGHKBJ8WE;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.ferbinator.TVChartAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TVChartApp;
+			};
+			name = Debug;
+		};
+		39D455AF2B7FF38400901E0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4ZGHKBJ8WE;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.ferbinator.TVChartAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TVChartApp;
+			};
+			name = Release;
+		};
+		39D455D92B7FF55700901E0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"TVChartAppWatch Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = 4ZGHKBJ8WE;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = TVChartAppWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = net.ferbinator.TVChartApp;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.ferbinator.TVChartApp.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.2;
+			};
+			name = Debug;
+		};
+		39D455DA2B7FF55700901E0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"TVChartAppWatch Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = 4ZGHKBJ8WE;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = TVChartAppWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = net.ferbinator.TVChartApp;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.ferbinator.TVChartApp.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.2;
+			};
+			name = Release;
+		};
+		39D455DD2B7FF55700901E0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4ZGHKBJ8WE;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ferbinator.TVChartAppWatch-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TVChartAppWatch Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TVChartAppWatch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 10.2;
+			};
+			name = Debug;
+		};
+		39D455DE2B7FF55700901E0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4ZGHKBJ8WE;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ferbinator.TVChartAppWatch-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TVChartAppWatch Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TVChartAppWatch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 10.2;
+			};
+			name = Release;
+		};
+		39D455E02B7FF55700901E0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4ZGHKBJ8WE;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ferbinator.TVChartAppWatch-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "TVChartAppWatch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 10.2;
+			};
+			name = Debug;
+		};
+		39D455E12B7FF55700901E0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4ZGHKBJ8WE;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ferbinator.TVChartAppWatch-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "TVChartAppWatch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 10.2;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		39D4557E2B7FF38200901E0D /* Build configuration list for PBXProject "TVChartApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				39D455A52B7FF38400901E0D /* Debug */,
+				39D455A62B7FF38400901E0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		39D455A72B7FF38400901E0D /* Build configuration list for PBXNativeTarget "TVChartApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				39D455A82B7FF38400901E0D /* Debug */,
+				39D455A92B7FF38400901E0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		39D455AA2B7FF38400901E0D /* Build configuration list for PBXNativeTarget "TVChartAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				39D455AB2B7FF38400901E0D /* Debug */,
+				39D455AC2B7FF38400901E0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		39D455AD2B7FF38400901E0D /* Build configuration list for PBXNativeTarget "TVChartAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				39D455AE2B7FF38400901E0D /* Debug */,
+				39D455AF2B7FF38400901E0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		39D455D82B7FF55700901E0D /* Build configuration list for PBXNativeTarget "TVChartAppWatch Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				39D455D92B7FF55700901E0D /* Debug */,
+				39D455DA2B7FF55700901E0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		39D455DC2B7FF55700901E0D /* Build configuration list for PBXNativeTarget "TVChartAppWatch Watch AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				39D455DD2B7FF55700901E0D /* Debug */,
+				39D455DE2B7FF55700901E0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		39D455DF2B7FF55700901E0D /* Build configuration list for PBXNativeTarget "TVChartAppWatch Watch AppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				39D455E02B7FF55700901E0D /* Debug */,
+				39D455E12B7FF55700901E0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		39D455E82B7FFA5B00901E0D /* XCRemoteSwiftPackageReference "Quick" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Quick/Quick.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+		39D455EB2B7FFAC600901E0D /* XCRemoteSwiftPackageReference "Nimble" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Quick/Nimble.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		39D455E92B7FFA5B00901E0D /* Quick */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39D455E82B7FFA5B00901E0D /* XCRemoteSwiftPackageReference "Quick" */;
+			productName = Quick;
+		};
+		39D455EC2B7FFAC600901E0D /* Nimble */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39D455EB2B7FFAC600901E0D /* XCRemoteSwiftPackageReference "Nimble" */;
+			productName = Nimble;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 39D4557B2B7FF38200901E0D /* Project object */;
+}
