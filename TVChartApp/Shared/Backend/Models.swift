@@ -20,7 +20,7 @@ struct Season: Codable {
   let items: [SeasonItem]
 }
 
-struct Show: Decodable {
+struct Show {
   let id: Int
   let title: String
   let tvmazeId: String
@@ -29,11 +29,13 @@ struct Show: Decodable {
   let episodeLength: String
   let seasons: [Season]
 
-  struct SeenThru: Decodable {
+  struct SeenThru: Codable {
     let season: Int
     let episodesWatched: Int
   }
+}
 
+extension Show: Codable {
   enum CodingKeys: String, CodingKey {
     case id
     case title
@@ -84,5 +86,55 @@ struct Show: Decodable {
       }.compactMap({ $0 })
       return Season(items: items)
     }
+  }
+  
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(id, forKey: .id)
+    try container.encode(title, forKey: .title)
+    try container.encode(tvmazeId, forKey: .tvmazeId)
+
+    if case .favorited = favorite {
+      try container.encode(true, forKey: .favorite)
+    } else {
+      try container.encode(false, forKey: .favorite)
+    }
+
+    try container.encode(location, forKey: .location)
+    try container.encode(episodeLength, forKey: .length)
+
+    func encodeSeason(season: Season) -> String {
+      return season.items.map {
+        switch $0 {
+          case .episode:
+            return "."
+          case .special:
+            return "S"
+          case .separator:
+            return "+"
+        }
+      }.joined(separator: "")
+    }
+
+    try container.encode(seasons.map(encodeSeason), forKey: .seasonMaps)
+
+    var lastWatchedSeason = 1, lastWatchedEpisodeNum = 0, episodeCounter = 0
+    for (seasonIndex, season) in seasons.enumerated() {
+      episodeCounter = 0
+      for item in season.items {
+        switch item {
+          case let .episode(status), let .special(status):
+            episodeCounter += 1
+            if status == .watched {
+              lastWatchedSeason = seasonIndex + 1
+              lastWatchedEpisodeNum = episodeCounter
+            }
+          default:
+            break
+        }
+      }
+    }
+    let seenThru = SeenThru(season: lastWatchedSeason, episodesWatched: lastWatchedEpisodeNum)
+    try container.encode(seenThru, forKey: .seenThru)
   }
 }

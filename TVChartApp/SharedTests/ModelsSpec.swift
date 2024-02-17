@@ -72,6 +72,115 @@ final class ModelsSpec: QuickSpec {
           }
         }
       }
+
+      context("serialization") {
+        it("handles a typical example") {
+          let show = Show(
+            id: 1,
+            title: "Taskmaster",
+            tvmazeId: "2955",
+            favorite: .favorited,
+            location: "YouTube",
+            episodeLength: "1 hour",
+            seasons: [
+              Season(items: [
+                .episode(status: .watched),
+                .episode(status: .watched),
+                .episode(status: .watched)
+              ]),
+              Season(items: [
+                .episode(status: .watched),
+                .special(status: .watched),
+                .separator,
+                .episode(status: .watched),
+                .special(status: .unwatched)
+              ])
+            ]
+          )
+          let json = try! JSONEncoder().encode(show)
+
+          let decoded = try! JSONSerialization.jsonObject(with: json) as! NSDictionary
+          expect(decoded["id"] as? Int).to(equal(1))
+          expect(decoded["title"] as? String).to(equal("Taskmaster"))
+          expect(decoded["tvmazeId"] as? String).to(equal("2955"))
+          expect(decoded["favorite"] as? Bool).to(beTrue())
+          expect(decoded["location"] as? String).to(equal("YouTube"))
+          expect(decoded["length"] as? String).to(equal("1 hour"))
+
+          expect(decoded["seasonMaps"] as? [String]).to(equal(["...", ".S+.S"]))
+          let seenThru = decoded["seenThru"] as! NSDictionary
+          expect(seenThru["season"] as? Int).to(equal(2))
+          expect(seenThru["episodesWatched"] as? Int).to(equal(3))
+        }
+      }
+
+      it("handles an unstarted show") {
+        let seasons: [Season] = [
+          Season(items: [
+            .episode(status: .unwatched),
+            .episode(status: .unwatched)
+          ]),
+          Season(items: [
+            .episode(status: .unwatched),
+            .episode(status: .unwatched)
+          ])
+        ]
+        let show = Show(id: 1, title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
+                        seasons: seasons)
+        let encoded = try! JSONEncoder().encode(show)
+
+        let decoded = try! JSONSerialization.jsonObject(with: encoded) as! NSDictionary
+        let seenThru = decoded["seenThru"] as! NSDictionary
+        expect(seenThru["season"] as? Int).to(equal(1))
+        expect(seenThru["episodesWatched"] as? Int).to(equal(0))
+      }
+
+      it("handles an unstarted new season") {
+        let seasons: [Season] = [
+          Season(items: [
+            .episode(status: .watched),
+            .separator,
+            .episode(status: .watched)
+          ]),
+          Season(items: [
+            .episode(status: .unwatched),
+            .separator,
+            .episode(status: .unwatched)
+          ])
+        ]
+        let show = Show(id: 1, title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
+                        seasons: seasons)
+        let encoded = try! JSONEncoder().encode(show)
+
+        let decoded = try! JSONSerialization.jsonObject(with: encoded) as! NSDictionary
+        let seenThru = decoded["seenThru"] as! NSDictionary
+        expect(seenThru["season"] as? Int).to(equal(1))
+        expect(seenThru["episodesWatched"] as? Int).to(equal(2))
+      }
+
+
+      it("ignores gaps for purposes of computing the 'last watched' episode") {
+        let seasons: [Season] = [
+          Season(items: [
+            .episode(status: .watched),
+            .separator,
+            .episode(status: .watched)
+          ]),
+          Season(items: [
+            .episode(status: .unwatched),
+            .separator,
+            .episode(status: .watched)
+          ])
+        ]
+        let show = Show(id: 1, title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
+                        seasons: seasons)
+        let encoded = try! JSONEncoder().encode(show)
+
+        let decoded = try! JSONSerialization.jsonObject(with: encoded) as! NSDictionary
+        let seenThru = decoded["seenThru"] as! NSDictionary
+        expect(seenThru["season"] as? Int).to(equal(2))
+        expect(seenThru["episodesWatched"] as? Int).to(equal(2))
+      }
     }
   }
 }
