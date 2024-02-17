@@ -83,18 +83,24 @@ final class ModelsSpec: QuickSpec {
             location: "YouTube",
             episodeLength: "1 hour",
             seasons: [
-              Season(items: [
-                .episode(status: .watched),
-                .episode(status: .watched),
-                .episode(status: .watched)
-              ]),
-              Season(items: [
-                .episode(status: .watched),
-                .special(status: .watched),
-                .separator,
-                .episode(status: .watched),
-                .special(status: .unwatched)
-              ])
+              Season(
+                id: 1,
+                items: [
+                  .episode(status: .watched),
+                  .episode(status: .watched),
+                  .episode(status: .watched)
+                ]
+              ),
+              Season(
+                id: 2,
+                items: [
+                  .episode(status: .watched),
+                  .special(status: .watched),
+                  .separator,
+                  .episode(status: .watched),
+                  .special(status: .unwatched)
+                ]
+              )
             ]
           )
           let json = try! JSONEncoder().encode(show)
@@ -116,14 +122,18 @@ final class ModelsSpec: QuickSpec {
 
       it("handles an unstarted show") {
         let seasons: [Season] = [
-          Season(items: [
-            .episode(status: .unwatched),
-            .episode(status: .unwatched)
-          ]),
-          Season(items: [
-            .episode(status: .unwatched),
-            .episode(status: .unwatched)
-          ])
+          Season(
+            id: 1,
+            items: [
+              .episode(status: .unwatched),
+              .episode(status: .unwatched)
+            ]),
+          Season(
+            id: 2,
+            items: [
+              .episode(status: .unwatched),
+              .episode(status: .unwatched)
+            ])
         ]
         let show = Show(id: 1, title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
                         seasons: seasons)
@@ -137,16 +147,20 @@ final class ModelsSpec: QuickSpec {
 
       it("handles an unstarted new season") {
         let seasons: [Season] = [
-          Season(items: [
-            .episode(status: .watched),
-            .separator,
-            .episode(status: .watched)
-          ]),
-          Season(items: [
-            .episode(status: .unwatched),
-            .separator,
-            .episode(status: .unwatched)
-          ])
+          Season(
+            id: 1,
+            items: [
+              .episode(status: .watched),
+              .separator,
+              .episode(status: .watched)
+            ]),
+          Season(
+            id: 2,
+            items: [
+              .episode(status: .unwatched),
+              .separator,
+              .episode(status: .unwatched)
+            ])
         ]
         let show = Show(id: 1, title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
                         seasons: seasons)
@@ -161,16 +175,20 @@ final class ModelsSpec: QuickSpec {
 
       it("ignores gaps for purposes of computing the 'last watched' episode") {
         let seasons: [Season] = [
-          Season(items: [
-            .episode(status: .watched),
-            .separator,
-            .episode(status: .watched)
-          ]),
-          Season(items: [
-            .episode(status: .unwatched),
-            .separator,
-            .episode(status: .watched)
-          ])
+          Season(
+            id: 1,
+            items: [
+              .episode(status: .watched),
+              .separator,
+              .episode(status: .watched)
+            ]),
+          Season(
+            id: 2,
+            items: [
+              .episode(status: .unwatched),
+              .separator,
+              .episode(status: .watched)
+            ])
         ]
         let show = Show(id: 1, title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
                         seasons: seasons)

@@ -16,11 +16,12 @@ enum SeasonItem: Codable {
   case separator
 }
 
-struct Season: Codable {
+struct Season: Codable, Identifiable {
+  let id: Int
   let items: [SeasonItem]
 }
 
-struct Show {
+struct Show: Identifiable {
   let id: Int
   let title: String
   let tvmazeId: String
@@ -84,7 +85,7 @@ extension Show: Codable {
           default: return nil
         }
       }.compactMap({ $0 })
-      return Season(items: items)
+      return Season(id: idx + 1, items: items)
     }
   }
   
