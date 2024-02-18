@@ -1,9 +1,5 @@
 import Foundation
 
-struct AppData {
-  let shows: [Show]
-}
-
 enum Status: Codable {
   case unwatched
   case watched
