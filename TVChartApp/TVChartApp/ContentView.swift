@@ -46,7 +46,7 @@ struct ShowList: View {
 struct SeasonRow: View {
   let season: Season
 
-  let episodeWidth = CGFloat(17.0)
+  let episodeWidth = CGFloat(21.0)
   let watchedColor = Color(white: 0.25)
   let unwatchedColor = Color(white: 0.5)
 
@@ -63,10 +63,12 @@ struct SeasonRow: View {
             switch status {
               case .unwatched:
                 Image(systemName: "square")
+                  .imageScale(.large)
                   .foregroundColor(unwatchedColor)
                   .frame(width: episodeWidth)
               case .watched:
                 Image(systemName: "square.fill")
+                  .imageScale(.large)
                   .foregroundColor(watchedColor)
                   .frame(width: episodeWidth)
             }
