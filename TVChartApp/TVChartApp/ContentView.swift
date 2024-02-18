@@ -24,26 +24,48 @@ struct ShowList: View {
       ForEach(shows) { show in
         VStack(alignment: .leading) {
           Text(show.title).font(.title2).bold()
+
           HStack(spacing: 5) {
             if show.favorite == .favorited {
               Image(systemName: "heart.fill").foregroundColor(.red)
             }
             Text(show.location + ", " + show.episodeLength)
           }
-          ForEach(show.seasons) { season in
-            let chars = season.items.map { item -> String in
-              switch item {
-                case .episode(let status), .special(let status):
-                  switch status {
-                    case .unwatched: return "☐"
-                    case .watched: return "☑︎"
-                  }
-                case .separator:
-                  return " + "
-              }
-            }
-            Text(String(season.id) + " " + chars.joined(separator: ""))
+
+          ForEach(show.seasons) {
+            SeasonRow(season: $0)
           }
+        }
+      }
+    }
+  }
+}
+
+struct SeasonRow: View {
+  let season: Season
+
+  let episodeWidth = 17
+  let watchedColor = Color(white: 0.25)
+  let unwatchedColor = Color(white: 0.5)
+
+  var body: some View {
+    HStack(spacing: 0) {
+      Text(String(season.id)).frame(width: CGFloat(episodeWidth))
+      
+      ForEach(season.items) { item in
+        switch item.kind {
+          case .episode(let status), .special(let status):
+            switch status {
+              case .unwatched:
+                Image(systemName: "square")
+                  .foregroundColor(unwatchedColor)
+                  .frame(width: CGFloat(episodeWidth))
+              case .watched:
+                Image(systemName: "square.fill")
+                  .foregroundColor(watchedColor)
+                  .frame(width: CGFloat(episodeWidth))
+            }
+          case .separator: Image(systemName: "plus").frame(width: CGFloat(episodeWidth))
         }
       }
     }

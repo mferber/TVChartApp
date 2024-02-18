@@ -34,7 +34,7 @@ final class ModelsSpec: QuickSpec {
 
         expect(seasons[0].items).to(haveCount(4))
         for item in seasons[0].items {
-          if case let .episode(status) = item {
+          if case let .episode(status) = item.kind {
             expect(status).to(equal(.watched))
           } else {
             fail("Expected .episode, got \(item)")
@@ -43,26 +43,27 @@ final class ModelsSpec: QuickSpec {
 
         expect(seasons[1].items).to(haveCount(5))
         for (index, item) in seasons[1].items.enumerated() {
+          expect(item.id).to(equal(index))
           switch index {
             case 0:
-              if case let .special(status) = item {
+              if case let .special(status) = item.kind {
                 expect(status).to(equal(.watched))
               } else {
                 fail("Expected .special, got \(item)")
               }
             case 1, 3:
-              if case let .episode(status) = item {
+              if case let .episode(status) = item.kind {
                 expect(status).to(equal(.watched))
               } else {
                 fail("Expected .episode, got \(item)")
               }
             case 2:
-              if case .separator = item {
+              if case .separator = item.kind {
               } else {
                 fail("Expected .separator, got \(item)")
               }
             case 4:
-              if case let .episode(status) = item {
+              if case let .episode(status) = item.kind {
                 expect(status).to(equal(.unwatched))
               } else {
                 fail("Expected .episode, got \(item)")
@@ -86,19 +87,19 @@ final class ModelsSpec: QuickSpec {
               Season(
                 id: 1,
                 items: [
-                  .episode(status: .watched),
-                  .episode(status: .watched),
-                  .episode(status: .watched)
+                  SeasonItem(index: 0, kind: .episode(status: .watched)),
+                  SeasonItem(index: 1, kind: .episode(status: .watched)),
+                  SeasonItem(index: 2, kind: .episode(status: .watched))
                 ]
               ),
               Season(
                 id: 2,
                 items: [
-                  .episode(status: .watched),
-                  .special(status: .watched),
-                  .separator,
-                  .episode(status: .watched),
-                  .special(status: .unwatched)
+                  SeasonItem(index: 0, kind: .episode(status: .watched)),
+                  SeasonItem(index: 1, kind: .special(status: .watched)),
+                  SeasonItem(index: 2, kind: .separator),
+                  SeasonItem(index: 3, kind: .episode(status: .watched)),
+                  SeasonItem(index: 4, kind: .special(status: .unwatched))
                 ]
               )
             ]
@@ -125,14 +126,14 @@ final class ModelsSpec: QuickSpec {
           Season(
             id: 1,
             items: [
-              .episode(status: .unwatched),
-              .episode(status: .unwatched)
+              SeasonItem(index: 0, kind: .episode(status: .unwatched)),
+              SeasonItem(index: 1, kind: .episode(status: .unwatched))
             ]),
           Season(
             id: 2,
             items: [
-              .episode(status: .unwatched),
-              .episode(status: .unwatched)
+              SeasonItem(index: 0, kind: .episode(status: .unwatched)),
+              SeasonItem(index: 1, kind: .episode(status: .unwatched))
             ])
         ]
         let show = Show(id: 1, title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
@@ -150,16 +151,16 @@ final class ModelsSpec: QuickSpec {
           Season(
             id: 1,
             items: [
-              .episode(status: .watched),
-              .separator,
-              .episode(status: .watched)
+              SeasonItem(index: 0, kind: .episode(status: .watched)),
+              SeasonItem(index: 1, kind: .separator),
+              SeasonItem(index: 2, kind: .episode(status: .watched))
             ]),
           Season(
             id: 2,
             items: [
-              .episode(status: .unwatched),
-              .separator,
-              .episode(status: .unwatched)
+              SeasonItem(index: 0, kind: .episode(status: .unwatched)),
+              SeasonItem(index: 1, kind: .separator),
+              SeasonItem(index: 2, kind: .episode(status: .unwatched)),
             ])
         ]
         let show = Show(id: 1, title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
@@ -178,17 +179,19 @@ final class ModelsSpec: QuickSpec {
           Season(
             id: 1,
             items: [
-              .episode(status: .watched),
-              .separator,
-              .episode(status: .watched)
-            ]),
+              SeasonItem(index: 0, kind: .episode(status: .watched)),
+              SeasonItem(index: 1, kind: .separator),
+              SeasonItem(index: 2, kind: .episode(status: .watched))
+            ]
+          ),
           Season(
             id: 2,
             items: [
-              .episode(status: .unwatched),
-              .separator,
-              .episode(status: .watched)
-            ])
+              SeasonItem(index: 0, kind: .episode(status: .unwatched)),
+              SeasonItem(index: 1, kind: .separator),
+              SeasonItem(index: 2, kind: .episode(status: .watched))
+            ]
+          )
         ]
         let show = Show(id: 1, title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
                         seasons: seasons)

@@ -10,13 +10,19 @@ enum FavoriteStatus: Codable {
   case unfavorited
 }
 
-enum SeasonItem: Codable {
-  case episode(status: Status)
-  case special(status: Status)
-  case separator
+struct SeasonItem: Identifiable {
+  enum Kind {
+    case episode(status: Status)
+    case special(status: Status)
+    case separator
+  }
+
+  var id: Int { index }
+  let index: Int
+  let kind: Kind
 }
 
-struct Season: Codable, Identifiable {
+struct Season: Identifiable {
   let id: Int
   let items: [SeasonItem]
 }
@@ -75,13 +81,14 @@ extension Show: Codable {
     self.seasons = seasonDescriptors.enumerated().map { (idx, descriptor) -> Season in
       let seasonNum = idx + 1
       var episodeCounter = 1
-      let items = descriptor.map { charCode -> SeasonItem? in
+      let items = descriptor.enumerated().map { (itemIdx, charCode) -> SeasonItem? in
         switch charCode {
           case ".", "S":
             let status = watchedStatus(season: seasonNum, episodeNum: episodeCounter, seenThru: seenThru)
             episodeCounter += 1
-            return charCode == "S" ? .special(status: status) : .episode(status: status)
-          case "+": return .separator
+            let kind: SeasonItem.Kind = charCode == "S" ? .special(status: status) : .episode(status: status)
+            return SeasonItem(index: itemIdx, kind: kind)
+          case "+": return SeasonItem(index: itemIdx, kind: .separator)
           default: return nil
         }
       }.compactMap({ $0 })
@@ -106,7 +113,7 @@ extension Show: Codable {
 
     func encodeSeason(season: Season) -> String {
       return season.items.map {
-        switch $0 {
+        switch $0.kind {
           case .episode:
             return "."
           case .special:
@@ -123,7 +130,7 @@ extension Show: Codable {
     for (seasonIndex, season) in seasons.enumerated() {
       episodeCounter = 0
       for item in season.items {
-        switch item {
+        switch item.kind {
           case let .episode(status), let .special(status):
             episodeCounter += 1
             if status == .watched {
