@@ -39,7 +39,7 @@ struct ShowList: View {
           }
         }
       }
-    }
+    }.padding()
   }
 }
 
