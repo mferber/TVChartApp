@@ -107,6 +107,7 @@
 		39D455CD2B7FF55600901E0D /* TVChartAppWatch Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TVChartAppWatch Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		39D455D12B7FF55600901E0D /* TVChartAppWatch_Watch_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVChartAppWatch_Watch_AppUITests.swift; sourceTree = "<group>"; };
 		39D455D32B7FF55600901E0D /* TVChartAppWatch_Watch_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVChartAppWatch_Watch_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		39DE18242B82A56D00D65CAB /* previewData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = previewData.json; sourceTree = "<group>"; };
 		39EACF1D2B80216C0050D4DF /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		39EACF1F2B802F2E0050D4DF /* ModelsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsSpec.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -217,6 +218,7 @@
 		39D4558C2B7FF38400901E0D /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
+				39DE18242B82A56D00D65CAB /* previewData.json */,
 				39D4558D2B7FF38400901E0D /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";

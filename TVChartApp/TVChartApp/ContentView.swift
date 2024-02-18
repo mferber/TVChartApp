@@ -83,7 +83,7 @@ struct SeasonRow: View {
     return Text(msg)
   }
 
-  let sampleDataUrl = Bundle.main.url(forResource: "sampleData", withExtension: "json")
+  let sampleDataUrl = Bundle.main.url(forResource: "previewData", withExtension: "json")
   guard let sampleDataUrl else {
     return errContent("no URL to sample data")
   }
@@ -95,6 +95,6 @@ struct SeasonRow: View {
   guard let content else {
     return errContent("can't parse JSON")
   }
-  let appData = AppData(shows: content)
+  let appData = AppData(shows: content.sortedByTitle)
   return ContentView(appData: appData)
 }
