@@ -5,13 +5,15 @@ struct ContentView: View {
 
   var body: some View {
     NavigationStack {
-      ScrollView {
+      ScrollView([.vertical, .horizontal]) {
         switch appData.shows {
           case .loading: Text("loading...")
           case .error(let e): Text("error: \(e.localizedDescription)")
           case .ready(let shows): ShowList(shows: shows)
         }
-      }.navigationTitle("All shows")
+      }
+      .defaultScrollAnchor(.topLeading)
+      .navigationTitle("All shows")
     }
   }
 }
@@ -44,14 +46,17 @@ struct ShowList: View {
 struct SeasonRow: View {
   let season: Season
 
-  let episodeWidth = 17
+  let episodeWidth = CGFloat(17.0)
   let watchedColor = Color(white: 0.25)
   let unwatchedColor = Color(white: 0.5)
 
   var body: some View {
     HStack(spacing: 0) {
-      Text(String(season.id)).frame(width: CGFloat(episodeWidth))
-      
+      Text(String(season.id))
+        .frame(width: episodeWidth * 1.5, alignment: .trailing)
+        .padding(.trailing, episodeWidth / 2.0)
+
+
       ForEach(season.items) { item in
         switch item.kind {
           case .episode(let status), .special(let status):
@@ -59,13 +64,14 @@ struct SeasonRow: View {
               case .unwatched:
                 Image(systemName: "square")
                   .foregroundColor(unwatchedColor)
-                  .frame(width: CGFloat(episodeWidth))
+                  .frame(width: episodeWidth)
               case .watched:
                 Image(systemName: "square.fill")
                   .foregroundColor(watchedColor)
-                  .frame(width: CGFloat(episodeWidth))
+                  .frame(width: episodeWidth)
             }
-          case .separator: Image(systemName: "plus").frame(width: CGFloat(episodeWidth))
+          case .separator: Image(systemName: "plus")
+              .frame(width: episodeWidth)
         }
       }
     }
