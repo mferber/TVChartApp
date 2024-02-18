@@ -18,7 +18,7 @@ class Backend {
       receiveCompletion: { _ in },
       receiveValue: { [weak self] shows in
         if let shows {
-          self?.dataSource.shows = .ready(shows)
+          self?.dataSource.shows = .ready(shows.sortedByTitle)
         } else {
           self?.dataSource.shows = .loading
         }

@@ -146,3 +146,13 @@ extension Show: Codable {
     try container.encode(seenThru, forKey: .seenThru)
   }
 }
+
+extension [Show] {
+  var sortedByTitle: [Show] {
+    let leadingArticlePat = /^(a|an|the)\s+/.ignoresCase()
+    return self
+      .map { ($0.title.replacing(leadingArticlePat, with: ""), $0) }
+      .sorted { $0.0 < $1.0 }
+      .map { $0.1 }
+  }
+}
