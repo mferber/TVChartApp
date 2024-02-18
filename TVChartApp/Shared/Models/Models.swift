@@ -10,7 +10,12 @@ enum FavoriteStatus: Codable {
   case unfavorited
 }
 
-struct SeasonItem: Identifiable {
+class SeasonItem: Identifiable {
+  init(index: Int, kind: Kind) {
+    self.index = index
+    self.kind = kind
+  }
+
   enum Kind {
     case episode(status: Status)
     case special(status: Status)
@@ -18,31 +23,49 @@ struct SeasonItem: Identifiable {
   }
 
   var id: Int { index }
-  let index: Int
-  let kind: Kind
+  var index: Int
+  var kind: Kind
 }
 
-struct Season: Identifiable {
-  let id: Int
-  let items: [SeasonItem]
-}
-
-struct Show: Identifiable {
-  let id: Int
-  let title: String
-  let tvmazeId: String
-  let favorite: FavoriteStatus
-  let location: String
-  let episodeLength: String
-  let seasons: [Season]
-
-  struct SeenThru: Codable {
-    let season: Int
-    let episodesWatched: Int
+class Season: Identifiable {
+  init(number: Int, items: [SeasonItem]) {
+    self.number = number
+    self.items = items
   }
+
+  var id: Int { number }
+  var number: Int
+  var items: [SeasonItem]
 }
 
-extension Show: Codable {
+class Show: Codable, Identifiable {
+  class SeenThru: Codable {
+    init(season: Int, episodesWatched: Int) {
+      self.season = season
+      self.episodesWatched = episodesWatched
+    }
+    
+    var season: Int
+    var episodesWatched: Int
+  }
+
+  init(title: String, tvmazeId: String, favorite: FavoriteStatus, location: String, episodeLength: String, seasons: [Season]) {
+    self.title = title
+    self.tvmazeId = tvmazeId
+    self.favorite = favorite
+    self.location = location
+    self.episodeLength = episodeLength
+    self.seasons = seasons
+  }
+
+  var id: String { tvmazeId }
+  var title: String
+  var tvmazeId: String
+  var favorite: FavoriteStatus
+  var location: String
+  var episodeLength: String
+  var seasons: [Season]
+
   enum CodingKeys: String, CodingKey {
     case id
     case title
@@ -54,9 +77,8 @@ extension Show: Codable {
     case seenThru
   }
 
-  init(from decoder: Decoder) throws {
+  required init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    self.id = try container.decode(Int.self, forKey: .id)
     self.title = try container.decode(String.self, forKey: .title)
     self.tvmazeId = try container.decode(String.self, forKey: .tvmazeId)
     self.location = try container.decode(String.self, forKey: .location)
@@ -92,7 +114,7 @@ extension Show: Codable {
           default: return nil
         }
       }.compactMap({ $0 })
-      return Season(id: idx + 1, items: items)
+      return Season(number: idx + 1, items: items)
     }
   }
   

@@ -22,7 +22,6 @@ final class ModelsSpec: QuickSpec {
         """.data(using: .utf8)!
 
         let decoded: Show = try! JSONDecoder().decode(Show.self, from: json)
-        expect(decoded.id).to(equal(1))
         expect(decoded.title).to(equal("For All Mankind"))
         expect(decoded.favorite).to(equal(.favorited))
         expect(decoded.tvmazeId).to(equal("41414"))
@@ -32,6 +31,7 @@ final class ModelsSpec: QuickSpec {
         let seasons = decoded.seasons
         expect(seasons).to(haveCount(2))
 
+        expect(seasons[0].number).to(equal(1))
         expect(seasons[0].items).to(haveCount(4))
         for item in seasons[0].items {
           if case let .episode(status) = item.kind {
@@ -41,6 +41,7 @@ final class ModelsSpec: QuickSpec {
           }
         }
 
+        expect(seasons[1].number).to(equal(2))
         expect(seasons[1].items).to(haveCount(5))
         for (index, item) in seasons[1].items.enumerated() {
           expect(item.id).to(equal(index))
@@ -77,7 +78,6 @@ final class ModelsSpec: QuickSpec {
       context("serialization") {
         it("handles a typical example") {
           let show = Show(
-            id: 1,
             title: "Taskmaster",
             tvmazeId: "2955",
             favorite: .favorited,
@@ -85,7 +85,7 @@ final class ModelsSpec: QuickSpec {
             episodeLength: "1 hour",
             seasons: [
               Season(
-                id: 1,
+                number: 1,
                 items: [
                   SeasonItem(index: 0, kind: .episode(status: .watched)),
                   SeasonItem(index: 1, kind: .episode(status: .watched)),
@@ -93,7 +93,7 @@ final class ModelsSpec: QuickSpec {
                 ]
               ),
               Season(
-                id: 2,
+                number: 2,
                 items: [
                   SeasonItem(index: 0, kind: .episode(status: .watched)),
                   SeasonItem(index: 1, kind: .special(status: .watched)),
@@ -107,7 +107,7 @@ final class ModelsSpec: QuickSpec {
           let json = try! JSONEncoder().encode(show)
 
           let decoded = try! JSONSerialization.jsonObject(with: json) as! NSDictionary
-          expect(decoded["id"] as? Int).to(equal(1))
+          expect(decoded["id"] as? String).to(equal("2955"))
           expect(decoded["title"] as? String).to(equal("Taskmaster"))
           expect(decoded["tvmazeId"] as? String).to(equal("2955"))
           expect(decoded["favorite"] as? Bool).to(beTrue())
@@ -124,19 +124,19 @@ final class ModelsSpec: QuickSpec {
       it("handles an unstarted show") {
         let seasons: [Season] = [
           Season(
-            id: 1,
+            number: 1,
             items: [
               SeasonItem(index: 0, kind: .episode(status: .unwatched)),
               SeasonItem(index: 1, kind: .episode(status: .unwatched))
             ]),
           Season(
-            id: 2,
+            number: 2,
             items: [
               SeasonItem(index: 0, kind: .episode(status: .unwatched)),
               SeasonItem(index: 1, kind: .episode(status: .unwatched))
             ])
         ]
-        let show = Show(id: 1, title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
+        let show = Show(title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
                         seasons: seasons)
         let encoded = try! JSONEncoder().encode(show)
 
@@ -149,21 +149,21 @@ final class ModelsSpec: QuickSpec {
       it("handles an unstarted new season") {
         let seasons: [Season] = [
           Season(
-            id: 1,
+            number: 1,
             items: [
               SeasonItem(index: 0, kind: .episode(status: .watched)),
               SeasonItem(index: 1, kind: .separator),
               SeasonItem(index: 2, kind: .episode(status: .watched))
             ]),
           Season(
-            id: 2,
+            number: 2,
             items: [
               SeasonItem(index: 0, kind: .episode(status: .unwatched)),
               SeasonItem(index: 1, kind: .separator),
               SeasonItem(index: 2, kind: .episode(status: .unwatched)),
             ])
         ]
-        let show = Show(id: 1, title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
+        let show = Show(title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
                         seasons: seasons)
         let encoded = try! JSONEncoder().encode(show)
 
@@ -177,7 +177,7 @@ final class ModelsSpec: QuickSpec {
       it("ignores gaps for purposes of computing the 'last watched' episode") {
         let seasons: [Season] = [
           Season(
-            id: 1,
+            number: 1,
             items: [
               SeasonItem(index: 0, kind: .episode(status: .watched)),
               SeasonItem(index: 1, kind: .separator),
@@ -185,7 +185,7 @@ final class ModelsSpec: QuickSpec {
             ]
           ),
           Season(
-            id: 2,
+            number: 2,
             items: [
               SeasonItem(index: 0, kind: .episode(status: .unwatched)),
               SeasonItem(index: 1, kind: .separator),
@@ -193,7 +193,7 @@ final class ModelsSpec: QuickSpec {
             ]
           )
         ]
-        let show = Show(id: 1, title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
+        let show = Show(title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
                         seasons: seasons)
         let encoded = try! JSONEncoder().encode(show)
 
