@@ -5,7 +5,7 @@ struct ContentView: View {
 
   var body: some View {
     NavigationStack {
-      ScrollView([.vertical, .horizontal]) {
+      ScrollView([.vertical]) {
         switch appData.shows {
           case .loading: Text("loading...")
           case .error(let e): Text("error: \(e.localizedDescription)")
@@ -56,24 +56,48 @@ struct SeasonRow: View {
         .frame(width: episodeWidth * 1.5, alignment: .trailing)
         .padding(.trailing, episodeWidth / 2.0)
 
-
-      ForEach(season.items) { item in
-        switch item.kind {
-          case .episode(let status), .special(let status):
-            switch status {
-              case .unwatched:
-                Image(systemName: "square")
-                  .imageScale(.large)
-                  .foregroundColor(unwatchedColor)
-                  .frame(width: episodeWidth)
-              case .watched:
-                Image(systemName: "square.fill")
-                  .imageScale(.large)
-                  .foregroundColor(watchedColor)
-                  .frame(width: episodeWidth)
+      ScrollView([.horizontal]) {
+        HStack(spacing: 0) {
+          ForEach(season.items) { item in
+            Button {
+              print("tapped \(item.kind) @ \(item.index)!")
+              switch item.kind {
+                case .episode(let status):
+                  if case .unwatched = status {
+                    item.kind = .episode(status: .watched)
+                  } else {
+                    item.kind = .episode(status: .unwatched)
+                  }
+                case .special(let status):
+                  if case .unwatched = status {
+                    item.kind = .special(status: .watched)
+                  } else {
+                    item.kind = .special(status: .unwatched)
+                  }
+                default:
+                  break
+              }
+              print("Status now: \(item.kind)")
+            } label: {
+              switch item.kind {
+                case .episode(let status), .special(let status):
+                  switch status {
+                    case .unwatched:
+                      Image(systemName: "square")
+                        .imageScale(.large)
+                        .foregroundColor(unwatchedColor)
+                        .frame(width: episodeWidth)
+                    case .watched:
+                      Image(systemName: "square.fill")
+                        .imageScale(.large)
+                        .foregroundColor(watchedColor)
+                        .frame(width: episodeWidth)
+                  }
+                case .separator: Image(systemName: "plus")
+                    .frame(width: episodeWidth)
+              }
             }
-          case .separator: Image(systemName: "plus")
-              .frame(width: episodeWidth)
+          }
         }
       }
     }
