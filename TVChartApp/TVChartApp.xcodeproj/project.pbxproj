@@ -183,8 +183,8 @@
 		399A61BF2B85253800255BE1 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				399A61C02B85254A00255BE1 /* HttpUtils.swift */,
 				399A61C22B8527A300255BE1 /* ErrorHandling.swift */,
+				399A61C02B85254A00255BE1 /* HttpUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -294,8 +294,8 @@
 			isa = PBXGroup;
 			children = (
 				391B3EDC2B827621001F5A54 /* App state */,
-				391B3EDD2B827635001F5A54 /* Models */,
 				39D455E42B7FF89B00901E0D /* Backend */,
+				391B3EDD2B827635001F5A54 /* Models */,
 				399A61BF2B85253800255BE1 /* Utils */,
 			);
 			path = Shared;
@@ -304,8 +304,8 @@
 		39D455E42B7FF89B00901E0D /* Backend */ = {
 			isa = PBXGroup;
 			children = (
-				391B3ED82B826171001F5A54 /* BackendRequestor.swift */,
 				391B3EDA2B826481001F5A54 /* Backend.swift */,
+				391B3ED82B826171001F5A54 /* BackendRequestor.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
