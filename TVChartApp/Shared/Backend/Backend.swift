@@ -7,12 +7,12 @@ class Backend {
   // main SwiftUI observable
   let dataSource: AppData
   
-  private var requestor: BackendRequestor
+  private var requestor: BackendClient
   private var cancellable: AnyCancellable?
 
   init(serverUrl: URL) {
     dataSource = AppData()
-    requestor = BackendRequestor(serverUrl: serverUrl)
+    requestor = BackendClient(serverUrl: serverUrl)
   }
 
   func refetch() async throws {

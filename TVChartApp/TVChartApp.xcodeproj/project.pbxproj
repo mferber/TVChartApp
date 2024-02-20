@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		391B3ED92B826171001F5A54 /* BackendRequestor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391B3ED82B826171001F5A54 /* BackendRequestor.swift */; };
+		391B3ED92B826171001F5A54 /* BackendClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391B3ED82B826171001F5A54 /* BackendClient.swift */; };
 		391B3EDB2B826481001F5A54 /* Backend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391B3EDA2B826481001F5A54 /* Backend.swift */; };
 		391B3EDF2B82765A001F5A54 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391B3EDE2B82765A001F5A54 /* AppData.swift */; };
 		399A61C12B85254A00255BE1 /* HttpUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399A61C02B85254A00255BE1 /* HttpUtils.swift */; };
@@ -86,7 +86,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		391B3ED82B826171001F5A54 /* BackendRequestor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendRequestor.swift; sourceTree = "<group>"; };
+		391B3ED82B826171001F5A54 /* BackendClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendClient.swift; sourceTree = "<group>"; };
 		391B3EDA2B826481001F5A54 /* Backend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backend.swift; sourceTree = "<group>"; };
 		391B3EDE2B82765A001F5A54 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
 		399A61C02B85254A00255BE1 /* HttpUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpUtils.swift; sourceTree = "<group>"; };
@@ -305,7 +305,7 @@
 			isa = PBXGroup;
 			children = (
 				391B3EDA2B826481001F5A54 /* Backend.swift */,
-				391B3ED82B826171001F5A54 /* BackendRequestor.swift */,
+				391B3ED82B826171001F5A54 /* BackendClient.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -548,7 +548,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				391B3ED92B826171001F5A54 /* BackendRequestor.swift in Sources */,
+				391B3ED92B826171001F5A54 /* BackendClient.swift in Sources */,
 				39D455892B7FF38300901E0D /* ContentView.swift in Sources */,
 				399A61C12B85254A00255BE1 /* HttpUtils.swift in Sources */,
 				39D455872B7FF38300901E0D /* TVChartApp.swift in Sources */,

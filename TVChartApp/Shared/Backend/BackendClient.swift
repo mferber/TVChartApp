@@ -1,6 +1,6 @@
 import Foundation
 
-class BackendRequestor {
+class BackendClient {
   private let serverUrl: URL
 
   init(serverUrl: URL) {
