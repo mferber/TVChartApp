@@ -8,6 +8,20 @@ struct TVChartApp: App {
   var body: some Scene {
     WindowGroup {
       ContentView(appData: backend.dataSource)
+        .onAppear {
+          loadInitialData()
+        }
+    }
+  }
+
+  func loadInitialData() {
+    Task {
+      do {
+        try await backend.refetch()
+      } catch {
+        handleError(error, "initial backend request")
+      }
     }
   }
 }
+

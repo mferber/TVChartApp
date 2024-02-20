@@ -13,17 +13,10 @@ class Backend {
   init(serverUrl: URL) {
     dataSource = AppData()
     requestor = BackendRequestor(serverUrl: serverUrl)
-    cancellable = requestor.publisher
-      .sink(
-      receiveCompletion: { _ in },
-      receiveValue: { [weak self] shows in
-        if let shows {
-          self?.dataSource.shows = .ready(shows.sortedByTitle)
-        } else {
-          self?.dataSource.shows = .loading
-        }
-      }
-    )
-    requestor.start()
+  }
+
+  func refetch() async throws {
+    dataSource.shows = .loading
+    dataSource.shows = .ready(try await requestor.fetchListings())
   }
 }
