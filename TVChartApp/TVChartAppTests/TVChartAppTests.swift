@@ -12,11 +12,6 @@ import Nimble
 
 final class TVChartAppSpec: QuickSpec {
   override class func spec() {
-    describe("Quick/Nimble") {
-      it("is installed correctly") {
-        expect(2 + 2).to(equal(4))
-      }
-    }
   }
 
 }
