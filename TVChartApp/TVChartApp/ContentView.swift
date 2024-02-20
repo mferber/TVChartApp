@@ -1,5 +1,10 @@
 import SwiftUI
 
+let episodeWidth = CGFloat(21.0)
+let watchedColor = Color(white: 0.25)
+let unwatchedColor = Color(white: 0.5)
+let specialEpCaption = "⭑"
+
 struct ContentView: View {
   var appData: AppData
 
@@ -46,10 +51,6 @@ struct ShowList: View {
 struct SeasonRow: View {
   let season: Season
 
-  let episodeWidth = CGFloat(21.0)
-  let watchedColor = Color(white: 0.25)
-  let unwatchedColor = Color(white: 0.5)
-
   var body: some View {
     HStack(spacing: 0) {
       Text(String(season.id))
@@ -59,43 +60,11 @@ struct SeasonRow: View {
       ScrollView([.horizontal]) {
         HStack(spacing: 0) {
           ForEach(season.items) { item in
-            Button {
-              print("tapped \(item.kind) @ \(item.index)!")
-              switch item.kind {
-                case .episode(let status):
-                  if case .unwatched = status {
-                    item.kind = .episode(status: .watched)
-                  } else {
-                    item.kind = .episode(status: .unwatched)
-                  }
-                case .special(let status):
-                  if case .unwatched = status {
-                    item.kind = .special(status: .watched)
-                  } else {
-                    item.kind = .special(status: .unwatched)
-                  }
-                default:
-                  break
-              }
-              print("Status now: \(item.kind)")
-            } label: {
-              switch item.kind {
-                case .episode(let status), .special(let status):
-                  switch status {
-                    case .unwatched:
-                      Image(systemName: "square")
-                        .imageScale(.large)
-                        .foregroundColor(unwatchedColor)
-                        .frame(width: episodeWidth)
-                    case .watched:
-                      Image(systemName: "square.fill")
-                        .imageScale(.large)
-                        .foregroundColor(watchedColor)
-                        .frame(width: episodeWidth)
-                  }
-                case .separator: Image(systemName: "plus")
-                    .frame(width: episodeWidth)
-              }
+            switch item.kind {
+              case .episode, .special:
+                EpisodeView(seasonItem: item)
+              case .separator:
+                Separator()
             }
           }
         }
@@ -103,6 +72,79 @@ struct SeasonRow: View {
     }
   }
 }
+
+struct EpisodeView: View {
+  let seasonItem: SeasonItem
+
+  var body: some View {
+    Button {
+      // FIXME: update the binding somehow
+    } label: {
+      switch (seasonItem.kind) {
+        case let .episode(number, status):
+          ZStack {
+            EpisodeBox(status: status)
+            EpisodeLabel(status: status, caption: String(number))
+          }
+        case let .special(status: status):
+          ZStack {
+            EpisodeBox(status: status)
+            EpisodeLabel(status: status, caption: specialEpCaption)
+          }
+        case .separator:  // shouldn't be here
+          EmptyView()
+      }
+    }
+  }
+}
+
+struct EpisodeBox: View {
+  let status: Status
+
+  var body: some View {
+    switch status {
+      case .unwatched:
+        Image(systemName: "square")
+          .imageScale(.large)
+          .foregroundColor(unwatchedColor)
+          .frame(width: episodeWidth)
+
+      case .watched:
+        Image(systemName: "square.fill")
+          .imageScale(.large)
+          .foregroundColor(watchedColor)
+          .frame(width: episodeWidth)
+    }
+  }
+}
+
+struct EpisodeLabel: View {
+  let status: Status
+  let caption: String
+
+  var color: Color {
+    switch status {
+      case .unwatched: Color.black
+      case .watched: Color.white
+    }
+  }
+
+  var body: some View {
+    Text(caption)
+      .font(.caption2)
+      .foregroundColor(color)
+  }
+}
+
+struct Separator: View {
+  var body: some View {
+    Image(systemName: "plus")
+      .imageScale(.small)
+      .foregroundColor(unwatchedColor)
+      .frame(width: episodeWidth)
+  }
+}
+
 
 #Preview {
   func errContent(_ msg: String) -> some View {

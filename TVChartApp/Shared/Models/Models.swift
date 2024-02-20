@@ -17,7 +17,7 @@ class SeasonItem: Identifiable {
   }
 
   enum Kind {
-    case episode(status: Status)
+    case episode(number: Int, status: Status)
     case special(status: Status)
     case separator
   }
@@ -83,41 +83,49 @@ class Show: Codable, Identifiable {
     self.tvmazeId = try container.decode(String.self, forKey: .tvmazeId)
     self.location = try container.decode(String.self, forKey: .location)
     self.episodeLength = try container.decode(String.self, forKey: .length)
-
+    
     let boolFavorite = try container.decode(Bool.self, forKey: .favorite)
     self.favorite = boolFavorite ? .favorited : .unfavorited
-
+    
     let seasonDescriptors = try container.decode([String].self, forKey: .seasonMaps)
     let seenThru = try container.decode(SeenThru.self, forKey: .seenThru)
-
-    func watchedStatus(season: Int, episodeNum: Int, seenThru: SeenThru) -> Status {
+    
+    func watchedStatus(season: Int, episodeIndex: Int, seenThru: SeenThru) -> Status {
       if season < seenThru.season {
         return .watched
-      } else if season == seenThru.season && episodeNum <= seenThru.episodesWatched {
+      } else if season == seenThru.season && episodeIndex < seenThru.episodesWatched {
         return .watched
       } else {
         return .unwatched
       }
     }
-
+    
     self.seasons = seasonDescriptors.enumerated().map { (idx, descriptor) -> Season in
       let seasonNum = idx + 1
-      var episodeCounter = 1
+      var episodeIndex = 0, nextEpisodeNumber = 1
+      
       let items = descriptor.enumerated().map { (itemIdx, charCode) -> SeasonItem? in
+        let status = watchedStatus(season: seasonNum, episodeIndex: episodeIndex, seenThru: seenThru)
+        var kind: SeasonItem.Kind
         switch charCode {
-          case ".", "S":
-            let status = watchedStatus(season: seasonNum, episodeNum: episodeCounter, seenThru: seenThru)
-            episodeCounter += 1
-            let kind: SeasonItem.Kind = charCode == "S" ? .special(status: status) : .episode(status: status)
-            return SeasonItem(index: itemIdx, kind: kind)
-          case "+": return SeasonItem(index: itemIdx, kind: .separator)
-          default: return nil
+          case ".":
+            kind = .episode(number: nextEpisodeNumber, status: status)
+            nextEpisodeNumber += 1
+            episodeIndex += 1
+          case "S":
+            kind = .special(status: status)
+            episodeIndex += 1
+          case "+":
+            kind = .separator
+          default:
+            return nil
         }
+        return SeasonItem(index: itemIdx, kind: kind)
       }.compactMap({ $0 })
       return Season(number: idx + 1, items: items)
     }
   }
-  
+
   func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(id, forKey: .id)
@@ -148,23 +156,23 @@ class Show: Codable, Identifiable {
 
     try container.encode(seasons.map(encodeSeason), forKey: .seasonMaps)
 
-    var lastWatchedSeason = 1, lastWatchedEpisodeNum = 0, episodeCounter = 0
+    var lastWatchedSeason = 1, lastWatchedEpisodeCount = 0, episodeCounter = 0
     for (seasonIndex, season) in seasons.enumerated() {
       episodeCounter = 0
       for item in season.items {
         switch item.kind {
-          case let .episode(status), let .special(status):
+          case let .episode(number: _, status: status), let .special(status: status):
             episodeCounter += 1
             if status == .watched {
               lastWatchedSeason = seasonIndex + 1
-              lastWatchedEpisodeNum = episodeCounter
+              lastWatchedEpisodeCount = episodeCounter
             }
-          default:
+          case .separator:
             break
         }
       }
     }
-    let seenThru = SeenThru(season: lastWatchedSeason, episodesWatched: lastWatchedEpisodeNum)
+    let seenThru = SeenThru(season: lastWatchedSeason, episodesWatched: lastWatchedEpisodeCount)
     try container.encode(seenThru, forKey: .seenThru)
   }
 }
