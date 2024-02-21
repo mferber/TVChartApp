@@ -35,8 +35,8 @@ struct EpisodeDetailView: View {
             EmptyView()
         }
 
-        Spacer()
-        Toggle("Watched", isOn: .constant(true)).labelsHidden()
+//        Spacer()
+//        Toggle("Watched", isOn: .constant(true)).labelsHidden()
       }
       Text(episode?.season.show.title ?? "").font(.footnote).italic().bold()
       Text("Season \(episode?.season.number ?? 0), \(positionDescription)")
@@ -48,6 +48,7 @@ struct EpisodeDetailView: View {
         // TBD
       } label: {
         Text("Mark all episodes watched up to here")
+        .frame(maxWidth: .infinity)
       }.buttonStyle(.borderedProminent)
         .padding([.top], 15)
     }.padding()
