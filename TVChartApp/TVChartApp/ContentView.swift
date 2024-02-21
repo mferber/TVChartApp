@@ -7,6 +7,8 @@ let specialEpCaption = "⭑"
 
 struct ContentView: View {
   var appData: AppData
+  @State private var isShowingEpisodeDetail = false
+  @State private var selectedItem: SeasonItem?
 
   var body: some View {
     NavigationStack {
@@ -14,17 +16,22 @@ struct ContentView: View {
         switch appData.shows {
           case .loading: Text("loading...")
           case .error(let e): Text("error: \(e.localizedDescription)")
-          case .ready(let shows): ShowList(shows: shows)
+          case .ready(let shows): ShowList(shows: shows, selectedItem: $selectedItem, isShowingEpisodeDetail: $isShowingEpisodeDetail)
         }
-      }
-      .defaultScrollAnchor(.topLeading)
-      .navigationTitle("All shows")
+      } .defaultScrollAnchor(.topLeading)
+        .navigationTitle("All shows")
+    }
+    .sheet(isPresented: $isShowingEpisodeDetail) {
+      EpisodeDetailView(episode: $selectedItem)
+        .presentationDetents([.fraction(0.4)])
     }
   }
 }
 
 struct ShowList: View {
   let shows: [Show]
+  @Binding var selectedItem: SeasonItem?
+  @Binding var isShowingEpisodeDetail: Bool
 
   var body: some View {
     VStack(alignment: .leading, spacing: 20) {
@@ -40,7 +47,7 @@ struct ShowList: View {
           }
 
           ForEach(show.seasons) {
-            SeasonRow(season: $0)
+            SeasonRow(show: show, season: $0, selectedItem: $selectedItem, isShowingEpisodeDetail: $isShowingEpisodeDetail)
           }
         }
       }
@@ -49,7 +56,10 @@ struct ShowList: View {
 }
 
 struct SeasonRow: View {
+  let show: Show
   let season: Season
+  @Binding var selectedItem: SeasonItem?
+  @Binding var isShowingEpisodeDetail: Bool
 
   var body: some View {
     HStack(spacing: 0) {
@@ -62,7 +72,7 @@ struct SeasonRow: View {
           ForEach(season.items) { item in
             switch item.kind {
               case .episode, .special:
-                EpisodeView(seasonItem: item)
+                EpisodeView(item: item, selectedItem: $selectedItem, isShowingEpisodeDetail: $isShowingEpisodeDetail)
               case .separator:
                 Separator()
             }
@@ -74,13 +84,16 @@ struct SeasonRow: View {
 }
 
 struct EpisodeView: View {
-  let seasonItem: SeasonItem
+  let item: SeasonItem
+  @Binding var selectedItem: SeasonItem?
+  @Binding var isShowingEpisodeDetail: Bool
 
   var body: some View {
     Button {
-      // FIXME: update the binding somehow
+      selectedItem = item
+      isShowingEpisodeDetail = true
     } label: {
-      switch (seasonItem.kind) {
+      switch (item.kind) {
         case let .episode(number, status):
           ZStack {
             EpisodeBox(status: status)
@@ -91,7 +104,7 @@ struct EpisodeView: View {
             EpisodeBox(status: status)
             EpisodeLabel(status: status, caption: specialEpCaption)
           }
-        case .separator:  // shouldn't be here
+        case .separator:  // shouldn't get here
           EmptyView()
       }
     }
@@ -145,24 +158,39 @@ struct Separator: View {
   }
 }
 
+// MARK: - Previews
 
-#Preview {
-  func errContent(_ msg: String) -> some View {
-    return Text(msg)
-  }
-
+private func previewData() throws -> AppData {
   let sampleDataUrl = Bundle.main.url(forResource: "previewData", withExtension: "json")
   guard let sampleDataUrl else {
-    return errContent("no URL to sample data")
+    throw TVChartError.general("no URL to sample data")
   }
   let json = try? Data(contentsOf: sampleDataUrl)
   guard let json else {
-    return errContent("can't read sample data")
+    throw TVChartError.general("can't read sample data")
   }
   let content = try? JSONDecoder().decode([Show].self, from: json)
   guard let content else {
-    return errContent("can't parse JSON")
+    throw TVChartError.general("can't parse JSON")
   }
-  let appData = AppData(shows: content.sortedByTitle)
-  return ContentView(appData: appData)
+  return AppData(shows: content.sortedByTitle)
+}
+
+private func createPreview(_ closure: (AppData) -> any View) -> any View {
+  let v: any View
+  do {
+    let data = try previewData()
+    v = closure(data)
+  } catch TVChartError.general(let msg) {
+    v = Text(msg ?? "error")
+  } catch {
+    v = Text("error")
+  }
+  return v
+}
+
+#Preview {
+  createPreview { appData in
+    ContentView(appData: appData)
+  }
 }

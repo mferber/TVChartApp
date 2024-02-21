@@ -21,19 +21,22 @@ final class ModelsSpec: QuickSpec {
         }
         """.data(using: .utf8)!
 
-        let decoded: Show = try! JSONDecoder().decode(Show.self, from: json)
-        expect(decoded.title).to(equal("For All Mankind"))
-        expect(decoded.favorite).to(equal(.favorited))
-        expect(decoded.tvmazeId).to(equal("41414"))
-        expect(decoded.location).to(equal("Apple TV+"))
-        expect(decoded.episodeLength).to(equal("1 hour"))
-  
-        let seasons = decoded.seasons
+        let show: Show = try! JSONDecoder().decode(Show.self, from: json)
+        expect(show.title).to(equal("For All Mankind"))
+        expect(show.favorite).to(equal(.favorited))
+        expect(show.tvmazeId).to(equal("41414"))
+        expect(show.location).to(equal("Apple TV+"))
+        expect(show.episodeLength).to(equal("1 hour"))
+
+        let seasons = show.seasons
         expect(seasons).to(haveCount(2))
 
+        expect(seasons[0].show).to(be(show))
         expect(seasons[0].number).to(equal(1))
         expect(seasons[0].items).to(haveCount(4))
         for item in seasons[0].items {
+          expect(item.season).to(be(seasons[0]))
+
           if case let .episode(_, status) = item.kind {
             expect(status).to(equal(.watched))
           } else {
@@ -45,6 +48,8 @@ final class ModelsSpec: QuickSpec {
         expect(seasons[1].items).to(haveCount(5))
         for (index, item) in seasons[1].items.enumerated() {
           expect(item.id).to(equal(index))
+          expect(item.season).to(be(seasons[1]))
+
           switch index {
             case 0:
               if case let .special(status) = item.kind {
@@ -248,7 +253,10 @@ final class ModelsSpec: QuickSpec {
         expect(episode.season).to(equal(6))
         expect(episode.episode).to(equal(7))
         expect(episode.length).to(equal("60 min."))
-        expect(episode.synopsis).to(contain("burst into full musical numbers"))
+        expect(episode.synopsis).to(contain("Sunnydale is alive"))
+
+        // html tags should be gone
+        expect(episode.synopsis).notTo(match("<.*>"))
       }
     }
 

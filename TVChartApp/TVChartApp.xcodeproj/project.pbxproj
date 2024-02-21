@@ -10,9 +10,12 @@
 		391B3ED92B826171001F5A54 /* BackendClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391B3ED82B826171001F5A54 /* BackendClient.swift */; };
 		391B3EDB2B826481001F5A54 /* Backend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391B3EDA2B826481001F5A54 /* Backend.swift */; };
 		391B3EDF2B82765A001F5A54 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391B3EDE2B82765A001F5A54 /* AppData.swift */; };
+		399A61B62B84F45800255BE1 /* MetadataClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399A61B52B84F45700255BE1 /* MetadataClient.swift */; };
+		399A61B82B84F4C900255BE1 /* MetadataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399A61B72B84F4C900255BE1 /* MetadataService.swift */; };
 		399A61C12B85254A00255BE1 /* HttpUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399A61C02B85254A00255BE1 /* HttpUtils.swift */; };
 		399A61C32B8527A300255BE1 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399A61C22B8527A300255BE1 /* ErrorHandling.swift */; };
 		399A61C92B85A89200255BE1 /* previewData.json in Resources */ = {isa = PBXBuildFile; fileRef = 39DE18242B82A56D00D65CAB /* previewData.json */; };
+		399A61CB2B85B87B00255BE1 /* EpisodeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399A61CA2B85B87B00255BE1 /* EpisodeDetailView.swift */; };
 		39D455872B7FF38300901E0D /* TVChartApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D455862B7FF38300901E0D /* TVChartApp.swift */; };
 		39D455892B7FF38300901E0D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D455882B7FF38300901E0D /* ContentView.swift */; };
 		39D4558B2B7FF38400901E0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39D4558A2B7FF38400901E0D /* Assets.xcassets */; };
@@ -90,8 +93,11 @@
 		391B3ED82B826171001F5A54 /* BackendClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendClient.swift; sourceTree = "<group>"; };
 		391B3EDA2B826481001F5A54 /* Backend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backend.swift; sourceTree = "<group>"; };
 		391B3EDE2B82765A001F5A54 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
+		399A61B52B84F45700255BE1 /* MetadataClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataClient.swift; sourceTree = "<group>"; };
+		399A61B72B84F4C900255BE1 /* MetadataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataService.swift; sourceTree = "<group>"; };
 		399A61C02B85254A00255BE1 /* HttpUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpUtils.swift; sourceTree = "<group>"; };
 		399A61C22B8527A300255BE1 /* ErrorHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandling.swift; sourceTree = "<group>"; };
+		399A61CA2B85B87B00255BE1 /* EpisodeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeDetailView.swift; sourceTree = "<group>"; };
 		39D455832B7FF38300901E0D /* TVChartApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TVChartApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39D455862B7FF38300901E0D /* TVChartApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVChartApp.swift; sourceTree = "<group>"; };
 		39D455882B7FF38300901E0D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -223,6 +229,7 @@
 			children = (
 				39D455862B7FF38300901E0D /* TVChartApp.swift */,
 				39D455882B7FF38300901E0D /* ContentView.swift */,
+				399A61CA2B85B87B00255BE1 /* EpisodeDetailView.swift */,
 				39D4558A2B7FF38400901E0D /* Assets.xcassets */,
 				39D4558C2B7FF38400901E0D /* Preview Content */,
 			);
@@ -307,6 +314,8 @@
 			children = (
 				391B3EDA2B826481001F5A54 /* Backend.swift */,
 				391B3ED82B826171001F5A54 /* BackendClient.swift */,
+				399A61B52B84F45700255BE1 /* MetadataClient.swift */,
+				399A61B72B84F4C900255BE1 /* MetadataService.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -554,10 +563,13 @@
 				39D455892B7FF38300901E0D /* ContentView.swift in Sources */,
 				399A61C12B85254A00255BE1 /* HttpUtils.swift in Sources */,
 				39D455872B7FF38300901E0D /* TVChartApp.swift in Sources */,
+				399A61CB2B85B87B00255BE1 /* EpisodeDetailView.swift in Sources */,
+				399A61B82B84F4C900255BE1 /* MetadataService.swift in Sources */,
 				39EACF1E2B80216C0050D4DF /* Models.swift in Sources */,
 				391B3EDB2B826481001F5A54 /* Backend.swift in Sources */,
 				399A61C32B8527A300255BE1 /* ErrorHandling.swift in Sources */,
 				391B3EDF2B82765A001F5A54 /* AppData.swift in Sources */,
+				399A61B62B84F45800255BE1 /* MetadataClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

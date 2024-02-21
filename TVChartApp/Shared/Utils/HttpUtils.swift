@@ -15,6 +15,12 @@ extension URLResponse {
   }
 }
 
+extension String {
+  var urlPathEncoded: String {
+    self.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPathAllowed)!
+  }
+}
+
 enum HttpError: Error {
   case notOk
 }

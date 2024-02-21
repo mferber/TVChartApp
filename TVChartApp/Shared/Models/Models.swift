@@ -17,13 +17,13 @@ class SeasonItem: Identifiable {
   }
 
   enum Kind {
-    case episode(number: Int, status: Status)
+    case episode(number: Int, status: Status)  // number = listed episode number; nil for specials
     case special(status: Status)
     case separator
   }
 
   var id: Int { index }
-  var index: Int
+  var index: Int  // 0-based, position within the season, including separators
   var kind: Kind
   var season: Season!
 }
@@ -41,6 +41,8 @@ class Season: Identifiable {
 }
 
 class Show: Codable, Identifiable {
+  // SeenThru is an artifact of the old data model, which will hopefully be discarded soon
+  // in favor of tracking watched status at the individual episode level
   class SeenThru: Codable {
     init(season: Int, episodesWatched: Int) {
       self.season = season
@@ -51,6 +53,14 @@ class Show: Codable, Identifiable {
     var episodesWatched: Int
   }
 
+  var id: String { tvmazeId }
+  var title: String
+  var tvmazeId: String
+  var favorite: FavoriteStatus
+  var location: String
+  var episodeLength: String
+  var seasons: [Season]
+
   init(title: String, tvmazeId: String, favorite: FavoriteStatus, location: String, episodeLength: String, seasons: [Season]) {
     self.title = title
     self.tvmazeId = tvmazeId
@@ -59,14 +69,6 @@ class Show: Codable, Identifiable {
     self.episodeLength = episodeLength
     self.seasons = seasons
   }
-
-  var id: String { tvmazeId }
-  var title: String
-  var tvmazeId: String
-  var favorite: FavoriteStatus
-  var location: String
-  var episodeLength: String
-  var seasons: [Season]
 
   enum CodingKeys: String, CodingKey {
     case id
@@ -202,14 +204,14 @@ struct EpisodeMetadata {
   let episode: Int?
   let title: String
   let length: String
-  let synopsis: String
+  let synopsis: String?
 
   struct DTO: Decodable {
     let season: Int
     let number: Int?
     let name: String
     let runtime: Int?
-    let summary: String
+    let summary: String?
 
     func toDomain() -> EpisodeMetadata {
       let length: String
@@ -224,8 +226,14 @@ struct EpisodeMetadata {
         episode: number,
         title: name,
         length: length,
-        synopsis: summary
+        synopsis: summary?.tagsStripped
       )
     }
+  }
+}
+
+private extension String {
+  var tagsStripped: String {
+    self.replacing(/<[^>]+>/, with: "")
   }
 }
