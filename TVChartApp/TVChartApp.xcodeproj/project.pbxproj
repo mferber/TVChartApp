@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		391A75A42B86A95200FBC1DF /* ModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391A75A32B86A95200FBC1DF /* ModelsTests.swift */; };
 		391B3ED92B826171001F5A54 /* BackendClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391B3ED82B826171001F5A54 /* BackendClient.swift */; };
 		391B3EDB2B826481001F5A54 /* Backend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391B3EDA2B826481001F5A54 /* Backend.swift */; };
 		391B3EDF2B82765A001F5A54 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391B3EDE2B82765A001F5A54 /* AppData.swift */; };
@@ -31,10 +32,8 @@
 		39D455D22B7FF55600901E0D /* TVChartAppWatch_Watch_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D455D12B7FF55600901E0D /* TVChartAppWatch_Watch_AppUITests.swift */; };
 		39D455D42B7FF55600901E0D /* TVChartAppWatch_Watch_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D455D32B7FF55600901E0D /* TVChartAppWatch_Watch_AppUITestsLaunchTests.swift */; };
 		39D455D72B7FF55600901E0D /* TVChartAppWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 39D455B42B7FF55500901E0D /* TVChartAppWatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		39D455EA2B7FFA5B00901E0D /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 39D455E92B7FFA5B00901E0D /* Quick */; };
 		39D455ED2B7FFAC600901E0D /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 39D455EC2B7FFAC600901E0D /* Nimble */; };
 		39EACF1E2B80216C0050D4DF /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EACF1D2B80216C0050D4DF /* Models.swift */; };
-		39EACF212B80335D0050D4DF /* ModelsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EACF1F2B802F2E0050D4DF /* ModelsSpec.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +89,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		391A75A32B86A95200FBC1DF /* ModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsTests.swift; sourceTree = "<group>"; };
 		391B3ED82B826171001F5A54 /* BackendClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendClient.swift; sourceTree = "<group>"; };
 		391B3EDA2B826481001F5A54 /* Backend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backend.swift; sourceTree = "<group>"; };
 		391B3EDE2B82765A001F5A54 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
@@ -120,7 +120,6 @@
 		39D455D32B7FF55600901E0D /* TVChartAppWatch_Watch_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVChartAppWatch_Watch_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		39DE18242B82A56D00D65CAB /* previewData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = previewData.json; sourceTree = "<group>"; };
 		39EACF1D2B80216C0050D4DF /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
-		39EACF1F2B802F2E0050D4DF /* ModelsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsSpec.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,7 +134,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				39D455EA2B7FFA5B00901E0D /* Quick in Frameworks */,
 				39D455ED2B7FFAC600901E0D /* Nimble in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -323,7 +321,7 @@
 		39D455E72B7FF8CA00901E0D /* SharedTests */ = {
 			isa = PBXGroup;
 			children = (
-				39EACF1F2B802F2E0050D4DF /* ModelsSpec.swift */,
+				391A75A32B86A95200FBC1DF /* ModelsTests.swift */,
 			);
 			path = SharedTests;
 			sourceTree = "<group>";
@@ -365,7 +363,6 @@
 			);
 			name = TVChartAppTests;
 			packageProductDependencies = (
-				39D455E92B7FFA5B00901E0D /* Quick */,
 				39D455EC2B7FFAC600901E0D /* Nimble */,
 			);
 			productName = TVChartAppTests;
@@ -487,7 +484,6 @@
 			);
 			mainGroup = 39D4557A2B7FF38200901E0D;
 			packageReferences = (
-				39D455E82B7FFA5B00901E0D /* XCRemoteSwiftPackageReference "Quick" */,
 				39D455EB2B7FFAC600901E0D /* XCRemoteSwiftPackageReference "Nimble" */,
 			);
 			productRefGroup = 39D455842B7FF38300901E0D /* Products */;
@@ -577,7 +573,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				39EACF212B80335D0050D4DF /* ModelsSpec.swift in Sources */,
+				391A75A42B86A95200FBC1DF /* ModelsTests.swift in Sources */,
 				39D455982B7FF38400901E0D /* TVChartAppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1114,14 +1110,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		39D455E82B7FFA5B00901E0D /* XCRemoteSwiftPackageReference "Quick" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Quick/Quick.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.0.0;
-			};
-		};
 		39D455EB2B7FFAC600901E0D /* XCRemoteSwiftPackageReference "Nimble" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Quick/Nimble.git";
@@ -1133,11 +1121,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		39D455E92B7FFA5B00901E0D /* Quick */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 39D455E82B7FFA5B00901E0D /* XCRemoteSwiftPackageReference "Quick" */;
-			productName = Quick;
-		};
 		39D455EC2B7FFAC600901E0D /* Nimble */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 39D455EB2B7FFAC600901E0D /* XCRemoteSwiftPackageReference "Nimble" */;

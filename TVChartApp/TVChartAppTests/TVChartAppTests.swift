@@ -5,13 +5,9 @@
 //  Created by Matthias Ferber on 2/16/24.
 //
 
-import Quick
+import XCTest
 import Nimble
-
 @testable import TVChartApp
 
-final class TVChartAppSpec: QuickSpec {
-  override class func spec() {
-  }
-
+final class TVChartAppTests: XCTestCase {
 }
