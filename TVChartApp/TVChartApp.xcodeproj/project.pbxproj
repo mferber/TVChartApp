@@ -12,6 +12,7 @@
 		391B3EDF2B82765A001F5A54 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391B3EDE2B82765A001F5A54 /* AppData.swift */; };
 		399A61C12B85254A00255BE1 /* HttpUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399A61C02B85254A00255BE1 /* HttpUtils.swift */; };
 		399A61C32B8527A300255BE1 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399A61C22B8527A300255BE1 /* ErrorHandling.swift */; };
+		399A61C92B85A89200255BE1 /* previewData.json in Resources */ = {isa = PBXBuildFile; fileRef = 39DE18242B82A56D00D65CAB /* previewData.json */; };
 		39D455872B7FF38300901E0D /* TVChartApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D455862B7FF38300901E0D /* TVChartApp.swift */; };
 		39D455892B7FF38300901E0D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D455882B7FF38300901E0D /* ContentView.swift */; };
 		39D4558B2B7FF38400901E0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39D4558A2B7FF38400901E0D /* Assets.xcassets */; };
@@ -499,6 +500,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				399A61C92B85A89200255BE1 /* previewData.json in Resources */,
 				39D4558E2B7FF38400901E0D /* Preview Assets.xcassets in Resources */,
 				39D4558B2B7FF38400901E0D /* Assets.xcassets in Resources */,
 			);
