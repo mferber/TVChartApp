@@ -25,6 +25,7 @@ class SeasonItem: Identifiable {
   var id: Int { index }
   var index: Int
   var kind: Kind
+  var season: Season!
 }
 
 class Season: Identifiable {
@@ -36,6 +37,7 @@ class Season: Identifiable {
   var id: Int { number }
   var number: Int
   var items: [SeasonItem]
+  var show: Show!
 }
 
 class Show: Codable, Identifiable {
@@ -124,8 +126,16 @@ class Show: Codable, Identifiable {
       }.compactMap({ $0 })
       return Season(number: idx + 1, items: items)
     }
+
+    for season in self.seasons {
+      for item in season.items {
+        item.season = season
+      }
+      season.show = self
+    }
   }
 
+  // FIXME: do we even need encoding?
   func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(id, forKey: .id)
