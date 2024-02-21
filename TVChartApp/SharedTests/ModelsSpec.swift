@@ -75,6 +75,7 @@ final class ModelsSpec: QuickSpec {
         }
       }
 
+      // FIXME do we even need serialization tests if all we send are PATCHes?
       context("serialization") {
         it("handles a typical example") {
           let show = Show(
@@ -173,7 +174,6 @@ final class ModelsSpec: QuickSpec {
         expect(seenThru["episodesWatched"] as? Int).to(equal(2))
       }
 
-
       it("ignores gaps for purposes of computing the 'last watched' episode") {
         let seasons: [Season] = [
           Season(
@@ -202,6 +202,92 @@ final class ModelsSpec: QuickSpec {
         expect(seenThru["season"] as? Int).to(equal(2))
         expect(seenThru["episodesWatched"] as? Int).to(equal(2))
       }
+    }
+
+    describe("TVmaze episode metadata") {
+      it("deserializes correctly") {
+        let json = """
+        [
+          {
+            "id": 40138,
+            "url": "https://www.tvmaze.com/episodes/40138/buffy-the-vampire-slayer-6x07-once-more-with-feeling",
+            "name": "Once More, with Feeling",
+            "season": 6,
+            "number": 7,
+            "type": "regular",
+            "airdate": "2001-11-06",
+            "airtime": "20:00",
+            "airstamp": "2001-11-07T01:00:00+00:00",
+            "runtime": 60,
+            "rating": {
+              "average": 8.4
+            },
+            "image": {
+              "medium": "https://static.tvmaze.com/uploads/images/medium_landscape/14/37391.jpg",
+              "original": "https://static.tvmaze.com/uploads/images/original_untouched/14/37391.jpg"
+            },
+            "summary": "<p>Sunnydale is alive with the sound of music as a mysterious force causes everyone in town to burst into full musical numbers, revealing their innermost secrets as they do. But some townsfolk are dancing so much that they simply burst into flames, and it becomes clear that maybe living in a musical isn't so great after all.</p>",
+            "_links": {
+              "self": {
+                "href": "https://api.tvmaze.com/episodes/40138"
+              },
+              "show": {
+                "href": "https://api.tvmaze.com/shows/427"
+              }
+            }
+          }
+        ]
+        """.data(using: .utf8)!
+
+        let seasonMetadata = try! JSONDecoder()
+          .decode([EpisodeMetadata.DTO].self, from: json)
+          .map { $0.toDomain() }
+        expect(seasonMetadata).to(haveCount(1))
+        let episode = seasonMetadata[0]
+        expect(episode.title).to(equal("Once More, with Feeling"))
+        expect(episode.season).to(equal(6))
+        expect(episode.episode).to(equal(7))
+        expect(episode.length).to(equal("60 min."))
+        expect(episode.synopsis).to(contain("burst into full musical numbers"))
+      }
+    }
+
+    it("deserializes special episodes correctly") {
+      let json =
+      """
+      {
+        "id": 13977,
+        "url": "https://www.tvmaze.com/episodes/13977/doctor-who-s05-special-a-christmas-carol",
+        "name": "A Christmas Carol",
+        "season": 5,
+        "number": null,
+        "type": "significant_special",
+        "airdate": "2010-12-25",
+        "airtime": "19:35",
+        "airstamp": "2010-12-25T19:35:00+00:00",
+        "runtime": 63,
+        "rating": {
+          "average": 6.9
+        },
+        "image": {
+          "medium": "https://static.tvmaze.com/uploads/images/medium_landscape/141/352739.jpg",
+          "original": "https://static.tvmaze.com/uploads/images/original_untouched/141/352739.jpg"
+        },
+        "summary": "<p>Amy and Rory are trapped on a crashing space liner, and the only way The Doctor can rescue them is to save the soul of a lonely old miser. But is Kazran Sardick, the richest man in Sardicktown, beyond redemption? And what is lurking in the fogs of Christmas Eve?</p>",
+        "_links": {
+          "self": {
+            "href": "https://api.tvmaze.com/episodes/13977"
+          },
+          "show": {
+            "href": "https://api.tvmaze.com/shows/210"
+          }
+        }
+      }
+      """.data(using: .utf8)!
+
+      let episode = try! JSONDecoder().decode(EpisodeMetadata.DTO.self, from: json).toDomain()
+      expect(episode.season).to(equal(5))
+      expect(episode.episode).to(beNil())
     }
   }
 }

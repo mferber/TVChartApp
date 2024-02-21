@@ -186,3 +186,36 @@ extension [Show] {
       .map { $0.1 }
   }
 }
+
+struct EpisodeMetadata {
+  let season: Int
+  let episode: Int?
+  let title: String
+  let length: String
+  let synopsis: String
+
+  struct DTO: Decodable {
+    let season: Int
+    let number: Int?
+    let name: String
+    let runtime: Int?
+    let summary: String
+
+    func toDomain() -> EpisodeMetadata {
+      let length: String
+      if let runtime {
+        length = "\(runtime) min."
+      } else {
+        length = "n/a"
+      }
+      
+      return EpisodeMetadata(
+        season: season,
+        episode: number,
+        title: name,
+        length: length,
+        synopsis: summary
+      )
+    }
+  }
+}
