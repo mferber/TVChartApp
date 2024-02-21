@@ -17,6 +17,6 @@ class Backend {
 
   func refetch() async throws {
     dataSource.shows = .loading
-    dataSource.shows = .ready(try await requestor.fetchListings())
+    dataSource.shows = .ready(try await requestor.fetchListings().sortedByTitle)
   }
 }
