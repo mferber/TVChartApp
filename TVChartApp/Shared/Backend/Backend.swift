@@ -8,7 +8,6 @@ class Backend {
   let dataSource: AppData
   
   private var requestor: BackendClient
-  private var cancellable: AnyCancellable?
 
   init(serverUrl: URL) {
     dataSource = AppData()
