@@ -1,4 +1,5 @@
 import Foundation
+import Observation
 
 enum FavoriteStatus: Codable {
   case favorited
@@ -15,6 +16,7 @@ class SeasonItem: Identifiable {
   }
 }
 
+@Observable
 class Episode: SeasonItem {
   // 0-based, episode counter (ignoring separators) -- may be able to get rid of this when
   // the seenThru construct goes away and we don't need to count episodes anymore
