@@ -81,7 +81,13 @@ struct SynopsisView: View {
 
           // synopsis is provided as HTML
           let data = Data(synopsis.utf8)
-          let nsAttrStr = try? NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
+          let documentType = NSAttributedString.DocumentType.html
+          let encoding = String.Encoding.utf8.rawValue
+          let nsAttrStr = try? NSAttributedString(
+            data: data,
+            options: [.documentType: documentType, .characterEncoding: encoding],
+            documentAttributes: nil
+          )
           var attrStr = AttributedString(nsAttrStr ?? NSAttributedString())
           attrStr.font = .footnote
           summaryView = Text(attrStr)
