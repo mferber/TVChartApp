@@ -11,11 +11,6 @@ enum FavoriteStatus: Codable {
 }
 
 class SeasonItem: Identifiable {
-  init(index: Int, kind: Kind) {
-    self.index = index
-    self.kind = kind
-  }
-
   enum Kind {
     case episode(number: Int, status: Status)  // number = listed episode number; nil for specials
     case special(status: Status)
@@ -26,18 +21,23 @@ class SeasonItem: Identifiable {
   var index: Int  // 0-based, position within the season, including separators
   var kind: Kind
   var season: Season!
+
+  init(index: Int, kind: Kind) {
+    self.index = index
+    self.kind = kind
+  }
 }
 
 class Season: Identifiable {
-  init(number: Int, items: [SeasonItem]) {
-    self.number = number
-    self.items = items
-  }
-
   var id: Int { number }
   var number: Int
   var items: [SeasonItem]
   var show: Show!
+
+  init(number: Int, items: [SeasonItem]) {
+    self.number = number
+    self.items = items
+  }
 }
 
 class Show: Codable, Identifiable {
@@ -200,12 +200,6 @@ extension [Show] {
 }
 
 struct EpisodeMetadata {
-  let season: Int
-  let episode: Int?
-  let title: String
-  let length: String
-  let synopsis: String?
-
   struct DTO: Decodable {
     let season: Int
     let number: Int?
@@ -230,6 +224,12 @@ struct EpisodeMetadata {
       )
     }
   }
+
+  let season: Int
+  let episode: Int?
+  let title: String
+  let length: String
+  let synopsis: String?
 }
 
 private extension String {
