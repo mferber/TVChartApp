@@ -1,3 +1,4 @@
+import Foundation
 import SwiftUI
 
 struct EpisodeDetailView: View {
@@ -77,10 +78,18 @@ struct SynopsisView: View {
       case let .ready(metadata):
         var summaryView: Text
         if let synopsis = metadata.synopsis {
-          summaryView = Text(synopsis)
+
+          // synopsis is provided as HTML
+          let data = Data(synopsis.utf8)
+          let nsAttrStr = try? NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
+          var attrStr = AttributedString(nsAttrStr ?? NSAttributedString())
+          attrStr.font = .footnote
+          summaryView = Text(attrStr)
+
         } else {
           summaryView = Text("No summary available").italic()
         }
+        
         return AnyView(
           summaryView
             .frame(maxWidth: .infinity, alignment: .leading)

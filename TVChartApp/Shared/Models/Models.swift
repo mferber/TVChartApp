@@ -226,14 +226,14 @@ struct EpisodeMetadata {
         episode: number,
         title: name,
         length: length,
-        synopsis: summary?.tagsStripped
+        synopsis: summary?.paragraphContainerStripped
       )
     }
   }
 }
 
 private extension String {
-  var tagsStripped: String {
-    self.replacing(/<[^>]+>/, with: "")
+  var paragraphContainerStripped: String {
+    self.replacing(#/^<p>|</p>$/#, with: "")
   }
 }
