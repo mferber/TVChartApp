@@ -2,12 +2,25 @@ import Foundation
 import SwiftUI
 
 struct EpisodeDetailView: View {
-  @Binding var episode: SeasonItem?
+  @Binding var episode: SeasonItem
   @State private var metadata: DataState<EpisodeMetadata> = .loading
+  @State private var isWatched: Bool
+
+  init(episode: Binding<SeasonItem>) {
+    self._episode = episode
+    self._isWatched = State(initialValue: false)
+
+    switch self.episode.kind {
+      case let .episode(_, status), let .special(status):
+        if case .watched = status {
+          self._isWatched = State(initialValue: true)
+        }
+      case .separator:
+        break
+    }
+  }
 
   private var positionDescription: String {
-    guard let episode else { return ""}
-
     switch episode.kind {
       case let .episode(number, _): return "episode \(number)"
       case .special: return "special"
@@ -36,11 +49,11 @@ struct EpisodeDetailView: View {
             EmptyView()
         }
 
-//        Spacer()
-//        Toggle("Watched", isOn: .constant(true)).labelsHidden()
+        Spacer()
+        Toggle("Watched", isOn: $isWatched).labelsHidden().disabled(true)
       }
-      Text(episode?.season.show.title ?? "").font(.footnote).italic().bold()
-      Text("Season \(episode?.season.number ?? 0), \(positionDescription)")
+      Text(episode.season.show.title)
+      Text("Season \(episode.season.number), \(positionDescription)")
         .font(.footnote)
 
       SynopsisView(metadata)
@@ -54,12 +67,10 @@ struct EpisodeDetailView: View {
         .padding([.top], 15)
     }.padding()
       .task {
-        if let episode {
-          do {
-            metadata = .ready(try await fetchMetadata(episode: episode))
-          } catch {
-            handleError(error)
-          }
+        do {
+          metadata = .ready(try await fetchMetadata(episode: episode))
+        } catch {
+          handleError(error)
         }
       }
   }
