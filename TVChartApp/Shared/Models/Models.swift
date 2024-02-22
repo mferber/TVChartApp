@@ -106,6 +106,23 @@ class Show: Codable, Identifiable {
     }
   }
 
+  func markWatchedUpTo(targetEpisode: Episode) {
+    for season in self.seasons {
+      for episode in season.items.compactMap({ $0 as? Episode }) {
+        if season !== targetEpisode.season {
+          episode.isWatched = true
+        } else if season === targetEpisode.season {
+          episode.isWatched = true
+          if episode === targetEpisode {
+            return
+          }
+        }
+      }
+    }
+  }
+
+  // MARK: Serialization
+
   enum CodingKeys: String, CodingKey {
     case id
     case title
