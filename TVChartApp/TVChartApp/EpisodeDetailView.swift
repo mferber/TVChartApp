@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 
 struct EpisodeDetailView: View {
+  @Environment(ContentView.DisplayState.self) var displayState
   @Binding var episode: Episode
   @State private var metadata: DataState<EpisodeMetadata> = .loading
 
@@ -38,7 +39,7 @@ struct EpisodeDetailView: View {
         }
 
         Spacer()
-        Toggle("Watched", isOn: $episode.isWatched).labelsHidden().disabled(true)
+        Toggle("Watched", isOn: $episode.isWatched).labelsHidden()
       }
       Text(episode.season.show.title)
       Text("Season \(episode.season.number), \(episodeDescription)")
@@ -47,7 +48,7 @@ struct EpisodeDetailView: View {
       SynopsisView(metadata)
 
       Button {
-        // TBD
+        displayState.markWatchedUpToHere(episode)
       } label: {
         Text("Mark all episodes watched up to here")
         .frame(maxWidth: .infinity)

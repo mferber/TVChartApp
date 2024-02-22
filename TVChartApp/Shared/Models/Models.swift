@@ -107,16 +107,21 @@ class Show: Codable, Identifiable {
   }
 
   func markWatchedUpTo(targetEpisode: Episode) {
+    var watched = true
     for season in self.seasons {
       for episode in season.items.compactMap({ $0 as? Episode }) {
+
         if season !== targetEpisode.season {
-          episode.isWatched = true
+          episode.isWatched = watched
         } else if season === targetEpisode.season {
-          episode.isWatched = true
+          episode.isWatched = watched
+
+          // any episodes after the target one should be set to NOT watched
           if episode === targetEpisode {
-            return
+            watched = false
           }
         }
+
       }
     }
   }

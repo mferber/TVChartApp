@@ -3,6 +3,7 @@ import SwiftUI
 let episodeWidth = CGFloat(21.0)
 let watchedColor = Color(white: 0.25)
 let unwatchedColor = Color(white: 0.5)
+let selectionColor = Color.red
 let specialEpCaption = "⭑"
 
 struct ContentView: View {
@@ -10,6 +11,10 @@ struct ContentView: View {
   class DisplayState {
     var isShowingEpisodeDetail = false
     var selectedEpisode: Episode?
+
+    var markWatchedUpToHere: (Episode) -> Void = { episode in
+      episode.season.show.markWatchedUpTo(targetEpisode: episode)
+    }
   }
 
   var appData: AppData
@@ -26,7 +31,12 @@ struct ContentView: View {
       } .defaultScrollAnchor(.topLeading)
         .navigationTitle("All shows")
     }
-    .sheet(isPresented: $displayState.isShowingEpisodeDetail) {
+    .sheet(
+      isPresented: $displayState.isShowingEpisodeDetail,
+      onDismiss: {
+        displayState.selectedEpisode = nil
+      }
+    ) {
       if displayState.selectedEpisode != nil {
         EpisodeDetailView(episode: Binding($displayState.selectedEpisode)!)
           .presentationDetents([.fraction(0.4)])
@@ -98,13 +108,14 @@ struct EpisodeButton: View {
       displayState.selectedEpisode = episode
       displayState.isShowingEpisodeDetail = true
     } label: {
-      EpisodeView(episode: episode)
+      EpisodeView(episode: episode, isSelected: episode === displayState.selectedEpisode)
     }
   }
 }
 
 struct EpisodeView: View {
   let episode: Episode
+  let isSelected: Bool
 
   var body: some View {
     let caption: String
@@ -115,37 +126,41 @@ struct EpisodeView: View {
     }
 
     return ZStack {
-      EpisodeBox(isWatched: episode.isWatched)
-      EpisodeLabel(
-        isWatched: episode.isWatched,
-        caption: caption
-      )
+      EpisodeBox(episode: episode, isSelected: isSelected)
+      EpisodeLabel(episode: episode, caption: caption)
     }.animation(.easeInOut.speed(2), value: episode.isWatched)
   }
 }
 
 struct EpisodeBox: View {
-  let isWatched: Bool
+  let episode: Episode
+  let isSelected: Bool
 
   var body: some View {
-    let symbolName = isWatched ? "square.fill" : "square"
-    let foregroundColor = isWatched ? watchedColor : unwatchedColor
+    let symbolName = episode.isWatched ? "square.fill" : "square"
+
+    let fgColor: Color
+    switch (episode.isWatched, isSelected) {
+      case (false, false): fgColor = unwatchedColor
+      case (true, false): fgColor = watchedColor
+      case (_, true): fgColor = selectionColor
+    }
 
     return Image(systemName: symbolName)
       .imageScale(.large)
-      .foregroundColor(foregroundColor)
+      .foregroundColor(fgColor)
       .frame(width: episodeWidth)
   }
 }
 
 struct EpisodeLabel: View {
-  let isWatched: Bool
+  let episode: Episode
   let caption: String
 
   var body: some View {
     Text(caption)
       .font(.caption2)
-      .foregroundColor(isWatched ? Color.white : Color.black)
+      .foregroundColor(episode.isWatched ? Color.white : Color.black)
   }
 }
 
