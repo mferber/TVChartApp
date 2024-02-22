@@ -93,6 +93,17 @@ class Show: Codable, Identifiable {
     self.location = location
     self.episodeLength = episodeLength
     self.seasons = seasons
+
+    hookUpBackLinks()
+  }
+
+  private func hookUpBackLinks() {
+    for season in self.seasons {
+      for item in season.items {
+        item.season = season
+      }
+      season.show = self
+    }
   }
 
   enum CodingKeys: String, CodingKey {
@@ -168,12 +179,7 @@ class Show: Codable, Identifiable {
       return Season(number: idx + 1, items: items)
     }
 
-    for season in self.seasons {
-      for item in season.items {
-        item.season = season
-      }
-      season.show = self
-    }
+    hookUpBackLinks()
   }
 
   // FIXME: do we even need encoding?
