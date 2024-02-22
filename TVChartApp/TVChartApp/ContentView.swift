@@ -6,9 +6,14 @@ let unwatchedColor = Color(white: 0.5)
 let specialEpCaption = "⭑"
 
 struct ContentView: View {
+  @Observable
+  class DisplayState {
+    var isShowingEpisodeDetail = false
+    var selectedItem: SeasonItem!
+  }
+
   var appData: AppData
-  @State private var isShowingEpisodeDetail = false
-  @State private var selectedItem: SeasonItem?
+  @State var overallState: DisplayState = DisplayState()
 
   var body: some View {
     NavigationStack {
@@ -16,22 +21,21 @@ struct ContentView: View {
         switch appData.shows {
           case .loading: Text("loading...")
           case .error(let e): Text("error: \(e.localizedDescription)")
-          case .ready(let shows): ShowList(shows: shows, selectedItem: $selectedItem, isShowingEpisodeDetail: $isShowingEpisodeDetail)
+          case .ready(let shows): ShowList(shows: shows)
         }
       } .defaultScrollAnchor(.topLeading)
         .navigationTitle("All shows")
     }
-    .sheet(isPresented: $isShowingEpisodeDetail) {
-      EpisodeDetailView(episode: $selectedItem)
+    .sheet(isPresented: $overallState.isShowingEpisodeDetail) {
+      EpisodeDetailView(episode: $overallState.selectedItem)
         .presentationDetents([.fraction(0.4)])
     }
+    .environment(overallState)
   }
 }
 
 struct ShowList: View {
   let shows: [Show]
-  @Binding var selectedItem: SeasonItem?
-  @Binding var isShowingEpisodeDetail: Bool
 
   var body: some View {
     VStack(alignment: .leading, spacing: 20) {
@@ -47,7 +51,7 @@ struct ShowList: View {
           }
 
           ForEach(show.seasons) {
-            SeasonRow(show: show, season: $0, selectedItem: $selectedItem, isShowingEpisodeDetail: $isShowingEpisodeDetail)
+            SeasonRow(show: show, season: $0)
           }
         }
       }
@@ -58,8 +62,6 @@ struct ShowList: View {
 struct SeasonRow: View {
   let show: Show
   let season: Season
-  @Binding var selectedItem: SeasonItem?
-  @Binding var isShowingEpisodeDetail: Bool
 
   var body: some View {
     HStack(spacing: 0) {
@@ -72,7 +74,7 @@ struct SeasonRow: View {
           ForEach(season.items) { item in
             switch item.kind {
               case .episode, .special:
-                EpisodeView(item: item, selectedItem: $selectedItem, isShowingEpisodeDetail: $isShowingEpisodeDetail)
+                EpisodeView(item: item)
               case .separator:
                 Separator()
             }
@@ -85,13 +87,12 @@ struct SeasonRow: View {
 
 struct EpisodeView: View {
   let item: SeasonItem
-  @Binding var selectedItem: SeasonItem?
-  @Binding var isShowingEpisodeDetail: Bool
+  @Environment(ContentView.DisplayState.self) var overallState
 
   var body: some View {
     Button {
-      selectedItem = item
-      isShowingEpisodeDetail = true
+      overallState.selectedItem = item
+      overallState.isShowingEpisodeDetail = true
     } label: {
       switch (item.kind) {
         case let .episode(number, status):
