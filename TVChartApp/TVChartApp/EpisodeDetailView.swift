@@ -2,37 +2,25 @@ import Foundation
 import SwiftUI
 
 struct EpisodeDetailView: View {
-  @Binding var episode: SeasonItem
+  @Binding var episode: Episode
   @State private var metadata: DataState<EpisodeMetadata> = .loading
-  @State private var isWatched: Bool
 
-  init(episode: Binding<SeasonItem>) {
-    self._episode = episode
-    self._isWatched = State(initialValue: false)
-
-    switch self.episode.kind {
-      case let .episode(_, status), let .special(status):
-        if case .watched = status {
-          self._isWatched = State(initialValue: true)
-        }
-      case .separator:
-        break
+  private var episodeDescription: String {
+    switch episode {
+      case let numberedEpisode as NumberedEpisode:
+        return "episode \(numberedEpisode.episodeNumber)"
+      case is SpecialEpisode:
+        return "special"
+      default:
+        return "—"
     }
   }
 
-  private var positionDescription: String {
-    switch episode.kind {
-      case let .episode(number, _): return "episode \(number)"
-      case .special: return "special"
-      default: return "—"
-    }
-  }
-
-  func fetchMetadata(episode: SeasonItem) async throws -> EpisodeMetadata {
+  func fetchMetadata(episode: Episode) async throws -> EpisodeMetadata {
     return try await MetadataService().getEpisodeMetadata(
       forShow: episode.season.show,
       season: episode.season.number,
-      episodeIndex: episode.index
+      episodeIndex: episode.episodeIndex
     )
   }
 
@@ -50,10 +38,10 @@ struct EpisodeDetailView: View {
         }
 
         Spacer()
-        Toggle("Watched", isOn: $isWatched).labelsHidden().disabled(true)
+        Toggle("Watched", isOn: $episode.isWatched).labelsHidden().disabled(true)
       }
       Text(episode.season.show.title)
-      Text("Season \(episode.season.number), \(positionDescription)")
+      Text("Season \(episode.season.number), \(episodeDescription)")
         .font(.footnote)
 
       SynopsisView(metadata)
@@ -128,7 +116,7 @@ struct SynopsisView: View {
 }
 
 #Preview {
-  let item = SeasonItem(index: 0, kind: .episode(number: 1, status: .unwatched))
+  let item = NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: false)
   let season = Season(number: 1, items: [item])
   let show = Show(title: "test", tvmazeId: "1", favorite: .unfavorited, location: "Netflix", episodeLength: "60 min.", seasons: [season])
   item.season = season

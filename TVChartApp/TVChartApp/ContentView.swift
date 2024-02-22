@@ -9,11 +9,11 @@ struct ContentView: View {
   @Observable
   class DisplayState {
     var isShowingEpisodeDetail = false
-    var selectedItem: SeasonItem!
+    var selectedEpisode: Episode?
   }
 
   var appData: AppData
-  @State var overallState: DisplayState = DisplayState()
+  @State var displayState: DisplayState = DisplayState()
 
   var body: some View {
     NavigationStack {
@@ -26,11 +26,13 @@ struct ContentView: View {
       } .defaultScrollAnchor(.topLeading)
         .navigationTitle("All shows")
     }
-    .sheet(isPresented: $overallState.isShowingEpisodeDetail) {
-      EpisodeDetailView(episode: $overallState.selectedItem)
-        .presentationDetents([.fraction(0.4)])
+    .sheet(isPresented: $displayState.isShowingEpisodeDetail) {
+      if displayState.selectedEpisode != nil {
+        EpisodeDetailView(episode: Binding($displayState.selectedEpisode)!)
+          .presentationDetents([.fraction(0.4)])
+      }
     }
-    .environment(overallState)
+    .environment(displayState)
   }
 }
 
@@ -72,11 +74,13 @@ struct SeasonRow: View {
       ScrollView([.horizontal]) {
         HStack(spacing: 0) {
           ForEach(season.items) { item in
-            switch item.kind {
-              case .episode, .special:
-                EpisodeView(item: item)
-              case .separator:
-                Separator()
+            switch item {
+              case let episode as Episode:
+                EpisodeButton(episode: episode)
+              case is Separator:
+                SeparatorView()
+              default:
+                EmptyView()
             }
           }
         }
@@ -85,72 +89,73 @@ struct SeasonRow: View {
   }
 }
 
-struct EpisodeView: View {
-  let item: SeasonItem
-  @Environment(ContentView.DisplayState.self) var overallState
+struct EpisodeButton: View {
+  let episode: Episode
+  @Environment(ContentView.DisplayState.self) var displayState
 
   var body: some View {
     Button {
-      overallState.selectedItem = item
-      overallState.isShowingEpisodeDetail = true
+      displayState.selectedEpisode = episode
+      displayState.isShowingEpisodeDetail = true
     } label: {
-      switch (item.kind) {
-        case let .episode(number, status):
-          ZStack {
-            EpisodeBox(status: status)
-            EpisodeLabel(status: status, caption: String(number))
-          }
-        case let .special(status: status):
-          ZStack {
-            EpisodeBox(status: status)
-            EpisodeLabel(status: status, caption: specialEpCaption)
-          }
-        case .separator:  // shouldn't get here
-          EmptyView()
-      }
+      EpisodeView(episode: episode)
+    }
+  }
+}
+
+struct EpisodeView: View {
+  let episode: Episode
+
+  var body: some View {
+    switch episode {
+      case let numberedEpisode as NumberedEpisode:
+        ZStack {
+          EpisodeBox(isWatched: numberedEpisode.isWatched)
+          EpisodeLabel(
+            isWatched: numberedEpisode.isWatched,
+            caption: String(numberedEpisode.episodeNumber)
+          )
+        }
+      case let specialEpisode as SpecialEpisode:
+        ZStack {
+          EpisodeBox(isWatched: specialEpisode.isWatched)
+          EpisodeLabel(
+            isWatched: specialEpisode.isWatched,
+            caption: specialEpCaption
+          )
+        }
+      default:
+        EmptyView()
     }
   }
 }
 
 struct EpisodeBox: View {
-  let status: Status
+  let isWatched: Bool
 
   var body: some View {
-    switch status {
-      case .unwatched:
-        Image(systemName: "square")
-          .imageScale(.large)
-          .foregroundColor(unwatchedColor)
-          .frame(width: episodeWidth)
+    let symbolName = isWatched ? "square.fill" : "square"
+    let foregroundColor = isWatched ? watchedColor : unwatchedColor
 
-      case .watched:
-        Image(systemName: "square.fill")
-          .imageScale(.large)
-          .foregroundColor(watchedColor)
-          .frame(width: episodeWidth)
-    }
+    return Image(systemName: symbolName)
+      .imageScale(.large)
+      .foregroundColor(foregroundColor)
+      .frame(width: episodeWidth)
   }
 }
 
 struct EpisodeLabel: View {
-  let status: Status
+  let isWatched: Bool
   let caption: String
-
-  var color: Color {
-    switch status {
-      case .unwatched: Color.black
-      case .watched: Color.white
-    }
-  }
 
   var body: some View {
     Text(caption)
       .font(.caption2)
-      .foregroundColor(color)
+      .foregroundColor(isWatched ? Color.white : Color.black)
   }
 }
 
-struct Separator: View {
+struct SeparatorView: View {
   var body: some View {
     Image(systemName: "plus")
       .imageScale(.small)

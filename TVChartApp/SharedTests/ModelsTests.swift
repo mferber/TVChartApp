@@ -33,11 +33,9 @@ final class ModelsTests: XCTestCase {
     expect(seasons[0].items).to(haveCount(4))
     for item in seasons[0].items {
       expect(item.season).to(be(seasons[0]))
-
-      if case let .episode(_, status) = item.kind {
-        expect(status).to(equal(.watched))
-      } else {
-        fail("Expected .episode, got \(item)")
+      expect(item).to(beAnInstanceOf(NumberedEpisode.self))
+      if let episode = item as? NumberedEpisode {
+        expect(episode.isWatched).to(beTrue())
       }
     }
 
@@ -49,30 +47,21 @@ final class ModelsTests: XCTestCase {
 
       switch index {
         case 0:
-          if case let .special(status) = item.kind {
-            expect(status).to(equal(.watched))
-          } else {
-            fail("Expected .special, got \(item)")
-          }
-        case 1, 3:
-          if case let .episode(_, status) = item.kind {
-            expect(status).to(equal(.watched))
-          } else {
-            fail("Expected .episode, got \(item)")
-          }
+          expect(item).to(beAnInstanceOf(SpecialEpisode.self))
+        case 1, 3, 4:
+          expect(item).to(beAnInstanceOf(NumberedEpisode.self))
         case 2:
-          if case .separator = item.kind {
-          } else {
-            fail("Expected .separator, got \(item)")
-          }
-        case 4:
-          if case let .episode(_, status) = item.kind {
-            expect(status).to(equal(.unwatched))
-          } else {
-            fail("Expected .episode, got \(item)")
-          }
+          expect(item).to(beAnInstanceOf(Separator.self))
         default:
           fail("Unexpected index")
+      }
+
+      if let episode = item as? Episode {
+        if index == 4 {
+          expect(episode.isWatched).to(beFalse())
+        } else {
+          expect(episode.isWatched).to(beTrue())
+        }
       }
     }
   }
@@ -88,19 +77,19 @@ final class ModelsTests: XCTestCase {
         Season(
           number: 1,
           items: [
-            SeasonItem(index: 0, kind: .episode(number: 1, status: .watched)),
-            SeasonItem(index: 1, kind: .episode(number: 2, status: .watched)),
-            SeasonItem(index: 2, kind: .episode(number: 3, status: .watched))
+            NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: true),
+            NumberedEpisode(index: 1, episodeIndex: 1, episodeNumber: 2, isWatched: true),
+            NumberedEpisode(index: 2, episodeIndex: 2, episodeNumber: 3, isWatched: true)
           ]
         ),
         Season(
           number: 2,
           items: [
-            SeasonItem(index: 0, kind: .episode(number: 1, status: .watched)),
-            SeasonItem(index: 1, kind: .special(status: .watched)),
-            SeasonItem(index: 2, kind: .separator),
-            SeasonItem(index: 3, kind: .episode(number: 2, status: .watched)),
-            SeasonItem(index: 4, kind: .special(status: .unwatched))
+            NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: true),
+            SpecialEpisode(index: 1, episodeIndex: 1, isWatched: true),
+            Separator(index: 2),
+            NumberedEpisode(index: 3, episodeIndex: 2, episodeNumber: 1, isWatched: true),
+            SpecialEpisode(index: 0, episodeIndex: 0, isWatched: false)
           ]
         )
       ]
@@ -126,14 +115,14 @@ final class ModelsTests: XCTestCase {
       Season(
         number: 1,
         items: [
-          SeasonItem(index: 0, kind: .episode(number: 1, status: .unwatched)),
-          SeasonItem(index: 1, kind: .episode(number: 2, status: .unwatched))
+          NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: false),
+          NumberedEpisode(index: 1, episodeIndex: 1, episodeNumber: 2, isWatched: false)
         ]),
       Season(
         number: 2,
         items: [
-          SeasonItem(index: 0, kind: .episode(number: 1, status: .unwatched)),
-          SeasonItem(index: 1, kind: .episode(number: 2, status: .unwatched))
+          NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: false),
+          NumberedEpisode(index: 1, episodeIndex: 1, episodeNumber: 2, isWatched: false)
         ])
     ]
     let show = Show(title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
@@ -151,16 +140,16 @@ final class ModelsTests: XCTestCase {
       Season(
         number: 1,
         items: [
-          SeasonItem(index: 0, kind: .episode(number: 1, status: .watched)),
-          SeasonItem(index: 1, kind: .separator),
-          SeasonItem(index: 2, kind: .episode(number: 2, status: .watched))
+          NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: true),
+          Separator(index: 1),
+          NumberedEpisode(index: 2, episodeIndex: 1, episodeNumber: 2, isWatched: true)
         ]),
       Season(
         number: 2,
         items: [
-          SeasonItem(index: 0, kind: .episode(number: 1, status: .unwatched)),
-          SeasonItem(index: 1, kind: .separator),
-          SeasonItem(index: 2, kind: .episode(number: 2, status: .unwatched)),
+          NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: false),
+          Separator(index: 1),
+          NumberedEpisode(index: 2, episodeIndex: 1, episodeNumber: 2, isWatched: false)
         ])
     ]
     let show = Show(title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
@@ -180,17 +169,17 @@ final class ModelsTests: XCTestCase {
       Season(
         number: 1,
         items: [
-          SeasonItem(index: 0, kind: .episode(number: 1, status: .watched)),
-          SeasonItem(index: 1, kind: .separator),
-          SeasonItem(index: 2, kind: .episode(number: 2, status: .watched))
+          NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: true),
+          Separator(index: 1),
+          NumberedEpisode(index: 2, episodeIndex: 1, episodeNumber: 2, isWatched: true)
         ]
       ),
       Season(
         number: 2,
         items: [
-          SeasonItem(index: 0, kind: .episode(number: 1, status: .unwatched)),
-          SeasonItem(index: 1, kind: .separator),
-          SeasonItem(index: 2, kind: .episode(number: 2, status: .watched))
+          NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: false),
+          Separator(index: 1),
+          NumberedEpisode(index: 2, episodeIndex: 1, episodeNumber: 2, isWatched: true)
         ]
       )
     ]
