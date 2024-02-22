@@ -107,25 +107,19 @@ struct EpisodeView: View {
   let episode: Episode
 
   var body: some View {
-    switch episode {
-      case let numberedEpisode as NumberedEpisode:
-        ZStack {
-          EpisodeBox(isWatched: numberedEpisode.isWatched)
-          EpisodeLabel(
-            isWatched: numberedEpisode.isWatched,
-            caption: String(numberedEpisode.episodeNumber)
-          )
-        }
-      case let specialEpisode as SpecialEpisode:
-        ZStack {
-          EpisodeBox(isWatched: specialEpisode.isWatched)
-          EpisodeLabel(
-            isWatched: specialEpisode.isWatched,
-            caption: specialEpCaption
-          )
-        }
-      default:
-        EmptyView()
+    let caption: String
+    if let numbered = episode as? NumberedEpisode {
+      caption = String(numbered.episodeNumber)
+    } else {
+      caption = specialEpCaption
+    }
+
+    return ZStack {
+      EpisodeBox(isWatched: episode.isWatched)
+      EpisodeLabel(
+        isWatched: episode.isWatched,
+        caption: caption
+      )
     }
   }
 }
