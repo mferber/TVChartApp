@@ -120,7 +120,7 @@ struct EpisodeView: View {
         isWatched: episode.isWatched,
         caption: caption
       )
-    }
+    }.animation(.easeInOut.speed(2), value: episode.isWatched)
   }
 }
 
