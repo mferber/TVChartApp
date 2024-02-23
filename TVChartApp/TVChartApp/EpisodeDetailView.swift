@@ -7,14 +7,23 @@ struct EpisodeDetailView: View {
   @State private var metadata: DataState<EpisodeMetadata> = .loading
 
   private var episodeDescription: String {
+    let desc: String, length: String
+
     switch episode {
       case let numberedEpisode as NumberedEpisode:
-        return "episode \(numberedEpisode.episodeNumber)"
+        desc = "episode \(numberedEpisode.episodeNumber)"
       case is SpecialEpisode:
-        return "special"
+        desc = "special"
       default:
-        return "—"
+        desc = "?"
     }
+
+    switch metadata {
+      case let .ready(metadata): length = " — \(metadata.length)"
+      default: length = ""
+    }
+
+    return desc + length
   }
 
   func fetchMetadata(episode: Episode) async throws -> EpisodeMetadata {
