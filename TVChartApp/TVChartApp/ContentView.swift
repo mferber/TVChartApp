@@ -49,7 +49,8 @@ struct ContentView: View {
     ) {
       if displayState.selectedEpisode != nil {
         EpisodeDetailView(episode: Binding($displayState.selectedEpisode)!)
-          .presentationDetents([.fraction(0.4)])
+          .presentationDetents([.fraction(0.4), .large])
+          .presentationDragIndicator(.automatic)
       }
     }
     .environment(displayState)
@@ -104,7 +105,7 @@ struct SeasonRow: View {
             }
           }
         }
-      }
+      }.defaultScrollAnchor(.leading)
     }
   }
 }
