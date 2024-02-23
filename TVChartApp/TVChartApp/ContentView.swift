@@ -1,10 +1,16 @@
 import SwiftUI
 
-let episodeWidth = CGFloat(21.0)
-let watchedColor = Color(white: 0.25)
-let unwatchedColor = Color(white: 0.5)
-let selectionColor = Color.red
-let specialEpCaption = "⭑"
+struct EpisodeBoxSpecs {
+  static let size = CGFloat(30.0)
+  static let borderWidth = CGFloat(1.5)
+  static let cornerRadius = CGFloat(10.5)
+  static let watchedColor = Color(white: 0.25)
+  static let unwatchedColor = Color(white: 0.5)
+  static let selectedColor = Color.red
+  static let watchedTextColor = Color.black
+  static let unwatchedTextColor = Color.white
+  static let font = Font.footnote
+}
 
 struct ContentView: View {
 
@@ -46,6 +52,7 @@ struct ContentView: View {
       onDismiss: {
         displayState.selectedEpisode = nil
       }
+
     ) {
       if displayState.selectedEpisode != nil {
         EpisodeDetailView(episode: Binding($displayState.selectedEpisode)!)
@@ -89,11 +96,11 @@ struct SeasonRow: View {
   var body: some View {
     HStack(spacing: 0) {
       Text(String(season.id))
-        .frame(width: episodeWidth * 1.5, alignment: .trailing)
-        .padding(.trailing, episodeWidth / 2.0)
+        .frame(width: EpisodeBoxSpecs.size, alignment: .trailing)
+        .padding(.trailing, EpisodeBoxSpecs.size / 2.0)
 
-      ScrollView([.horizontal]) {
-        HStack(spacing: 0) {
+      ScrollView([.horizontal], showsIndicators: false) {
+        HStack(spacing: EpisodeBoxSpecs.size / 8.0) {
           ForEach(season.items) { item in
             switch item {
               case let episode as Episode:
@@ -129,17 +136,20 @@ struct EpisodeView: View {
   let isSelected: Bool
 
   var body: some View {
-    let caption: String
+    let caption: AnyView
     if let numbered = episode as? NumberedEpisode {
-      caption = String(numbered.episodeNumber)
+      caption = AnyView(Text(String(numbered.episodeNumber)).font(EpisodeBoxSpecs.font))
+
     } else {
-      caption = specialEpCaption
+      caption = AnyView(Image(systemName: "star.fill").font(EpisodeBoxSpecs.font))
     }
 
     return ZStack {
       EpisodeBox(episode: episode, isSelected: isSelected)
-      EpisodeLabel(episode: episode, caption: caption)
-    }.animation(.easeInOut.speed(2), value: episode.isWatched)
+      EpisodeLabel(episode: episode, caption: caption, isSelected: isSelected)
+    }
+    .animation(.easeInOut.speed(3), value: episode.isWatched)
+    .animation(.easeInOut.speed(3), value: isSelected)
   }
 }
 
@@ -148,30 +158,34 @@ struct EpisodeBox: View {
   let isSelected: Bool
 
   var body: some View {
-    let symbolName = episode.isWatched ? "square.fill" : "square"
-
     let fgColor: Color
     switch (episode.isWatched, isSelected) {
-      case (false, false): fgColor = unwatchedColor
-      case (true, false): fgColor = watchedColor
-      case (_, true): fgColor = selectionColor
+      case (false, false): fgColor = EpisodeBoxSpecs.unwatchedColor
+      case (true, false): fgColor = EpisodeBoxSpecs.watchedColor
+      case (_, true): fgColor = EpisodeBoxSpecs.selectedColor
     }
 
-    return Image(systemName: symbolName)
-      .imageScale(.large)
-      .foregroundColor(fgColor)
-      .frame(width: episodeWidth)
+    return RoundedRectangle(cornerRadius: EpisodeBoxSpecs.cornerRadius, style: .circular)
+      .strokeBorder(fgColor, lineWidth: EpisodeBoxSpecs.borderWidth)
+      .fill(episode.isWatched ? fgColor : .clear)
+      .frame(width: EpisodeBoxSpecs.size, height: EpisodeBoxSpecs.size)
   }
 }
 
 struct EpisodeLabel: View {
   let episode: Episode
-  let caption: String
+  let caption: AnyView
+  let isSelected: Bool
 
   var body: some View {
-    Text(caption)
-      .font(.caption2)
-      .foregroundColor(episode.isWatched ? Color.white : Color.black)
+    let fgColor: Color
+    switch (episode.isWatched, isSelected) {
+      case (true, _): fgColor = .white
+      case (false, true): fgColor = EpisodeBoxSpecs.selectedColor
+      case (false, false): fgColor = .black
+    }
+    
+    return caption.foregroundColor(fgColor)
   }
 }
 
@@ -179,8 +193,8 @@ struct SeparatorView: View {
   var body: some View {
     Image(systemName: "plus")
       .imageScale(.small)
-      .foregroundColor(unwatchedColor)
-      .frame(width: episodeWidth)
+      .foregroundColor(EpisodeBoxSpecs.watchedColor)
+      .frame(width: EpisodeBoxSpecs.size / 2.0, height: EpisodeBoxSpecs.size / 2.0)
   }
 }
 
