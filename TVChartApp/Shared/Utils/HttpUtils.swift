@@ -1,17 +1,17 @@
 import Foundation
 
 extension URLResponse {
-  var isHttpOk: Bool {
-    guard let rsp = self as? HTTPURLResponse else {
-      return false
-    }
-    return (200..<300).contains(rsp.statusCode)
-  }
+  func validate(_ data: Data?) throws {
+    guard let rsp = self as? HTTPURLResponse else { return }
 
-  func validate() throws {
-    if !self.isHttpOk {
-      throw HttpError.notOk
+    if (200..<300).contains(rsp.statusCode) { return }
+    let text: String?
+    if let data {
+      text = String(data: data, encoding: .utf8)
+    } else {
+      text = nil
     }
+    throw HttpError.notOk(statusCode: rsp.statusCode, data: data, text: text)
   }
 }
 
@@ -22,5 +22,5 @@ extension String {
 }
 
 enum HttpError: Error {
-  case notOk
+  case notOk(statusCode: Int, data: Data?, text: String?)
 }

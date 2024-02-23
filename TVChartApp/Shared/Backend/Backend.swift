@@ -2,20 +2,41 @@ import Foundation
 import SwiftUI
 import Combine
 
-class Backend {
-  
+protocol BackendProtocol {
+  func refetch() async throws
+  func updateSeenThru(show: Show) async throws
+}
+
+class Backend: BackendProtocol {
+
   // main SwiftUI observable
   let dataSource: AppData
   
-  private var requestor: BackendClient
+  private var client: BackendClient
 
-  init(serverUrl: URL) {
+  init(baseURL: URL) {
     dataSource = AppData()
-    requestor = BackendClient(serverUrl: serverUrl)
+    client = BackendClient(baseURL: baseURL)
+
+    dataSource.shows = .loading
   }
 
   func refetch() async throws {
     dataSource.shows = .loading
-    dataSource.shows = .ready(try await requestor.fetchListings().sortedByTitle)
+    dataSource.shows = .ready(try await client.fetchAllShows().sortedByTitle)
   }
+
+  func updateSeenThru(show: Show) async throws {
+    do {
+      _ = try await client.patchShowSeenThru(show: show)
+    } catch {
+      handleError(error)
+      try await refetch()  // patch didn't go through, so try to refresh data
+    }
+  }
+}
+
+class BackendStub: BackendProtocol {
+  func refetch() async throws { }
+  func updateSeenThru(show: Show) async throws { }
 }

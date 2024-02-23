@@ -48,7 +48,7 @@ struct EpisodeDetailView: View {
       SynopsisView(metadata)
 
       Button {
-        displayState.markWatchedUpToHere(episode)
+        handleMarkWatchedToEpisode(episode: episode, backend: displayState.backend)
       } label: {
         Text("Mark all episodes watched up to here")
         .frame(maxWidth: .infinity)
@@ -62,6 +62,17 @@ struct EpisodeDetailView: View {
           handleError(error)
         }
       }
+  }
+
+  func handleMarkWatchedToEpisode(episode: Episode, backend: BackendProtocol) {
+    Task {
+      do {
+        episode.season.show.markWatchedUpTo(targetEpisode: episode)
+        try await displayState.backend.updateSeenThru(show: episode.season.show)
+      } catch {
+        handleError(error)
+      }
+    }
   }
 }
 
@@ -119,10 +130,12 @@ struct SynopsisView: View {
 #Preview {
   let item = NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: false)
   let season = Season(number: 1, items: [item])
-  let show = Show(title: "test", tvmazeId: "1", favorite: .unfavorited, location: "Netflix", episodeLength: "60 min.", seasons: [season])
+  let show = Show(id: 1, title: "test", tvmazeId: "1", favorite: .unfavorited,
+                  location: "Netflix", episodeLength: "60 min.", seasons: [season])
   item.season = season
   season.show = show
   return EpisodeDetailView(episode: .constant(item))
+    .environment(ContentView.DisplayState(backend: BackendStub()))
     .previewLayout(.fixed(width: 50, height: 50))
     .previewDisplayName("Sheet")
 }

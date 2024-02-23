@@ -7,18 +7,27 @@ let selectionColor = Color.red
 let specialEpCaption = "⭑"
 
 struct ContentView: View {
+
   @Observable
   class DisplayState {
+    init(backend: BackendProtocol) {
+      self.backend = backend
+    }
+
     var isShowingEpisodeDetail = false
     var selectedEpisode: Episode?
-
-    var markWatchedUpToHere: (Episode) -> Void = { episode in
-      episode.season.show.markWatchedUpTo(targetEpisode: episode)
-    }
+    var backend: BackendProtocol
   }
 
   var appData: AppData
-  @State var displayState: DisplayState = DisplayState()
+  let backend: BackendProtocol
+  @State var displayState: DisplayState
+
+  init(appData: AppData, backend: BackendProtocol) {
+    self.appData = appData
+    self.backend = backend
+    self._displayState = State(initialValue: DisplayState(backend: backend))
+  }
 
   var body: some View {
     NavigationStack {
@@ -28,8 +37,9 @@ struct ContentView: View {
           case .error(let e): Text("error: \(e.localizedDescription)")
           case .ready(let shows): ShowList(shows: shows)
         }
-      } .defaultScrollAnchor(.topLeading)
-        .navigationTitle("All shows")
+      }
+      .defaultScrollAnchor(.topLeading)
+      .navigationTitle("All shows")
     }
     .sheet(
       isPresented: $displayState.isShowingEpisodeDetail,
@@ -206,6 +216,6 @@ private func createPreview(_ closure: (AppData) -> any View) -> any View {
 
 #Preview {
   createPreview { appData in
-    ContentView(appData: appData)
+    ContentView(appData: appData, backend: BackendStub())
   }
 }

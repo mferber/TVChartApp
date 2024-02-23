@@ -1,6 +1,18 @@
 import Foundation
 import Observation
 
+// SeenThru is an artifact of the old data model, which will hopefully be discarded soon
+// in favor of tracking watched status at the individual episode level
+class SeenThru: Codable {
+  init(season: Int, episodesWatched: Int) {
+    self.season = season
+    self.episodesWatched = episodesWatched
+  }
+
+  var season: Int
+  var episodesWatched: Int
+}
+
 enum FavoriteStatus: Codable {
   case favorited
   case unfavorited
@@ -66,27 +78,17 @@ class Season: Identifiable {
 }
 
 class Show: Codable, Identifiable {
-  // SeenThru is an artifact of the old data model, which will hopefully be discarded soon
-  // in favor of tracking watched status at the individual episode level
-  class SeenThru: Codable {
-    init(season: Int, episodesWatched: Int) {
-      self.season = season
-      self.episodesWatched = episodesWatched
-    }
-    
-    var season: Int
-    var episodesWatched: Int
-  }
-
-  var id: String { tvmazeId }
-  var title: String
+  var id: Int
   var tvmazeId: String
+  var title: String
   var favorite: FavoriteStatus
   var location: String
   var episodeLength: String
   var seasons: [Season]
 
-  init(title: String, tvmazeId: String, favorite: FavoriteStatus, location: String, episodeLength: String, seasons: [Season]) {
+  init(id: Int, title: String, tvmazeId: String, favorite: FavoriteStatus, location: String,
+       episodeLength: String, seasons: [Season]) {
+    self.id = id
     self.title = title
     self.tvmazeId = tvmazeId
     self.favorite = favorite
@@ -141,6 +143,7 @@ class Show: Codable, Identifiable {
 
   required init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.id = try container.decode(Int.self, forKey: .id)
     self.title = try container.decode(String.self, forKey: .title)
     self.tvmazeId = try container.decode(String.self, forKey: .tvmazeId)
     self.location = try container.decode(String.self, forKey: .location)
@@ -237,9 +240,13 @@ class Show: Codable, Identifiable {
 
     try container.encode(seasons.map(encodeSeason), forKey: .seasonMaps)
 
-    // Temporary: determine the latest watched episode; the server-side data model only
-    // tracks that. This can go when the server-side model has been updated to track
-    // watched episodes on an individual basis.
+    try container.encode(self.seenThru, forKey: .seenThru)
+  }
+
+  // Temporary: determine the latest watched episode; the server-side data model only
+  // tracks that. This can go when the server-side model has been updated to track
+  // watched episodes on an individual basis.
+  var seenThru: SeenThru {
     var lastWatchedSeason = 1, lastWatchedEpisodeCount = 0, episodeCounter = 0
     for (seasonIndex, season) in seasons.enumerated() {
       episodeCounter = 0
@@ -253,8 +260,7 @@ class Show: Codable, Identifiable {
         }
       }
     }
-    let seenThru = SeenThru(season: lastWatchedSeason, episodesWatched: lastWatchedEpisodeCount)
-    try container.encode(seenThru, forKey: .seenThru)
+    return SeenThru(season: lastWatchedSeason, episodesWatched: lastWatchedEpisodeCount)
   }
 }
 
@@ -266,6 +272,10 @@ extension [Show] {
       .sorted { $0.0 < $1.0 }
       .map { $0.1 }
   }
+}
+
+struct SeenThruPartial: Encodable {
+  let seenThru: SeenThru
 }
 
 struct EpisodeMetadata {

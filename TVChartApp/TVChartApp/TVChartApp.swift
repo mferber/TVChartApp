@@ -2,11 +2,11 @@ import SwiftUI
 
 @main
 struct TVChartApp: App {
-  private let backend = Backend(serverUrl: URL(string: "http://taskmaster.local:8000/shows")!)
+  private let backend = Backend(baseURL: URL(string: "http://taskmaster.local:8000/")!)
 
   var body: some Scene {
     WindowGroup {
-      ContentView(appData: backend.dataSource)
+      ContentView(appData: backend.dataSource, backend: backend)
         .task { await loadShowListings() }
         .refreshable { await loadShowListings() }
     }
