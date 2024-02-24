@@ -6,7 +6,7 @@ struct EpisodeBoxSpecs {
   static let cornerRadius = CGFloat(10.5)
   static let watchedColor = Color(white: 0.25)
   static let unwatchedColor = Color(white: 0.5)
-  static let selectedColor = Color.red
+  static let selectedColor = Color.accentColor
   static let watchedTextColor = Color.black
   static let unwatchedTextColor = Color.white
   static let font = Font.footnote
@@ -86,7 +86,7 @@ struct ShowList: View {
 
           HStack(spacing: 5) {
             if show.favorite == .favorited {
-              Image(systemName: "heart.fill").foregroundColor(.red)
+              Image(systemName: "heart.fill").foregroundColor(Color.accentColor)
             }
             Text(show.location + ", " + show.episodeLength)
           }
@@ -243,5 +243,6 @@ private func createPreview(_ closure: (AppData) -> any View) -> any View {
 #Preview {
   createPreview { appData in
     ContentView(appData: appData, backend: BackendStub(), metadataService: MetadataServiceStub())
+      .tint(TVChartApp.tintColor)
   }
 }

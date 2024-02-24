@@ -5,9 +5,12 @@ struct TVChartApp: App {
   private let backend = Backend(baseURL: URL(string: "http://taskmaster.local:8000/")!)
   private let metadataService = MetadataService()
 
+  static let tintColor = Color.red
+
   var body: some Scene {
     WindowGroup {
       ContentView(appData: backend.dataSource, backend: backend, metadataService: metadataService)
+        .tint(Self.tintColor)
         .task { await loadShowListings() }
         .refreshable { await loadShowListings() }
     }

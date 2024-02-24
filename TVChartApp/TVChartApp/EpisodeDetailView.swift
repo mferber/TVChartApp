@@ -154,6 +154,7 @@ struct SynopsisView: View {
   item.season = season
   season.show = show
   return EpisodeDetailView(episode: .constant(item), metadataService: MetadataServiceStub())
+    .tint(TVChartApp.tintColor)
     .environment(ContentView.DisplayState(backend: BackendStub()))
     .previewLayout(.fixed(width: 50, height: 50))
     .previewDisplayName("Sheet")
