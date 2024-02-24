@@ -24,7 +24,7 @@ class MetadataService : MetadataServiceProtocol {
       seasons[currentSeasonIndex].append(item)
     }
     cache[show.tvmazeId] = seasons
-    return seasons[season - 1][episodeIndex]
+    return seasons[season - 1][episodeIndex]  // FIXME: trap out-of-range error: stored episode list may not match tvmaze
   }
 
   enum Error: Swift.Error, CustomStringConvertible {
