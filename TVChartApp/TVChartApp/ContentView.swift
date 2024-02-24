@@ -20,9 +20,9 @@ struct ContentView: View {
       self.backend = backend
     }
 
-    var isShowingEpisodeDetail = false
-    var selectedEpisode: Episode?
     var backend: BackendProtocol
+    var selectedEpisode: Episode?
+    var isShowingEpisodeDetail = false
   }
 
   var appData: AppData
@@ -39,15 +39,7 @@ struct ContentView: View {
 
   var body: some View {
     NavigationStack {
-      ScrollView([.vertical]) {
-        switch appData.shows {
-          case .loading: Text("loading...")
-          case .error(let e): Text("error: \(e.localizedDescription)")
-          case .ready(let shows): ShowList(shows: shows)
-        }
-      }
-      .defaultScrollAnchor(.topLeading)
-      .navigationTitle("All shows")
+      LoadableShowList(appData: appData).navigationTitle("All shows")
     }
     .sheet(
       isPresented: $displayState.isShowingEpisodeDetail,
@@ -64,6 +56,22 @@ struct ContentView: View {
       }
     }
     .environment(displayState)
+  }
+}
+
+struct LoadableShowList: View {
+  var appData: AppData
+
+  var body: some View {
+    switch appData.shows {
+      case .loading: ProgressView().controlSize(.extraLarge)
+
+      case .error(let e): Text("error: \(e.localizedDescription)")
+
+      case .ready(let shows): ScrollView([.vertical]) {
+        ShowList(shows: shows)
+      }.defaultScrollAnchor(.topLeading)
+    }
   }
 }
 
