@@ -43,7 +43,7 @@ class Episode: SeasonItem {
   }
 }
 
-class NumberedEpisode: Episode {
+class NumberedEpisode: Episode, CustomStringConvertible {
   let episodeNumber: Int  // official episode number
 
   init(index: Int, episodeIndex: Int, episodeNumber: Int, isWatched: Bool) {
@@ -51,11 +51,19 @@ class NumberedEpisode: Episode {
 
     super.init(index: index, episodeIndex: episodeIndex, isWatched: isWatched)
   }
+
+  var description: String {
+    "NumberedEpisode { \(season.show.title), season \(season.number), index \(episodeIndex), number \(episodeNumber) }"
+  }
 }
 
-class SpecialEpisode: Episode {
+class SpecialEpisode: Episode, CustomStringConvertible {
   override init(index: Int, episodeIndex: Int, isWatched: Bool) {
     super.init(index: index, episodeIndex: episodeIndex, isWatched: isWatched)
+  }
+  
+  var description: String {
+    "SpecialEpisode { \(season.show.title), season \(season.number), index \(episodeIndex) }"
   }
 }
 

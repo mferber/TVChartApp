@@ -3,10 +3,11 @@ import SwiftUI
 @main
 struct TVChartApp: App {
   private let backend = Backend(baseURL: URL(string: "http://taskmaster.local:8000/")!)
+  private let metadataService = MetadataService()
 
   var body: some Scene {
     WindowGroup {
-      ContentView(appData: backend.dataSource, backend: backend)
+      ContentView(appData: backend.dataSource, backend: backend, metadataService: metadataService)
         .task { await loadShowListings() }
         .refreshable { await loadShowListings() }
     }

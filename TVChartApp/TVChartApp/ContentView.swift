@@ -27,11 +27,13 @@ struct ContentView: View {
 
   var appData: AppData
   let backend: BackendProtocol
+  let metadataService: MetadataServiceProtocol
   @State var displayState: DisplayState
 
-  init(appData: AppData, backend: BackendProtocol) {
+  init(appData: AppData, backend: BackendProtocol, metadataService: MetadataServiceProtocol) {
     self.appData = appData
     self.backend = backend
+    self.metadataService = metadataService
     self._displayState = State(initialValue: DisplayState(backend: backend))
   }
 
@@ -52,10 +54,13 @@ struct ContentView: View {
       onDismiss: { displayState.selectedEpisode = nil }
     ) {
       if displayState.selectedEpisode != nil {
-        EpisodeDetailView(episode: Binding($displayState.selectedEpisode)!)
-          .presentationDetents([.fraction(0.4), .large])
-          .presentationDragIndicator(.automatic)
-          .presentationBackgroundInteraction(.enabled)
+        EpisodeDetailView(
+          episode: Binding($displayState.selectedEpisode)!,
+          metadataService: metadataService
+        )
+        .presentationDetents([.fraction(0.4), .large])
+        .presentationDragIndicator(.automatic)
+        .presentationBackgroundInteraction(.enabled)
       }
     }
     .environment(displayState)
@@ -229,6 +234,6 @@ private func createPreview(_ closure: (AppData) -> any View) -> any View {
 
 #Preview {
   createPreview { appData in
-    ContentView(appData: appData, backend: BackendStub())
+    ContentView(appData: appData, backend: BackendStub(), metadataService: MetadataServiceStub())
   }
 }

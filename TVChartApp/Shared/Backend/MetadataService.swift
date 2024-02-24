@@ -1,6 +1,10 @@
 import Foundation
 
-class MetadataService {
+protocol MetadataServiceProtocol {
+  func getEpisodeMetadata(forShow show: Show, season: Int, episodeIndex: Int) async throws -> EpisodeMetadata
+}
+
+class MetadataService : MetadataServiceProtocol {
   var cache: Dictionary<String, [[EpisodeMetadata]]> = [:]
 
   func getEpisodeMetadata(forShow show: Show, season: Int, episodeIndex: Int) async throws -> EpisodeMetadata {
@@ -32,5 +36,12 @@ class MetadataService {
           "requested season \(requestedSeason) is out of bounds - last season is \(lastSeason)"
       }
     }
+  }
+}
+
+class MetadataServiceStub: MetadataServiceProtocol {
+  func getEpisodeMetadata(forShow show: Show, season: Int, episodeIndex: Int) async throws -> EpisodeMetadata {
+    let synopsis = #"BoJack takes an underwater trip to the Pacific Ocean Film Festival for the "Secretariat" premiere, where he tries to reach out to Kelsey."#
+    return EpisodeMetadata(season: 3, episode: 4, title: "Fish out of Water", length: "26 min.", synopsis: synopsis)
   }
 }
