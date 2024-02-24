@@ -39,8 +39,13 @@ struct ContentView: View {
   }
 
   var body: some View {
-    NavigationStack {
-      LoadableShowList(appData: appData).navigationTitle("All shows")
+    ZStack {
+      NavigationStack {
+        LoadableShowList(appData: appData).navigationTitle("All shows")
+      }
+      FavoritesToggle(isOn: $displayState.showFavoritesOnly)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+
     }
     .sheet(
       isPresented: $displayState.isShowingEpisodeDetail,
@@ -212,6 +217,20 @@ struct SeparatorView: View {
   }
 }
 
+struct FavoritesToggle: View {
+  @Binding var isOn: Bool
+  @Environment(ContentView.DisplayState.self) var displayState
+
+  var body: some View {
+    @Bindable var displayState = displayState
+    Toggle(isOn: $displayState.showFavoritesOnly) { }
+      .labelsHidden()
+      .padding(20)
+      .background(Color.white.opacity(0.9))
+      .clipped(antialiased: false)
+      .cornerRadius(20.0)
+  }
+}
 // MARK: - Previews
 
 private func previewData() throws -> AppData {
