@@ -49,15 +49,13 @@ struct ContentView: View {
     }
     .sheet(
       isPresented: $displayState.isShowingEpisodeDetail,
-      onDismiss: {
-        displayState.selectedEpisode = nil
-      }
-
+      onDismiss: { displayState.selectedEpisode = nil }
     ) {
       if displayState.selectedEpisode != nil {
         EpisodeDetailView(episode: Binding($displayState.selectedEpisode)!)
           .presentationDetents([.fraction(0.4), .large])
           .presentationDragIndicator(.automatic)
+          .presentationBackgroundInteraction(.enabled)
       }
     }
     .environment(displayState)
