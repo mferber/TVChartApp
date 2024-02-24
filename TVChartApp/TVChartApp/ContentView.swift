@@ -21,6 +21,7 @@ struct ContentView: View {
     }
 
     var backend: BackendProtocol
+    var showFavoritesOnly = true
     var selectedEpisode: Episode?
     var isShowingEpisodeDetail = false
   }
@@ -76,18 +77,20 @@ struct LoadableShowList: View {
 }
 
 struct ShowList: View {
+  @Environment(ContentView.DisplayState.self) var displayState
   let shows: [Show]
 
   var body: some View {
+    let displayShows = displayState.showFavoritesOnly ? shows.favoritesOnly : shows
+
     VStack(alignment: .leading, spacing: 20) {
-      ForEach(shows) { show in
+      ForEach(displayShows) { show in
         VStack(alignment: .leading) {
           Text(show.title).font(.title2).bold()
 
           HStack(spacing: 5) {
-            if show.favorite == .favorited {
-              Image(systemName: "heart.fill").foregroundColor(Color.accentColor)
-            }
+            Image(systemName: show.isFavorite ? "heart.fill" : "heart")
+              .foregroundColor(Color.accentColor)
             Text(show.location + ", " + show.episodeLength)
           }
 

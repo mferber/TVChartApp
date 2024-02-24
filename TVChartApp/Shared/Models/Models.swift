@@ -107,6 +107,13 @@ class Show: Codable, Identifiable {
     hookUpBackLinks()
   }
 
+  var isFavorite: Bool {
+    if case .favorited = favorite {
+      return true
+    }
+    return false
+  }
+
   private func hookUpBackLinks() {
     for season in self.seasons {
       for item in season.items {
@@ -269,6 +276,12 @@ class Show: Codable, Identifiable {
       }
     }
     return SeenThru(season: lastWatchedSeason, episodesWatched: lastWatchedEpisodeCount)
+  }
+}
+
+extension [Show] {
+  var favoritesOnly: [Show] {
+    return self.filter { $0.isFavorite }
   }
 }
 
