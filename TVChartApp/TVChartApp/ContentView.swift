@@ -104,7 +104,7 @@ struct ShowList: View {
           }
         }
       }
-    }.padding()
+    }.padding([.leading, .top, .bottom])
   }
 }
 
