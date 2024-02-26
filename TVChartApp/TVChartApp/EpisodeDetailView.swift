@@ -129,6 +129,7 @@ struct SynopsisView: View {
       )
       var attrStr = AttributedString(nsAttrStr ?? NSAttributedString())
       attrStr.font = Font.footnote
+      attrStr.foregroundColor = .synopsisText
       synopsisView = Text(attrStr)
 
     } else {
@@ -140,8 +141,7 @@ struct SynopsisView: View {
       .font(.footnote)
       .padding(10)
       .padding([.leading, .trailing], 5)
-      .background(Color(white: 0.97))
-      .border(Color(white: 0.75))
+      .background(.synopsisBackground)
       .padding([.top], 10)
   }
 }
@@ -154,7 +154,7 @@ struct SynopsisView: View {
   item.season = season
   season.show = show
   return EpisodeDetailView(episode: .constant(item), metadataService: MetadataServiceStub())
-    .tint(TVChartApp.tintColor)
+    .tint(.accent)
     .environment(ContentView.DisplayState(backend: BackendStub()))
     .previewLayout(.fixed(width: 50, height: 50))
     .previewDisplayName("Sheet")

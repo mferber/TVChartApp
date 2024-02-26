@@ -4,11 +4,6 @@ struct EpisodeBoxSpecs {
   static let size = CGFloat(30.0)
   static let borderWidth = CGFloat(1.5)
   static let cornerRadius = CGFloat(10.5)
-  static let watchedColor = Color(white: 0.25)
-  static let unwatchedColor = Color(white: 0.5)
-  static let selectedColor = Color.accentColor
-  static let watchedTextColor = Color.black
-  static let unwatchedTextColor = Color.white
   static let font = Font.footnote
 }
 
@@ -177,16 +172,26 @@ struct EpisodeBox: View {
   let isSelected: Bool
 
   var body: some View {
-    let fgColor: Color
+   let strokeColor: Color, fillColor: Color
+
     switch (episode.isWatched, isSelected) {
-      case (false, false): fgColor = EpisodeBoxSpecs.unwatchedColor
-      case (true, false): fgColor = EpisodeBoxSpecs.watchedColor
-      case (_, true): fgColor = EpisodeBoxSpecs.selectedColor
+      case (false, false): 
+        strokeColor = .episodeBox
+        fillColor = .clear
+      case (true, false):
+        strokeColor = .episodeBox
+        fillColor = .episodeBox
+      case (false, true):
+        strokeColor = .accentColor
+        fillColor = .clear
+      case (true, true):
+        strokeColor = .accentColor
+        fillColor = .accentColor
     }
 
     return RoundedRectangle(cornerRadius: EpisodeBoxSpecs.cornerRadius, style: .circular)
-      .strokeBorder(fgColor, lineWidth: EpisodeBoxSpecs.borderWidth)
-      .fill(episode.isWatched ? fgColor : .clear)
+      .fill(fillColor)
+      .strokeBorder(strokeColor, lineWidth: EpisodeBoxSpecs.borderWidth)
       .frame(width: EpisodeBoxSpecs.size, height: EpisodeBoxSpecs.size)
   }
 }
@@ -199,9 +204,9 @@ struct EpisodeLabel: View {
   var body: some View {
     let fgColor: Color
     switch (episode.isWatched, isSelected) {
-      case (true, _): fgColor = .white
-      case (false, true): fgColor = EpisodeBoxSpecs.selectedColor
-      case (false, false): fgColor = .black
+      case (true, _): fgColor = .watchedText
+      case (false, true): fgColor = .accentColor
+      case (false, false): fgColor = .unwatchedText
     }
     
     return caption.foregroundColor(fgColor)
@@ -212,7 +217,7 @@ struct SeparatorView: View {
   var body: some View {
     Image(systemName: "plus")
       .imageScale(.small)
-      .foregroundColor(EpisodeBoxSpecs.watchedColor)
+      .foregroundColor(.episodeBox)
       .frame(width: EpisodeBoxSpecs.size / 2.0, height: EpisodeBoxSpecs.size / 2.0)
   }
 }
@@ -226,7 +231,7 @@ struct FavoritesToggle: View {
     Toggle(isOn: $displayState.showFavoritesOnly) { }
       .labelsHidden()
       .padding(20)
-      .background(Color.white.opacity(0.9))
+      .background(Color.white.opacity(0.5))
       .clipped(antialiased: false)
       .cornerRadius(20.0)
   }
@@ -262,9 +267,10 @@ private func createPreview(_ closure: (AppData) -> any View) -> any View {
   return v
 }
 
+
 #Preview {
   createPreview { appData in
     ContentView(appData: appData, backend: BackendStub(), metadataService: MetadataServiceStub())
-      .tint(TVChartApp.tintColor)
+      .tint(.accent)
   }
 }
