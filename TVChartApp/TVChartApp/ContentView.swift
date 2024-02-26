@@ -227,8 +227,7 @@ struct FavoritesToggle: View {
   @Environment(ContentView.DisplayState.self) var displayState
 
   var body: some View {
-    @Bindable var displayState = displayState
-    Toggle(isOn: $displayState.showFavoritesOnly) { }
+    Toggle(isOn: Bindable(displayState).showFavoritesOnly) { }
       .labelsHidden()
       .padding(20)
       .background(Color.white.opacity(0.5))
