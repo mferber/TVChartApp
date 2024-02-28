@@ -58,7 +58,7 @@ struct EpisodeDetailLoadableContentsView: View {
   var body: some View {
     switch metadata {
       case let .ready(metadata): EpisodeDetailMetadataView(episode: $episode, metadata: metadata)
-      case .loading: ProgressView()
+      case .loading: ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity)
       default: EmptyView()
     }
   }
@@ -106,7 +106,12 @@ struct EpisodeDetailMetadataView: View {
     Text("Season \(episode.season.number), \(episodeDescription)")
       .font(.footnote)
 
-    SynopsisView(synopsis: metadata.synopsis)
+    ScrollView([.vertical], showsIndicators: true) {
+      SynopsisView(synopsis: metadata.synopsis)
+    }
+    .scrollIndicators(.visible)
+    .background(.synopsisBackground)
+    .padding([.top], 10)
 
     Button {
       handleMarkWatchedToEpisode(episode: episode, backend: displayState.backend)
@@ -122,7 +127,7 @@ struct SynopsisView: View {
   let synopsis: String?
 
   var body: some View {
-    var synopsisView: Text
+    var synopsisText: Text
     if let synopsis {
 
       // synopsis is provided as HTML
@@ -137,19 +142,19 @@ struct SynopsisView: View {
       var attrStr = AttributedString(nsAttrStr ?? NSAttributedString())
       attrStr.font = Font.footnote
       attrStr.foregroundColor = .synopsisText
-      synopsisView = Text(attrStr)
+      synopsisText = Text(attrStr)
 
     } else {
-      synopsisView = Text("No summary available").italic()
+      synopsisText = Text("No summary available").italic()
     }
 
-    return synopsisView
+    return synopsisText
       .frame(maxWidth: .infinity, alignment: .leading)
       .font(.footnote)
-      .padding(10)
-      .padding([.leading, .trailing], 5)
-      .background(.synopsisBackground)
-      .padding([.top], 10)
+      .padding([.leading, .trailing], 10)
+      .padding([.top, .bottom], 5)
+      .background(.clear)
+      .padding([.top, .bottom], 5)
   }
 }
 
