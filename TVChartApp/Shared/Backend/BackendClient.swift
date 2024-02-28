@@ -26,22 +26,28 @@ class BackendClient {
   func fetchAllShows() async throws -> [Show] {
     var req = URLRequest(url: urls.allShows())
     req.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    
-    let (data, rsp) = try await URLSession.shared.data(for: req)
-    try rsp.validate(data)
 
-    return try JSONDecoder().decode([Show].self, from: data)
+    do {
+      let (data, rsp) = try await URLSession.shared.data(for: req)
+      try rsp.validate(data)
+      return try JSONDecoder().decode([Show].self, from: data)
+    } catch {
+      throw ConnectionError(kind: .loadShowsFailed, cause: error)
+    }
   }
 
   func patchShowSeenThru(show: Show) async throws -> Show {
     var req = URLRequest(url: urls.show(showId: String(show.id)))
     req.httpMethod = "PATCH"
     req.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    req.httpBody = try JSONEncoder().encode(SeenThruPartial(seenThru: show.seenThru))
 
-    let (data, rsp) = try await URLSession.shared.data(for: req)
-    try rsp.validate(data)
-
-    return try JSONDecoder().decode(Show.self, from: data)
+    do {
+      req.httpBody = try JSONEncoder().encode(SeenThruPartial(seenThru: show.seenThru))
+      let (data, rsp) = try await URLSession.shared.data(for: req)
+      try rsp.validate(data)
+      return try JSONDecoder().decode(Show.self, from: data)
+    } catch {
+      throw ConnectionError(kind: .updateWatchedFailed, cause: error)
+    }
   }
 }

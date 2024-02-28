@@ -15,9 +15,11 @@ struct EpisodeDetailView: View {
     }
   }
 
-  @Environment(ContentView.DisplayState.self) var displayState
   @Binding var episode: Episode
   @State private var metadata: DataState<EpisodeMetadata> = .loading
+  @Environment(TVChartApp.AppState.self) var appState
+  @Environment(ContentView.DisplayState.self) var displayState
+  
   let metadataService: MetadataServiceProtocol
 
   func fetchMetadata(episode: Episode) {
@@ -31,7 +33,10 @@ struct EpisodeDetailView: View {
         )
         metadata = .ready(actualMetadata)
       } catch {
-        handleError(error)
+        withAnimation {
+          displayState.isShowingEpisodeDetail = false
+          appState.errorDisplayList.add(error)
+        }
       }
     }
   }
@@ -63,6 +68,7 @@ struct EpisodeDetailLoadableContentsView: View {
 struct EpisodeDetailMetadataView: View {
   @Binding var episode: Episode
   let metadata: EpisodeMetadata
+  @Environment(TVChartApp.AppState.self) var appState
   @Environment(ContentView.DisplayState.self) var displayState
 
   private var episodeDescription: String {
@@ -84,7 +90,9 @@ struct EpisodeDetailMetadataView: View {
         episode.season.show.markWatchedUpTo(targetEpisode: episode)
         try await displayState.backend.updateSeenThru(show: episode.season.show)
       } catch {
-        handleError(error)
+        withAnimation {
+          appState.errorDisplayList.add(error)
+        }
       }
     }
   }
@@ -155,6 +163,7 @@ struct SynopsisView: View {
   season.show = show
   return EpisodeDetailView(episode: .constant(item), metadataService: MetadataServiceStub())
     .tint(.accent)
+    .environment(TVChartApp.AppState())
     .environment(ContentView.DisplayState(backend: BackendStub()))
     .previewLayout(.fixed(width: 50, height: 50))
     .previewDisplayName("Sheet")

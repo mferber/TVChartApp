@@ -22,7 +22,11 @@ class Backend: BackendProtocol {
   }
 
   func refetch() async throws {
-    dataSource.shows = .loading
+    switch dataSource.shows {
+      case .ready: break  // don't show main spinner if we've already loaded
+      default: dataSource.shows = .loading
+    }
+
     dataSource.shows = .ready(try await client.fetchAllShows().sortedByTitle)
   }
 
@@ -30,8 +34,10 @@ class Backend: BackendProtocol {
     do {
       _ = try await client.patchShowSeenThru(show: show)
     } catch {
-      handleError(error)
-      try await refetch()  // patch didn't go through, so try to refresh data
+      Task {
+        try await refetch()  // patch didn't go through; try to refresh data
+      }
+      throw error  // ... and rethrow anyway
     }
   }
 }

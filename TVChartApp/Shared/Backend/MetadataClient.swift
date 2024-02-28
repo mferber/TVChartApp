@@ -20,10 +20,13 @@ struct MetadataClient {
   func fetchShowMetadata(show: Show) async throws -> [EpisodeMetadata] {
     let url = urls.show(showId: show.tvmazeId)
 
-    let (data, rsp) = try! await URLSession.shared.data(from: url)
-    try rsp.validate(data)
-    
-    return try JSONDecoder().decode([EpisodeMetadata.DTO].self, from: data).map { $0.toDomain() }
+    do {
+      let (data, rsp) = try await URLSession.shared.data(from: url)
+      try rsp.validate(data)
+      return try JSONDecoder().decode([EpisodeMetadata.DTO].self, from: data).map { $0.toDomain() }
+    } catch {
+      throw ConnectionError(kind: .loadShowMetadataFailed, cause: error)
+    }
   }
 } 
 

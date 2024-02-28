@@ -26,17 +26,6 @@ class MetadataService : MetadataServiceProtocol {
     cache[show.tvmazeId] = seasons
     return seasons[season - 1][episodeIndex]  // FIXME: trap out-of-range error: stored episode list may not match tvmaze
   }
-
-  enum Error: Swift.Error, CustomStringConvertible {
-    case outOfRange(requestedSeason: Int, lastSeason: Int)
-
-    var description: String {
-      switch self {
-        case let .outOfRange(requestedSeason, lastSeason):
-          "requested season \(requestedSeason) is out of bounds - last season is \(lastSeason)"
-      }
-    }
-  }
 }
 
 class MetadataServiceStub: MetadataServiceProtocol {

@@ -11,6 +11,9 @@
 		391B3ED92B826171001F5A54 /* BackendClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391B3ED82B826171001F5A54 /* BackendClient.swift */; };
 		391B3EDB2B826481001F5A54 /* Backend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391B3EDA2B826481001F5A54 /* Backend.swift */; };
 		391B3EDF2B82765A001F5A54 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391B3EDE2B82765A001F5A54 /* AppData.swift */; };
+		3964E9992B8E576D00C076E8 /* ShowingErrorsModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3964E9982B8E576D00C076E8 /* ShowingErrorsModifier.swift */; };
+		3964E99D2B8F973E00C076E8 /* ConnectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3964E99C2B8F973E00C076E8 /* ConnectionError.swift */; };
+		3964E99F2B8F983800C076E8 /* TVChartError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3964E99E2B8F983800C076E8 /* TVChartError.swift */; };
 		399A61B62B84F45800255BE1 /* MetadataClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399A61B52B84F45700255BE1 /* MetadataClient.swift */; };
 		399A61B82B84F4C900255BE1 /* MetadataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399A61B72B84F4C900255BE1 /* MetadataService.swift */; };
 		399A61C12B85254A00255BE1 /* HttpUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399A61C02B85254A00255BE1 /* HttpUtils.swift */; };
@@ -93,6 +96,9 @@
 		391B3ED82B826171001F5A54 /* BackendClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendClient.swift; sourceTree = "<group>"; };
 		391B3EDA2B826481001F5A54 /* Backend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backend.swift; sourceTree = "<group>"; };
 		391B3EDE2B82765A001F5A54 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
+		3964E9982B8E576D00C076E8 /* ShowingErrorsModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingErrorsModifier.swift; sourceTree = "<group>"; };
+		3964E99C2B8F973E00C076E8 /* ConnectionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionError.swift; sourceTree = "<group>"; };
+		3964E99E2B8F983800C076E8 /* TVChartError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVChartError.swift; sourceTree = "<group>"; };
 		399A61B52B84F45700255BE1 /* MetadataClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataClient.swift; sourceTree = "<group>"; };
 		399A61B72B84F4C900255BE1 /* MetadataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataService.swift; sourceTree = "<group>"; };
 		399A61C02B85254A00255BE1 /* HttpUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpUtils.swift; sourceTree = "<group>"; };
@@ -190,6 +196,7 @@
 			children = (
 				399A61C22B8527A300255BE1 /* ErrorHandling.swift */,
 				399A61C02B85254A00255BE1 /* HttpUtils.swift */,
+				3964E99E2B8F983800C076E8 /* TVChartError.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -228,6 +235,7 @@
 				39D455862B7FF38300901E0D /* TVChartApp.swift */,
 				39D455882B7FF38300901E0D /* ContentView.swift */,
 				399A61CA2B85B87B00255BE1 /* EpisodeDetailView.swift */,
+				3964E9982B8E576D00C076E8 /* ShowingErrorsModifier.swift */,
 				39D4558A2B7FF38400901E0D /* Assets.xcassets */,
 				39D4558C2B7FF38400901E0D /* Preview Content */,
 			);
@@ -312,6 +320,7 @@
 			children = (
 				391B3EDA2B826481001F5A54 /* Backend.swift */,
 				391B3ED82B826171001F5A54 /* BackendClient.swift */,
+				3964E99C2B8F973E00C076E8 /* ConnectionError.swift */,
 				399A61B52B84F45700255BE1 /* MetadataClient.swift */,
 				399A61B72B84F4C900255BE1 /* MetadataService.swift */,
 			);
@@ -558,12 +567,15 @@
 				391B3ED92B826171001F5A54 /* BackendClient.swift in Sources */,
 				39D455892B7FF38300901E0D /* ContentView.swift in Sources */,
 				399A61C12B85254A00255BE1 /* HttpUtils.swift in Sources */,
+				3964E99D2B8F973E00C076E8 /* ConnectionError.swift in Sources */,
+				3964E9992B8E576D00C076E8 /* ShowingErrorsModifier.swift in Sources */,
 				39D455872B7FF38300901E0D /* TVChartApp.swift in Sources */,
 				399A61CB2B85B87B00255BE1 /* EpisodeDetailView.swift in Sources */,
 				399A61B82B84F4C900255BE1 /* MetadataService.swift in Sources */,
 				39EACF1E2B80216C0050D4DF /* Models.swift in Sources */,
 				391B3EDB2B826481001F5A54 /* Backend.swift in Sources */,
 				399A61C32B8527A300255BE1 /* ErrorHandling.swift in Sources */,
+				3964E99F2B8F983800C076E8 /* TVChartError.swift in Sources */,
 				391B3EDF2B82765A001F5A54 /* AppData.swift in Sources */,
 				399A61B62B84F45800255BE1 /* MetadataClient.swift in Sources */,
 			);

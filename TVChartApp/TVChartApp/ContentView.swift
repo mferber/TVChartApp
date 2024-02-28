@@ -25,6 +25,7 @@ struct ContentView: View {
   let backend: BackendProtocol
   let metadataService: MetadataServiceProtocol
   @State var displayState: DisplayState
+  @Environment(TVChartApp.AppState.self) var appState
 
   init(appData: AppData, backend: BackendProtocol, metadataService: MetadataServiceProtocol) {
     self.appData = appData
@@ -57,6 +58,20 @@ struct ContentView: View {
       }
     }
     .environment(displayState)
+    .task(self.load)
+    .refreshable(action: self.load)
+  }
+
+  @Sendable
+  func load() async {
+    do {
+      try await backend.refetch()
+    } catch {
+      withAnimation {
+        appState.errorDisplayList.add(error)
+        appData.shows = .error(error)
+      }
+    }
   }
 }
 
@@ -67,7 +82,11 @@ struct LoadableShowList: View {
     switch appData.shows {
       case .loading: ProgressView().controlSize(.extraLarge)
 
-      case .error(let e): Text("error: \(e.localizedDescription)")
+      case .error:
+        VStack {
+          Text("Failed to load data").font(.body)
+          Text("Pull to refresh to try again").font(.body)
+        }
 
       case .ready(let shows): ScrollView([.vertical]) {
         ShowList(shows: shows)
@@ -235,6 +254,7 @@ struct FavoritesToggle: View {
       .cornerRadius(20.0)
   }
 }
+
 // MARK: - Previews
 
 private func previewData() throws -> AppData {
@@ -270,6 +290,7 @@ private func createPreview(_ closure: (AppData) -> any View) -> any View {
 #Preview {
   createPreview { appData in
     ContentView(appData: appData, backend: BackendStub(), metadataService: MetadataServiceStub())
+      .environment(TVChartApp.AppState())
       .tint(.accent)
   }
 }
