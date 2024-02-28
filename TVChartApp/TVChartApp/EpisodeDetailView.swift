@@ -45,7 +45,6 @@ struct EpisodeDetailView: View {
     return VStack(alignment: .leading, spacing: 0) {
       EpisodeDetailLoadableContentsView(episode: $episode, metadata: metadata)
     }
-    .padding()
     .onChange(of: EpisodeIdentity(episode), initial:true) {
       fetchMetadata(episode: episode)
     }
@@ -163,6 +162,7 @@ struct SynopsisView: View {
   season.show = show
   return EpisodeDetailView(episode: .constant(item), metadataService: MetadataServiceStub())
     .tint(.accent)
+    .padding()
     .environment(TVChartApp.AppState())
     .environment(ContentView.DisplayState(backend: BackendStub()))
     .previewLayout(.fixed(width: 50, height: 50))

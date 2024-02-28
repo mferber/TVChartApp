@@ -52,10 +52,12 @@ struct ContentView: View {
           episode: Binding($displayState.selectedEpisode)!,
           metadataService: metadataService
         )
+        .padding()
         .presentationDetents([.fraction(0.4), .large])
         .presentationDragIndicator(.automatic)
         .presentationBackgroundInteraction(.enabled)
       }
+      Spacer()
     }
     .environment(displayState)
     .task(self.load)
