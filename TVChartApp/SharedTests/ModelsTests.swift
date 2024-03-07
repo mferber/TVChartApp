@@ -4,7 +4,7 @@ import Nimble
 
 final class ModelsTests: XCTestCase {
 
-  func testSerializedShowInfoDeserializesCorrectly() {
+  func test_Show_deserializesCorrectly() {
     let json = """
       {
         "id": 1,
@@ -66,7 +66,7 @@ final class ModelsTests: XCTestCase {
     }
   }
 
-  func testTypicalShowInfoSerializesCorrectly() {
+  func test_Show_typicalShowSerializesCorrectly() {
     let show = Show(
       id: 0,
       title: "Taskmaster",
@@ -111,7 +111,7 @@ final class ModelsTests: XCTestCase {
     expect(seenThru["episodesWatched"] as? Int).to(equal(3))
   }
 
-  func testUnstartedShowSerializesCorrectly() {
+  func test_Show_unstartedShowSerializesCorrectly() {
     let seasons: [Season] = [
       Season(
         number: 1,
@@ -136,7 +136,7 @@ final class ModelsTests: XCTestCase {
     expect(seenThru["episodesWatched"] as? Int).to(equal(0))
   }
 
-  func testShowWithUnstartedSeasonSerializesCorrectly() {
+  func test_Show_unstartedSeasonSerializesCorrectly() {
     let seasons: [Season] = [
       Season(
         number: 1,
@@ -165,7 +165,7 @@ final class ModelsTests: XCTestCase {
 
   // this is a stopgap while the server-side data model still tracks only "last watched
   // episode" -- the intent is to convert to tracking each episode's status individually
-  func testGapsAreIgnoredWhenDeterminingLastWatchedEpisode() {
+  func test_Season_gapsAreIgnoredWhenDeterminingLastWatchedEpisode() {
     let seasons: [Season] = [
       Season(
         number: 1,
@@ -303,7 +303,7 @@ final class ModelsTests: XCTestCase {
 
   }
 
-  func testTVmazeMetadataDeserializesNormalEpisodeCorrectly() {
+  func test_EpisodeMetadata_TVmazeMetadataDeserializesNormalEpisodeCorrectly() {
     let json = """
       [
         {
@@ -352,7 +352,7 @@ final class ModelsTests: XCTestCase {
     expect(episode.synopsis).notTo(match("<.*>"))
   }
 
-  func testTVmazeMetadataDeserializesSpecialEpisodeCorrectly() {
+  func test_EpisodeMetadata_TVmazeMetadataDeserializesSpecialEpisodeCorrectly() {
     let json =
     """
     {
