@@ -107,20 +107,23 @@ struct ShowList: View {
     VStack(alignment: .leading, spacing: 20) {
       ForEach(displayShows) { show in
         VStack(alignment: .leading) {
-          Text(show.title).font(.title2).bold()
+          Text(show.title)
+            .font(.title2)
+            .bold()
+            .padding([.leading])
 
           HStack(spacing: 5) {
             Image(systemName: show.isFavorite ? "heart.fill" : "heart")
               .foregroundColor(Color.accentColor)
             Text(show.location + ", " + show.episodeLength)
-          }
+          }.padding([.leading])
 
           ForEach(show.seasons) {
             SeasonRow(show: show, season: $0)
           }
         }
       }
-    }.padding([.leading, .top, .bottom])
+    }.padding([.top, .bottom])
   }
 }
 
@@ -131,15 +134,28 @@ struct SeasonRow: View {
   var body: some View {
     HStack(spacing: 0) {
       Text(String(season.id))
-        .frame(width: EpisodeBoxSpecs.size, alignment: .trailing)
+        .bold()
+        .frame(width: EpisodeBoxSpecs.size, height: EpisodeBoxSpecs.size, alignment: .trailing)
         .padding(.trailing, EpisodeBoxSpecs.size / 2.0)
+        .background(Color.white.opacity(0.9)
+          .mask(
+            LinearGradient(
+              gradient: Gradient(colors: [Color.black, Color.black.opacity(0)]),
+              startPoint: UnitPoint(x: 0.7, y: 0.5),
+              endPoint: .trailing
+            )
+          )
+        )
 
       ScrollView([.horizontal], showsIndicators: false) {
         HStack(spacing: EpisodeBoxSpecs.size / 4.0) {
           EpisodeRow(items: season.items)
           SeasonEnd(filled: season.isCompleted)
         }
-      }.defaultScrollAnchor(.leading)
+      }
+      .zIndex(-1)
+      .defaultScrollAnchor(.leading)
+      .scrollClipDisabled()
     }
   }
 }
