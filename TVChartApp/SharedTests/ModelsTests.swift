@@ -68,6 +68,7 @@ final class ModelsTests: XCTestCase {
 
   func testTypicalShowInfoSerializesCorrectly() {
     let show = Show(
+      id: 0,
       title: "Taskmaster",
       tvmazeId: "2955",
       favorite: .favorited,
@@ -97,7 +98,7 @@ final class ModelsTests: XCTestCase {
     let json = try! JSONEncoder().encode(show)
 
     let decoded = try! JSONSerialization.jsonObject(with: json) as! NSDictionary
-    expect(decoded["id"] as? String).to(equal("2955"))
+    expect(decoded["id"] as? Int).to(equal(0))
     expect(decoded["title"] as? String).to(equal("Taskmaster"))
     expect(decoded["tvmazeId"] as? String).to(equal("2955"))
     expect(decoded["favorite"] as? Bool).to(beTrue())
@@ -125,7 +126,7 @@ final class ModelsTests: XCTestCase {
           NumberedEpisode(index: 1, episodeIndex: 1, episodeNumber: 2, isWatched: false)
         ])
     ]
-    let show = Show(title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
+    let show = Show(id: 0, title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
                     seasons: seasons)
     let encoded = try! JSONEncoder().encode(show)
 
@@ -152,7 +153,7 @@ final class ModelsTests: XCTestCase {
           NumberedEpisode(index: 2, episodeIndex: 1, episodeNumber: 2, isWatched: false)
         ])
     ]
-    let show = Show(title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
+    let show = Show(id: 0, title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
                     seasons: seasons)
     let encoded = try! JSONEncoder().encode(show)
 
@@ -183,7 +184,7 @@ final class ModelsTests: XCTestCase {
         ]
       )
     ]
-    let show = Show(title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
+    let show = Show(id: 0, title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
                     seasons: seasons)
     let encoded = try! JSONEncoder().encode(show)
 
@@ -220,7 +221,7 @@ final class ModelsTests: XCTestCase {
         ]
       )
     ]
-    let show = Show(title: "", tvmazeId: "", favorite: .unfavorited, location: "", episodeLength: "", 
+    let show = Show(id: 0, title: "", tvmazeId: "", favorite: .unfavorited, location: "", episodeLength: "", 
                     seasons: seasons)
 
     show.markWatchedUpTo(targetEpisode: seasons[1].items[2] as! Episode)
@@ -263,7 +264,7 @@ final class ModelsTests: XCTestCase {
         ]
       )
     ]
-    let show = Show(title: "", tvmazeId: "", favorite: .unfavorited, location: "", episodeLength: "",
+    let show = Show(id: 0, title: "", tvmazeId: "", favorite: .unfavorited, location: "", episodeLength: "",
                     seasons: seasons)
 
     show.markWatchedUpTo(targetEpisode: seasons[1].items[2] as! Episode)
