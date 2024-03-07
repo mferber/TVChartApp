@@ -44,7 +44,7 @@ class Episode: SeasonItem {
 }
 
 class NumberedEpisode: Episode, CustomStringConvertible {
-  let episodeNumber: Int  // official episode number
+  let episodeNumber: Int  // official episode number; specials aren't numbered
 
   init(index: Int, episodeIndex: Int, episodeNumber: Int, isWatched: Bool) {
     self.episodeNumber = episodeNumber
@@ -78,6 +78,10 @@ class Season: Identifiable {
   var number: Int
   var items: [SeasonItem]
   var show: Show!
+
+  var isCompleted: Bool {
+    return items.allSatisfy { ($0 as? Episode)?.isWatched ?? true }
+  }
 
   init(number: Int, items: [SeasonItem]) {
     self.number = number

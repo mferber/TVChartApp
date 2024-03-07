@@ -135,20 +135,40 @@ struct SeasonRow: View {
         .padding(.trailing, EpisodeBoxSpecs.size / 2.0)
 
       ScrollView([.horizontal], showsIndicators: false) {
-        HStack(spacing: EpisodeBoxSpecs.size / 8.0) {
-          ForEach(season.items) { item in
-            switch item {
-              case let episode as Episode:
-                EpisodeButton(episode: episode)
-              case is Separator:
-                SeparatorView()
-              default:
-                EmptyView()
-            }
-          }
+        HStack(spacing: EpisodeBoxSpecs.size / 4.0) {
+          EpisodeRow(items: season.items)
+          SeasonEnd(filled: season.isCompleted)
         }
       }.defaultScrollAnchor(.leading)
     }
+  }
+}
+
+struct EpisodeRow: View {
+  let items: [SeasonItem]
+
+  var body: some View {
+    HStack(spacing: EpisodeBoxSpecs.size / 8.0) {
+      ForEach(items) { item in
+        switch item {
+          case let episode as Episode:
+            EpisodeButton(episode: episode)
+          case is Separator:
+            SeparatorView()
+          default:
+            EmptyView()
+        }
+      }
+    }
+  }
+}
+
+struct SeasonEnd: View {
+  var filled: Bool
+
+  var body: some View {
+    return Image(systemName: "rhombus\(filled ? ".fill" : "")")
+      .foregroundStyle(.episodeBox).dynamicTypeSize(.xSmall)
   }
 }
 

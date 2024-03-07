@@ -194,6 +194,27 @@ final class ModelsTests: XCTestCase {
     expect(seenThru["episodesWatched"] as? Int).to(equal(2))
   }
 
+  func test_Season_fullyWatchedSeasonIsComplete() {
+    let seasonItems: [SeasonItem] = [
+      NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: true),
+      Separator(index: 1),
+      NumberedEpisode(index: 2, episodeIndex: 1, episodeNumber: 2, isWatched: true)
+    ]
+    let season = Season(number: 1, items: seasonItems)
+
+    expect(season.isCompleted).to(beTrue())
+  }
+
+  func test_Season_fullyWatchedSeasonIsIncomplete() {
+    let seasonItems: [SeasonItem] = [
+      NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: false),
+      Separator(index: 1),
+      NumberedEpisode(index: 2, episodeIndex: 1, episodeNumber: 2, isWatched: true)
+    ]
+    let season = Season(number: 1, items: seasonItems)
+
+    expect(season.isCompleted).to(beFalse())
+  }
 
   func test_Show_markWatchedUpToEpisode() {
     let seasons: [Season] = [
