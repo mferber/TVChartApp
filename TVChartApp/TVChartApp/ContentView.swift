@@ -43,6 +43,7 @@ struct ContentView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
 
     }
+    .refreshable(action: self.load)
     .sheet(
       isPresented: $displayState.isShowingEpisodeDetail,
       onDismiss: { displayState.selectedEpisode = nil }
@@ -61,7 +62,6 @@ struct ContentView: View {
     }
     .environment(displayState)
     .task(self.load)
-    .refreshable(action: self.load)
   }
 
   @Sendable
