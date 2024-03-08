@@ -130,21 +130,25 @@ struct ShowList: View {
 struct SeasonRow: View {
   let show: Show
   let season: Season
+  @Environment(\.colorScheme) var colorScheme
 
   var body: some View {
+    let maxOpacity = colorScheme == .dark ? 0.5 : 0.9
     HStack(spacing: 0) {
       Text(String(season.id))
         .bold()
         .frame(width: EpisodeBoxSpecs.size, height: EpisodeBoxSpecs.size, alignment: .trailing)
         .padding(.trailing, EpisodeBoxSpecs.size / 2.0)
-        .background(Color.white.opacity(0.9)
-          .mask(
-            LinearGradient(
-              gradient: Gradient(colors: [Color.black, Color.black.opacity(0)]),
-              startPoint: UnitPoint(x: 0.7, y: 0.5),
-              endPoint: .trailing
+        .background(
+          Color(UIColor.systemBackground)
+            .mask(
+              LinearGradient(
+                gradient: Gradient(colors: [Color.black.opacity(maxOpacity), Color.clear]),
+                startPoint: .center,
+                endPoint: .trailing
+              )
             )
-          )
+
         )
 
       ScrollView([.horizontal], showsIndicators: false) {
