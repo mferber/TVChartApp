@@ -55,8 +55,8 @@ struct ContentView: View {
         )
         .padding()
         .presentationDetents([.fraction(0.4), .large])
+        .presentationBackgroundInteraction(.enabled(upThrough: .large))
         .presentationDragIndicator(.automatic)
-        .presentationBackgroundInteraction(.enabled)
       }
       Spacer()
     }
