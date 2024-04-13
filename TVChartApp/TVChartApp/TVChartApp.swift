@@ -1,5 +1,11 @@
 import SwiftUI
 
+#if DEV_SERVER
+fileprivate let serverUrl = "http://localhost:8000/v0.1/"
+#else
+fileprivate let serverUrl = "http://taskmaster.local:8000/v0.1/"
+#endif
+
 @main
 struct TVChartApp: App {
 
@@ -8,7 +14,7 @@ struct TVChartApp: App {
     private(set) var errorDisplayList = ErrorDisplayList()
   }
 
-  private let backend = Backend(baseURL: URL(string: "http://taskmaster.local:8000/v0.1/")!)
+  private let backend = Backend(baseURL: URL(string: serverUrl)!)
   private let metadataService = MetadataService()
 
   @State var appState = AppState()
