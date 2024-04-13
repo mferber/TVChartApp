@@ -1,23 +1,25 @@
 import Foundation
 
-struct ConnectionError: DisplayableError {
-  enum Kind {
-    case loadShowsFailed
-    case loadShowMetadataFailed
-    case updateWatchedFailed
+enum ConnectionError: DisplayableError {
+  case loadShowsFailed(cause: Error?)
+  case loadShowMetadataFailed(cause: Error?)
+  case updateStatusFailed(cause: Error?)
 
-    var description: String {
-      switch self {
-        case .loadShowsFailed: "Error loading shows"
-        case .loadShowMetadataFailed: "Error loading show details"
-        case .updateWatchedFailed: "Error sending update"
-      }
+  var description: String {
+    switch self {
+      case .loadShowsFailed: "Error loading shows"
+      case .loadShowMetadataFailed: "Error loading show details"
+      case .updateStatusFailed: "Error updating episode status"
     }
   }
 
-  let kind: Kind
-  let cause: Error
-
-  var displayDescription: String { kind.description }
-  var displayDetails: String? { cause.localizedDescription }
+  var displayDescription: String { description }
+  var displayDetails: String? {
+    switch self {
+      case .loadShowsFailed(let cause),
+          .loadShowMetadataFailed(let cause),
+          .updateStatusFailed(let cause):
+        cause?.localizedDescription
+    }
+  }
 }

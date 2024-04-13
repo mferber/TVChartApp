@@ -14,7 +14,7 @@ final class ModelsTests: XCTestCase {
         "location": "Apple TV+",
         "length": "1 hour",
         "seasonMaps": ["....", "S.+.."],
-        "seenThru": { "season": 2, "episodesWatched": 3 }
+        "watchedEpisodeMaps": ["xx..", "...x" ]
       }
       """.data(using: .utf8)!
 
@@ -34,10 +34,11 @@ final class ModelsTests: XCTestCase {
     for item in seasons[0].items {
       expect(item.season).to(be(seasons[0]))
       expect(item).to(beAnInstanceOf(NumberedEpisode.self))
-      if let episode = item as? NumberedEpisode {
-        expect(episode.isWatched).to(beTrue())
-      }
     }
+    expect((seasons[0].items[0] as! Episode).isWatched).to(beTrue())
+    expect((seasons[0].items[1] as! Episode).isWatched).to(beTrue())
+    expect((seasons[0].items[2] as! Episode).isWatched).to(beFalse())
+    expect((seasons[0].items[3] as! Episode).isWatched).to(beFalse())
 
     expect(seasons[1].number).to(equal(2))
     expect(seasons[1].items).to(haveCount(5))
@@ -55,15 +56,11 @@ final class ModelsTests: XCTestCase {
         default:
           fail("Unexpected index")
       }
-
-      if let episode = item as? Episode {
-        if index == 4 {
-          expect(episode.isWatched).to(beFalse())
-        } else {
-          expect(episode.isWatched).to(beTrue())
-        }
-      }
     }
+    expect((seasons[1].items[0] as! Episode).isWatched).to(beFalse())
+    expect((seasons[1].items[1] as! Episode).isWatched).to(beFalse())
+    expect((seasons[1].items[3] as! Episode).isWatched).to(beFalse())
+    expect((seasons[1].items[4] as! Episode).isWatched).to(beTrue())
   }
 
   func test_Show_typicalShowSerializesCorrectly() {
@@ -78,7 +75,7 @@ final class ModelsTests: XCTestCase {
         Season(
           number: 1,
           items: [
-            NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: true),
+            NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: false),
             NumberedEpisode(index: 1, episodeIndex: 1, episodeNumber: 2, isWatched: true),
             NumberedEpisode(index: 2, episodeIndex: 2, episodeNumber: 3, isWatched: true)
           ]
@@ -106,9 +103,7 @@ final class ModelsTests: XCTestCase {
     expect(decoded["length"] as? String).to(equal("1 hour"))
 
     expect(decoded["seasonMaps"] as? [String]).to(equal(["...", ".S+.S"]))
-    let seenThru = decoded["seenThru"] as! NSDictionary
-    expect(seenThru["season"] as? Int).to(equal(2))
-    expect(seenThru["episodesWatched"] as? Int).to(equal(3))
+    expect(decoded["watchedEpisodeMaps"] as? [String]).to(equal([".xx", "xxx."]))
   }
 
   func test_Show_unstartedShowSerializesCorrectly() {
@@ -131,9 +126,7 @@ final class ModelsTests: XCTestCase {
     let encoded = try! JSONEncoder().encode(show)
 
     let decoded = try! JSONSerialization.jsonObject(with: encoded) as! NSDictionary
-    let seenThru = decoded["seenThru"] as! NSDictionary
-    expect(seenThru["season"] as? Int).to(equal(1))
-    expect(seenThru["episodesWatched"] as? Int).to(equal(0))
+    expect(decoded["watchedEpisodeMaps"] as? [String]).to(equal(["..", ".."]))
   }
 
   func test_Show_unstartedSeasonSerializesCorrectly() {
@@ -158,40 +151,7 @@ final class ModelsTests: XCTestCase {
     let encoded = try! JSONEncoder().encode(show)
 
     let decoded = try! JSONSerialization.jsonObject(with: encoded) as! NSDictionary
-    let seenThru = decoded["seenThru"] as! NSDictionary
-    expect(seenThru["season"] as? Int).to(equal(1))
-    expect(seenThru["episodesWatched"] as? Int).to(equal(2))
-  }
-
-  // this is a stopgap while the server-side data model still tracks only "last watched
-  // episode" -- the intent is to convert to tracking each episode's status individually
-  func test_Season_gapsAreIgnoredWhenDeterminingLastWatchedEpisode() {
-    let seasons: [Season] = [
-      Season(
-        number: 1,
-        items: [
-          NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: true),
-          Separator(index: 1),
-          NumberedEpisode(index: 2, episodeIndex: 1, episodeNumber: 2, isWatched: true)
-        ]
-      ),
-      Season(
-        number: 2,
-        items: [
-          NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: false),
-          Separator(index: 1),
-          NumberedEpisode(index: 2, episodeIndex: 1, episodeNumber: 2, isWatched: true)
-        ]
-      )
-    ]
-    let show = Show(id: 0, title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
-                    seasons: seasons)
-    let encoded = try! JSONEncoder().encode(show)
-
-    let decoded = try! JSONSerialization.jsonObject(with: encoded) as! NSDictionary
-    let seenThru = decoded["seenThru"] as! NSDictionary
-    expect(seenThru["season"] as? Int).to(equal(2))
-    expect(seenThru["episodesWatched"] as? Int).to(equal(2))
+    expect(decoded["watchedEpisodeMaps"] as? [String]).to(equal(["xx", ".."]))
   }
 
   func test_Season_fullyWatchedSeasonIsComplete() {
@@ -221,7 +181,7 @@ final class ModelsTests: XCTestCase {
       Season(
         number: 1,
         items: [
-          NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: false),
+          NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: true),
           Separator(index: 1),
           NumberedEpisode(index: 2, episodeIndex: 1, episodeNumber: 2, isWatched: false)
         ]
@@ -231,8 +191,9 @@ final class ModelsTests: XCTestCase {
         items: [
           SpecialEpisode(index: 0, episodeIndex: 0, isWatched: false),
           Separator(index: 1),
-          NumberedEpisode(index: 2, episodeIndex: 1, episodeNumber: 2, isWatched: false),  // <- target episode
-          NumberedEpisode(index: 3, episodeIndex: 2, episodeNumber: 2, isWatched: false)
+          NumberedEpisode(index: 2, episodeIndex: 1, episodeNumber: 1, isWatched: false),  // <- target episode
+          NumberedEpisode(index: 3, episodeIndex: 2, episodeNumber: 2, isWatched: false),
+          NumberedEpisode(index: 4, episodeIndex: 3, episodeNumber: 3, isWatched: true)
         ]
       ),
       Season(
@@ -245,62 +206,33 @@ final class ModelsTests: XCTestCase {
     let show = Show(id: 0, title: "", tvmazeId: "", favorite: .unfavorited, location: "", episodeLength: "", 
                     seasons: seasons)
 
-    show.markWatchedUpTo(targetEpisode: seasons[1].items[2] as! Episode)
+    let updatedEpisodes = show.markWatchedUpTo(targetEpisode: seasons[1].items[2] as! Episode)
+    expect(updatedEpisodes).to(equal([
+      EpisodeDescriptor(showId: 0, season: 1, episodeIndex: 1),
+      EpisodeDescriptor(showId: 0, season: 2, episodeIndex: 0),
+      EpisodeDescriptor(showId: 0, season: 2, episodeIndex: 1)
+    ]))
 
     for season in seasons {
       for ep in season.items.compactMap({ $0 as? Episode }) {
         switch season.number {
-          case 1: expect(ep.isWatched).to(beTrue(), description: "season \(season.number), index \(ep.index)")
-          case 2: expect(ep.isWatched).to(equal(ep.index <= 2), description: "season \(season.number), index \(ep.index)")
-          case 3: expect(ep.isWatched).to(beFalse(), description: "season \(season.number), index \(ep.index)")
+          case 1: 
+            expect(ep.isWatched).to(beTrue(), description: "season \(season.number), index \(ep.index)")
+          case 2:
+            switch ep.episodeIndex {
+              case 0, 1, 3:
+                expect(ep.isWatched).to(beTrue(), description: "season \(season.number), index \(ep.index)")
+              case 2:
+                expect(ep.isWatched).to(beFalse(), description: "season \(season.number), index \(ep.index)")
+              default:
+                fail()
+            }
+          case 3:
+            expect(ep.isWatched).to(beFalse(), description: "season \(season.number), index \(ep.index)")
           default: fail()
         }
       }
     }
-  }
-
-  func test_Show_markWatchedUpToEpisodeWithLaterEpsWatched() {
-    let seasons: [Season] = [
-      Season(
-        number: 1,
-        items: [
-          NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: true),
-          Separator(index: 1),
-          NumberedEpisode(index: 2, episodeIndex: 1, episodeNumber: 2, isWatched: true)
-        ]
-      ),
-      Season(
-        number: 2,
-        items: [
-          SpecialEpisode(index: 0, episodeIndex: 0, isWatched: false),
-          Separator(index: 1),
-          NumberedEpisode(index: 2, episodeIndex: 1, episodeNumber: 2, isWatched: true),  // <- target episode
-          NumberedEpisode(index: 3, episodeIndex: 2, episodeNumber: 2, isWatched: true)
-        ]
-      ),
-      Season(
-        number: 3,
-        items: [
-          SpecialEpisode(index: 0, episodeIndex: 0, isWatched: true)
-        ]
-      )
-    ]
-    let show = Show(id: 0, title: "", tvmazeId: "", favorite: .unfavorited, location: "", episodeLength: "",
-                    seasons: seasons)
-
-    show.markWatchedUpTo(targetEpisode: seasons[1].items[2] as! Episode)
-
-    for season in seasons {
-      for ep in season.items.compactMap({ $0 as? Episode }) {
-        switch season.number {
-          case 1: expect(ep.isWatched).to(beTrue(), description: "season \(season.number), index \(ep.index)")
-          case 2: expect(ep.isWatched).to(equal(ep.index <= 2), description: "season \(season.number), index \(ep.index)")
-          case 3: expect(ep.isWatched).to(beFalse(), description: "season \(season.number), index \(ep.index)")
-          default: fail()
-        }
-      }
-    }
-
   }
 
   func test_EpisodeMetadata_TVmazeMetadataDeserializesNormalEpisodeCorrectly() {

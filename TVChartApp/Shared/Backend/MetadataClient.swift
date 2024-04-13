@@ -25,7 +25,7 @@ struct MetadataClient {
       try rsp.validate(data)
       return try JSONDecoder().decode([EpisodeMetadata.DTO].self, from: data).map { $0.toDomain() }
     } catch {
-      throw ConnectionError(kind: .loadShowMetadataFailed, cause: error)
+      throw ConnectionError.loadShowMetadataFailed(cause: error)
     }
   }
 } 

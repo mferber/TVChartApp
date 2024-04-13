@@ -11,78 +11,57 @@ struct ContentView: View {
 
   @Observable
   class DisplayState {
+    var backend: BackendProtocol
+    var showFavoritesOnly = true
+    var isPresentingSelectedEpisode = false
+    var selectedEpisodeDescriptor: EpisodeDescriptor? = nil
+
     init(backend: BackendProtocol) {
       self.backend = backend
     }
-
-    var backend: BackendProtocol
-    var showFavoritesOnly = true
-    var selectedEpisode: Episode?
-    var isShowingEpisodeDetail = false
   }
 
-  var appData: AppData
-  let backend: BackendProtocol
-  let metadataService: MetadataServiceProtocol
+  @State var loadableAppData: Loadable<AppData> = .loading
   @State var displayState: DisplayState
   @Environment(TVChartApp.AppState.self) var appState
 
-  init(appData: AppData, backend: BackendProtocol, metadataService: MetadataServiceProtocol) {
-    self.appData = appData
-    self.backend = backend
-    self.metadataService = metadataService
+  let metadataService: MetadataServiceProtocol
+
+  init(backend: BackendProtocol, metadataService: MetadataServiceProtocol) {
     self._displayState = State(initialValue: DisplayState(backend: backend))
+    self.metadataService = metadataService
   }
 
   var body: some View {
     ZStack {
       NavigationStack {
-        LoadableShowList(appData: appData).navigationTitle("All shows")
+        ShowListLoadingView(appData: loadableAppData, metadataService: metadataService)
+          .navigationTitle("All shows")
       }
       FavoritesToggle(isOn: $displayState.showFavoritesOnly)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-
     }
-    .refreshable(action: self.load)
-    .sheet(
-      isPresented: $displayState.isShowingEpisodeDetail,
-      onDismiss: { displayState.selectedEpisode = nil }
-    ) {
-      if displayState.selectedEpisode != nil {
-        EpisodeDetailView(
-          episode: Binding($displayState.selectedEpisode)!,
-          metadataService: metadataService
-        )
-        .padding()
-        .presentationDetents([.fraction(0.4), .large])
-        .presentationContentInteraction(.scrolls)
-        .presentationBackgroundInteraction(.enabled(upThrough: .large))
-        .presentationDragIndicator(.automatic)
-      }
-      Spacer()
-    }
+    .task { await self.loadData() }
+    .refreshable { await self.loadData() }
     .environment(displayState)
-    .task(self.load)
   }
 
-  @Sendable
-  func load() async {
+  func loadData() async {
     do {
-      try await backend.refetch()
+      loadableAppData = .ready(AppData(shows: try await displayState.backend.fetch()))
     } catch {
-      withAnimation {
-        appState.errorDisplayList.add(error)
-        appData.shows = .error(error)
-      }
+      loadableAppData = .error(error)
+      handleError(error)
     }
   }
 }
 
-struct LoadableShowList: View {
-  var appData: AppData
+struct ShowListLoadingView: View {
+  var appData: Loadable<AppData>
+  var metadataService: MetadataServiceProtocol
 
   var body: some View {
-    switch appData.shows {
+    switch appData {
       case .loading: ProgressView().controlSize(.extraLarge)
 
       case .error:
@@ -92,7 +71,8 @@ struct LoadableShowList: View {
         }
 
       case .ready(let shows): ScrollView([.vertical]) {
-        ShowList(shows: shows)
+        ShowList(metadataService: metadataService)
+          .environment(shows)
       }.defaultScrollAnchor(.topLeading)
     }
   }
@@ -100,10 +80,13 @@ struct LoadableShowList: View {
 
 struct ShowList: View {
   @Environment(ContentView.DisplayState.self) var displayState
-  let shows: [Show]
+  @Environment(AppData.self) var appData
+
+  let metadataService: MetadataServiceProtocol
 
   var body: some View {
-    let displayShows = displayState.showFavoritesOnly ? shows.favoritesOnly : shows
+    let displayShows = displayState.showFavoritesOnly ? appData.shows.favoritesOnly : appData.shows
+    @Bindable var displayState = displayState
 
     VStack(alignment: .leading, spacing: 20) {
       ForEach(displayShows) { show in
@@ -124,7 +107,25 @@ struct ShowList: View {
           }
         }
       }
-    }.padding([.top, .bottom])
+    }
+    .padding([.top, .bottom])
+    .sheet(
+      isPresented: $displayState.isPresentingSelectedEpisode,
+      onDismiss: { displayState.selectedEpisodeDescriptor = nil }
+    ) {
+      if let descriptor = displayState.selectedEpisodeDescriptor {
+        EpisodeDetailView(
+          episodeDescriptor: descriptor,
+          metadataService: metadataService
+        )
+        .padding()
+        .presentationDetents([.fraction(0.4), .large])
+        .presentationContentInteraction(.scrolls)
+        .presentationBackgroundInteraction(.enabled(upThrough: .large))
+        .presentationDragIndicator(.automatic)
+      }
+      Spacer()
+    }
   }
 }
 
@@ -158,9 +159,8 @@ struct SeasonRow: View {
           SeasonEnd(filled: season.isCompleted)
         }
       }
-      .zIndex(-1)
       .defaultScrollAnchor(.leading)
-      .scrollClipDisabled()
+      .scrollClipDisabled()  // permit scrolling behind season numbers
     }
   }
 }
@@ -199,10 +199,13 @@ struct EpisodeButton: View {
 
   var body: some View {
     Button {
-      displayState.selectedEpisode = episode
-      displayState.isShowingEpisodeDetail = true
+      displayState.selectedEpisodeDescriptor = episode.descriptor
+      displayState.isPresentingSelectedEpisode = true
     } label: {
-      EpisodeView(episode: episode, isSelected: episode === displayState.selectedEpisode)
+      EpisodeView(
+        episode: episode,
+        isSelected: displayState.selectedEpisodeDescriptor?.matches(episode) ?? false
+      )
     }
   }
 }
@@ -300,7 +303,8 @@ struct FavoritesToggle: View {
 
 // MARK: - Previews
 
-private func previewData() throws -> AppData {
+#if DEBUG
+private func previewData() throws -> [Show] {
   let sampleDataUrl = Bundle.main.url(forResource: "previewData", withExtension: "json")
   guard let sampleDataUrl else {
     throw TVChartError.general("no URL to sample data")
@@ -309,31 +313,32 @@ private func previewData() throws -> AppData {
   guard let json else {
     throw TVChartError.general("can't read sample data")
   }
-  let content = try? JSONDecoder().decode([Show].self, from: json)
-  guard let content else {
-    throw TVChartError.general("can't parse JSON")
-  }
-  return AppData(shows: content.sortedByTitle)
-}
-
-private func createPreview(_ closure: (AppData) -> any View) -> any View {
-  let v: any View
+  var content: [Show]!
   do {
-    let data = try previewData()
-    v = closure(data)
-  } catch TVChartError.general(let msg) {
-    v = Text(msg ?? "error")
+    try content = JSONDecoder().decode([Show].self, from: json)
   } catch {
-    v = Text("error")
+    throw TVChartError.general("can't parse JSON: \(error)")
   }
-  return v
+  return content.sortedByTitle
 }
-
+#endif
 
 #Preview {
-  createPreview { appData in
-    ContentView(appData: appData, backend: BackendStub(), metadataService: MetadataServiceStub())
+  do {
+    let shows = try previewData()
+    let backend = BackendStub()
+    backend.fetchResult = shows
+
+    return ContentView(backend: backend, metadataService: MetadataServiceStub())
       .environment(TVChartApp.AppState())
       .tint(.accent)
+
+  } catch {
+    let desc = switch error {
+      case let e as DisplayableError: e.displayDescription
+      default: "\(error)"
+    }
+    print(desc)
+    return Text(desc)
   }
 }

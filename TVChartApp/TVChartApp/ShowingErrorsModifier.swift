@@ -73,7 +73,7 @@ struct ErrorView: View {
 #Preview("From Errors") {
   let errList = ErrorDisplayList([
     ErrorDisplayItem(TVChartError.general("Houston, we've had a problem")),
-    ErrorDisplayItem(ConnectionError(kind: .loadShowsFailed, cause: NSError(domain: "test", code: 0)))
+    ErrorDisplayItem(ConnectionError.loadShowsFailed(cause: NSError(domain: "test", code: 0)))
   ])
   return EmptyView().showingErrors(from: errList)
 }

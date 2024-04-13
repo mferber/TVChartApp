@@ -1,6 +1,7 @@
 import Foundation
 
-/// For Error types that are equipped to be displayed in the UI
+/// Protocol for Error types that are equipped to be displayed in the UI.
+/// Errors must expose `displayDescription` and an optional `displayDetails`.
 protocol DisplayableError: Error {
   var displayDescription: String { get }
   var displayDetails: String? { get }

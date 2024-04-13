@@ -1,18 +1,6 @@
 import Foundation
 import Observation
 
-// SeenThru is an artifact of the old data model, which will hopefully be discarded soon
-// in favor of tracking watched status at the individual episode level
-class SeenThru: Codable {
-  init(season: Int, episodesWatched: Int) {
-    self.season = season
-    self.episodesWatched = episodesWatched
-  }
-
-  var season: Int
-  var episodesWatched: Int
-}
-
 enum FavoriteStatus: Codable {
   case favorited
   case unfavorited
@@ -30,8 +18,7 @@ class SeasonItem: Identifiable {
 
 @Observable
 class Episode: SeasonItem {
-  // 0-based, episode counter (ignoring separators) -- may be able to get rid of this when
-  // the seenThru construct goes away and we don't need to count episodes anymore
+  // 0-based, episode counter (ignoring separators)
   let episodeIndex: Int
   var isWatched: Bool
 
@@ -40,6 +27,10 @@ class Episode: SeasonItem {
     self.isWatched = isWatched
     
     super.init(index: index)
+  }
+
+  var descriptor: EpisodeDescriptor {
+    return EpisodeDescriptor(showId: season.show.id, season: season.number, episodeIndex: episodeIndex)
   }
 }
 
@@ -127,24 +118,27 @@ class Show: Codable, Identifiable {
     }
   }
 
-  func markWatchedUpTo(targetEpisode: Episode) {
-    var watched = true
+  func markWatchedUpTo(targetEpisode: Episode) -> [EpisodeDescriptor] {
+    var updatedEpisodes: [EpisodeDescriptor] = []
+  outer:
     for season in self.seasons {
       for episode in season.items.compactMap({ $0 as? Episode }) {
-
-        if season !== targetEpisode.season {
-          episode.isWatched = watched
-        } else if season === targetEpisode.season {
-          episode.isWatched = watched
-
-          // any episodes after the target one should be set to NOT watched
-          if episode === targetEpisode {
-            watched = false
+        if (season.number < targetEpisode.season.number ||
+            season.number == targetEpisode.season.number && episode.episodeIndex <= targetEpisode.episodeIndex) {
+          if !episode.isWatched {
+            episode.isWatched = true
+            updatedEpisodes.append(EpisodeDescriptor(
+              showId: season.show.id,
+              season: season.number,
+              episodeIndex: episode.episodeIndex)
+            )
           }
+        } else {
+          break outer
         }
-
       }
     }
+    return updatedEpisodes
   }
 
   // MARK: Serialization
@@ -157,7 +151,7 @@ class Show: Codable, Identifiable {
     case location
     case length
     case seasonMaps
-    case seenThru
+    case watchedEpisodeMaps
   }
 
   required init(from decoder: Decoder) throws {
@@ -172,17 +166,10 @@ class Show: Codable, Identifiable {
     self.favorite = boolFavorite ? .favorited : .unfavorited
     
     let seasonDescriptors = try container.decode([String].self, forKey: .seasonMaps)
-    let seenThru = try container.decode(SeenThru.self, forKey: .seenThru)
-    
-    // Temporary: the server-side data model currently tracks only the latest episode
-    // that has been watched. Until the server-side model has adopted tracking watched
-    // status on an episode-by-episode basis, this helper bridges that gap.
-    func hasEpisodeBeenWatched(season: Int, episodeIndex: Int, seenThru: SeenThru) -> Bool {
-      return season < seenThru.season || (season == seenThru.season && episodeIndex < seenThru.episodesWatched)
-    }
-    
-    self.seasons = seasonDescriptors.enumerated().map { (idx, descriptor) -> Season in
-      let seasonNum = idx + 1
+    let watchedEpisodeMapStrings = try container.decode([String].self, forKey: .watchedEpisodeMaps)
+    let watchedEpisodeMaps = watchedEpisodeMapStrings.map { Array($0).map { $0 == "x" } }
+
+    self.seasons = seasonDescriptors.enumerated().map { (seasonIdx, descriptor) -> Season in
       var episodeIndex = 0, nextEpisodeNumber = 1
       
       // decode a string of characters, each representing one season item
@@ -190,7 +177,6 @@ class Show: Codable, Identifiable {
       // S = special episode
       // + = separator
       let items = descriptor.enumerated().map { (itemIdx, charCode) -> SeasonItem? in
-        
         switch charCode {
             
           case ".":
@@ -198,7 +184,7 @@ class Show: Codable, Identifiable {
               index: itemIdx,
               episodeIndex: episodeIndex,
               episodeNumber: nextEpisodeNumber,
-              isWatched: hasEpisodeBeenWatched(season: seasonNum, episodeIndex: episodeIndex, seenThru: seenThru)
+              isWatched: watchedEpisodeMaps[safe: seasonIdx]?[safe: episodeIndex] ?? false
             )
             nextEpisodeNumber += 1
             episodeIndex += 1
@@ -208,7 +194,7 @@ class Show: Codable, Identifiable {
             let episode = SpecialEpisode(
               index: itemIdx,
               episodeIndex: episodeIndex,
-              isWatched: hasEpisodeBeenWatched(season: seasonNum, episodeIndex: episodeIndex, seenThru: seenThru)
+              isWatched: watchedEpisodeMaps[safe: seasonIdx]?[safe: episodeIndex] ?? false
             )
             episodeIndex += 1
             return episode
@@ -220,13 +206,12 @@ class Show: Codable, Identifiable {
             return nil
         }
       }.compactMap({ $0 })
-      return Season(number: idx + 1, items: items)
+      return Season(number: seasonIdx + 1, items: items)
     }
 
     hookUpBackLinks()
   }
 
-  // FIXME: do we even need encoding?
   func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(id, forKey: .id)
@@ -259,27 +244,10 @@ class Show: Codable, Identifiable {
 
     try container.encode(seasons.map(encodeSeason), forKey: .seasonMaps)
 
-    try container.encode(self.seenThru, forKey: .seenThru)
-  }
-
-  // Temporary: determine the latest watched episode; the server-side data model only
-  // tracks that. This can go when the server-side model has been updated to track
-  // watched episodes on an individual basis.
-  var seenThru: SeenThru {
-    var lastWatchedSeason = 1, lastWatchedEpisodeCount = 0, episodeCounter = 0
-    for (seasonIndex, season) in seasons.enumerated() {
-      episodeCounter = 0
-      for item in season.items {
-        if let episode = item as? Episode {
-          episodeCounter += 1
-          if episode.isWatched {
-            lastWatchedSeason = seasonIndex + 1
-            lastWatchedEpisodeCount = episodeCounter
-          }
-        }
-      }
+    let watchedEpisodeMapStrings = seasons.reduce(into: []) { result, season in
+      result.append(season.items.compactMap { $0 as? Episode }.map { $0.isWatched ? "x" : "." }.joined())
     }
-    return SeenThru(season: lastWatchedSeason, episodesWatched: lastWatchedEpisodeCount)
+    try container.encode(watchedEpisodeMapStrings, forKey: .watchedEpisodeMaps)
   }
 }
 
@@ -299,8 +267,14 @@ extension [Show] {
   }
 }
 
-struct SeenThruPartial: Encodable {
-  let seenThru: SeenThru
+struct EpisodeDescriptor: Equatable {
+  let showId: Int
+  let season: Int
+  let episodeIndex: Int
+
+  func matches(_ episode: Episode) -> Bool {
+    return showId == episode.season.show.id && season == episode.season.number && episodeIndex == episode.episodeIndex
+  }
 }
 
 struct EpisodeMetadata {

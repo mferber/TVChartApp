@@ -1,19 +1,33 @@
 import Foundation
 
+struct ApiStatusUpdate: Encodable {
+  let watched: [ApiEpisodeDescriptor]?
+  let unwatched: [ApiEpisodeDescriptor]?
+}
+
+struct ApiEpisodeDescriptor: Encodable {
+  let seasonIndex: Int
+  let episodeIndex: Int
+}
+
 class BackendClient {
   struct URLs {
     let baseURL: URL
 
-    private func create(_ path: String) -> URL {
+    private func url(_ path: String) -> URL {
       return URL(string: path, relativeTo: baseURL)!
     }
 
     func allShows() -> URL {
-      return create("/shows")
+      return url("shows")
     }
 
     func show(showId: String) -> URL {
-      return create("/shows/\(showId)")
+      return url("shows/\(showId)")
+    }
+
+    func showUpdatingEpisodeStatus(showId: String) -> URL {
+      return url("shows/\(showId)/update-status")
     }
   }
 
@@ -32,22 +46,27 @@ class BackendClient {
       try rsp.validate(data)
       return try JSONDecoder().decode([Show].self, from: data)
     } catch {
-      throw ConnectionError(kind: .loadShowsFailed, cause: error)
+      throw ConnectionError.loadShowsFailed(cause: error)
     }
   }
 
-  func patchShowSeenThru(show: Show) async throws -> Show {
-    var req = URLRequest(url: urls.show(showId: String(show.id)))
-    req.httpMethod = "PATCH"
+  func updateEpisodeStatus(show: Show, watched: [EpisodeDescriptor]?, unwatched: [EpisodeDescriptor]?) async throws -> Show {
+    var req = URLRequest(url: urls.showUpdatingEpisodeStatus(showId: String(show.id)))
+    req.httpMethod = "POST"
     req.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
+    let body = ApiStatusUpdate(
+      watched: watched?.map { ApiEpisodeDescriptor(seasonIndex: $0.season - 1, episodeIndex: $0.episodeIndex) },
+      unwatched: unwatched?.map { ApiEpisodeDescriptor(seasonIndex: $0.season - 1, episodeIndex: $0.episodeIndex) }
+    )
+
     do {
-      req.httpBody = try JSONEncoder().encode(SeenThruPartial(seenThru: show.seenThru))
+      req.httpBody = try JSONEncoder().encode(body)
       let (data, rsp) = try await URLSession.shared.data(for: req)
       try rsp.validate(data)
       return try JSONDecoder().decode(Show.self, from: data)
     } catch {
-      throw ConnectionError(kind: .updateWatchedFailed, cause: error)
+      throw ConnectionError.updateStatusFailed(cause: error)
     }
   }
 }

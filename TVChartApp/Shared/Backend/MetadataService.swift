@@ -5,10 +5,10 @@ protocol MetadataServiceProtocol {
 }
 
 class MetadataService : MetadataServiceProtocol {
-  var cache: Dictionary<String, [[EpisodeMetadata]]> = [:]
+  var cache: Dictionary<Int, [[EpisodeMetadata]]> = [:]
 
   func getEpisodeMetadata(forShow show: Show, season: Int, episodeIndex: Int) async throws -> EpisodeMetadata {
-    if let metadata = cache[show.tvmazeId]?[season - 1][episodeIndex] {
+    if let metadata = cache[show.id]?[season - 1][episodeIndex] {
       return metadata
     }
     
@@ -23,7 +23,7 @@ class MetadataService : MetadataServiceProtocol {
       }
       seasons[currentSeasonIndex].append(item)
     }
-    cache[show.tvmazeId] = seasons
+    cache[show.id] = seasons
     return seasons[season - 1][episodeIndex]  // FIXME: trap out-of-range error: stored episode list may not match tvmaze
   }
 }

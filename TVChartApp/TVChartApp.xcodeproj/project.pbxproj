@@ -20,6 +20,9 @@
 		399A61C32B8527A300255BE1 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399A61C22B8527A300255BE1 /* ErrorHandling.swift */; };
 		399A61C92B85A89200255BE1 /* previewData.json in Resources */ = {isa = PBXBuildFile; fileRef = 39DE18242B82A56D00D65CAB /* previewData.json */; };
 		399A61CB2B85B87B00255BE1 /* EpisodeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399A61CA2B85B87B00255BE1 /* EpisodeDetailView.swift */; };
+		39B800112BC20484000C5A84 /* Loadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B800102BC20484000C5A84 /* Loadable.swift */; };
+		39B800122BC20484000C5A84 /* Loadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B800102BC20484000C5A84 /* Loadable.swift */; };
+		39C08BC32BAF3BFD0084C7C5 /* ArrayUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C08BC22BAF3BFD0084C7C5 /* ArrayUtils.swift */; };
 		39D455872B7FF38300901E0D /* TVChartApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D455862B7FF38300901E0D /* TVChartApp.swift */; };
 		39D455892B7FF38300901E0D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D455882B7FF38300901E0D /* ContentView.swift */; };
 		39D4558B2B7FF38400901E0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39D4558A2B7FF38400901E0D /* Assets.xcassets */; };
@@ -104,6 +107,8 @@
 		399A61C02B85254A00255BE1 /* HttpUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpUtils.swift; sourceTree = "<group>"; };
 		399A61C22B8527A300255BE1 /* ErrorHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandling.swift; sourceTree = "<group>"; };
 		399A61CA2B85B87B00255BE1 /* EpisodeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeDetailView.swift; sourceTree = "<group>"; };
+		39B800102BC20484000C5A84 /* Loadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loadable.swift; sourceTree = "<group>"; };
+		39C08BC22BAF3BFD0084C7C5 /* ArrayUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayUtils.swift; sourceTree = "<group>"; };
 		39D455832B7FF38300901E0D /* TVChartApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TVChartApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39D455862B7FF38300901E0D /* TVChartApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVChartApp.swift; sourceTree = "<group>"; };
 		39D455882B7FF38300901E0D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -187,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				39EACF1D2B80216C0050D4DF /* Models.swift */,
+				39B800102BC20484000C5A84 /* Loadable.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -197,6 +203,7 @@
 				399A61C22B8527A300255BE1 /* ErrorHandling.swift */,
 				399A61C02B85254A00255BE1 /* HttpUtils.swift */,
 				3964E99E2B8F983800C076E8 /* TVChartError.swift */,
+				39C08BC22BAF3BFD0084C7C5 /* ArrayUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -574,9 +581,11 @@
 				399A61B82B84F4C900255BE1 /* MetadataService.swift in Sources */,
 				39EACF1E2B80216C0050D4DF /* Models.swift in Sources */,
 				391B3EDB2B826481001F5A54 /* Backend.swift in Sources */,
+				39B800112BC20484000C5A84 /* Loadable.swift in Sources */,
 				399A61C32B8527A300255BE1 /* ErrorHandling.swift in Sources */,
 				3964E99F2B8F983800C076E8 /* TVChartError.swift in Sources */,
 				391B3EDF2B82765A001F5A54 /* AppData.swift in Sources */,
+				39C08BC32BAF3BFD0084C7C5 /* ArrayUtils.swift in Sources */,
 				399A61B62B84F45800255BE1 /* MetadataClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -604,6 +613,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				39D455B92B7FF55500901E0D /* ContentView.swift in Sources */,
+				39B800122BC20484000C5A84 /* Loadable.swift in Sources */,
 				39D455B72B7FF55500901E0D /* TVChartAppWatchApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
