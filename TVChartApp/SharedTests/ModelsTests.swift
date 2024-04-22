@@ -18,7 +18,7 @@ final class ModelsTests: XCTestCase {
       }
       """.data(using: .utf8)!
 
-    let show: Show = try! JSONDecoder().decode(Show.self, from: json)
+    let show: Show = try! JSONDecoder().decode(ShowDTO.self, from: json).toShow()
     expect(show.title).to(equal("For All Mankind"))
     expect(show.favorite).to(equal(.favorited))
     expect(show.tvmazeId).to(equal("41414"))
@@ -92,7 +92,7 @@ final class ModelsTests: XCTestCase {
         )
       ]
     )
-    let json = try! JSONEncoder().encode(show)
+    let json = try! JSONEncoder().encode(ShowDTO.from(show))
 
     let decoded = try! JSONSerialization.jsonObject(with: json) as! NSDictionary
     expect(decoded["id"] as? Int).to(equal(0))
@@ -123,7 +123,7 @@ final class ModelsTests: XCTestCase {
     ]
     let show = Show(id: 0, title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
                     seasons: seasons)
-    let encoded = try! JSONEncoder().encode(show)
+    let encoded = try! JSONEncoder().encode(ShowDTO.from(show))
 
     let decoded = try! JSONSerialization.jsonObject(with: encoded) as! NSDictionary
     expect(decoded["watchedEpisodeMaps"] as? [String]).to(equal(["..", ".."]))
@@ -148,7 +148,7 @@ final class ModelsTests: XCTestCase {
     ]
     let show = Show(id: 0, title: "", tvmazeId: "", favorite: .favorited, location: "", episodeLength: "",
                     seasons: seasons)
-    let encoded = try! JSONEncoder().encode(show)
+    let encoded = try! JSONEncoder().encode(ShowDTO.from(show))
 
     let decoded = try! JSONSerialization.jsonObject(with: encoded) as! NSDictionary
     expect(decoded["watchedEpisodeMaps"] as? [String]).to(equal(["xx", ".."]))

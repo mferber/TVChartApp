@@ -315,7 +315,7 @@ private func previewData() throws -> [Show] {
   }
   var content: [Show]!
   do {
-    try content = JSONDecoder().decode([Show].self, from: json)
+    try content = JSONDecoder().decode([ShowDTO].self, from: json).map { $0.toShow() }
   } catch {
     throw TVChartError.general("can't parse JSON: \(error)")
   }

@@ -40,6 +40,7 @@
 		39D455D72B7FF55600901E0D /* TVChartAppWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 39D455B42B7FF55500901E0D /* TVChartAppWatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		39D455ED2B7FFAC600901E0D /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 39D455EC2B7FFAC600901E0D /* Nimble */; };
 		39EACF1E2B80216C0050D4DF /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EACF1D2B80216C0050D4DF /* Models.swift */; };
+		39FD50712BD704BF008E79C3 /* DTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FD50702BD704BF008E79C3 /* DTO.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -131,6 +132,7 @@
 		39D455D32B7FF55600901E0D /* TVChartAppWatch_Watch_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVChartAppWatch_Watch_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		39DE18242B82A56D00D65CAB /* previewData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = previewData.json; sourceTree = "<group>"; };
 		39EACF1D2B80216C0050D4DF /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		39FD50702BD704BF008E79C3 /* DTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTO.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -330,6 +332,7 @@
 				3964E99C2B8F973E00C076E8 /* ConnectionError.swift */,
 				399A61B52B84F45700255BE1 /* MetadataClient.swift */,
 				399A61B72B84F4C900255BE1 /* MetadataService.swift */,
+				39FD50702BD704BF008E79C3 /* DTO.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -583,6 +586,7 @@
 				391B3EDB2B826481001F5A54 /* Backend.swift in Sources */,
 				39B800112BC20484000C5A84 /* Loadable.swift in Sources */,
 				399A61C32B8527A300255BE1 /* ErrorHandling.swift in Sources */,
+				39FD50712BD704BF008E79C3 /* DTO.swift in Sources */,
 				3964E99F2B8F983800C076E8 /* TVChartError.swift in Sources */,
 				391B3EDF2B82765A001F5A54 /* AppData.swift in Sources */,
 				39C08BC32BAF3BFD0084C7C5 /* ArrayUtils.swift in Sources */,

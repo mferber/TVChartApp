@@ -80,7 +80,7 @@ class Season: Identifiable {
   }
 }
 
-class Show: Codable, Identifiable {
+class Show: Identifiable {
   var id: Int
   var tvmazeId: String
   var title: String
@@ -139,115 +139,6 @@ class Show: Codable, Identifiable {
       }
     }
     return updatedEpisodes
-  }
-
-  // MARK: Serialization
-
-  enum CodingKeys: String, CodingKey {
-    case id
-    case title
-    case tvmazeId
-    case favorite
-    case location
-    case length
-    case seasonMaps
-    case watchedEpisodeMaps
-  }
-
-  required init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: CodingKeys.self)
-    self.id = try container.decode(Int.self, forKey: .id)
-    self.title = try container.decode(String.self, forKey: .title)
-    self.tvmazeId = try container.decode(String.self, forKey: .tvmazeId)
-    self.location = try container.decode(String.self, forKey: .location)
-    self.episodeLength = try container.decode(String.self, forKey: .length)
-    
-    let boolFavorite = try container.decode(Bool.self, forKey: .favorite)
-    self.favorite = boolFavorite ? .favorited : .unfavorited
-    
-    let seasonDescriptors = try container.decode([String].self, forKey: .seasonMaps)
-    let watchedEpisodeMapStrings = try container.decode([String].self, forKey: .watchedEpisodeMaps)
-    let watchedEpisodeMaps = watchedEpisodeMapStrings.map { Array($0).map { $0 == "x" } }
-
-    self.seasons = seasonDescriptors.enumerated().map { (seasonIdx, descriptor) -> Season in
-      var episodeIndex = 0, nextEpisodeNumber = 1
-      
-      // decode a string of characters, each representing one season item
-      // . = numbered episode
-      // S = special episode
-      // + = separator
-      let items = descriptor.enumerated().map { (itemIdx, charCode) -> SeasonItem? in
-        switch charCode {
-            
-          case ".":
-            let episode = NumberedEpisode(
-              index: itemIdx,
-              episodeIndex: episodeIndex,
-              episodeNumber: nextEpisodeNumber,
-              isWatched: watchedEpisodeMaps[safe: seasonIdx]?[safe: episodeIndex] ?? false
-            )
-            nextEpisodeNumber += 1
-            episodeIndex += 1
-            return episode
-
-          case "S":
-            let episode = SpecialEpisode(
-              index: itemIdx,
-              episodeIndex: episodeIndex,
-              isWatched: watchedEpisodeMaps[safe: seasonIdx]?[safe: episodeIndex] ?? false
-            )
-            episodeIndex += 1
-            return episode
-
-          case "+":
-            return Separator(index: itemIdx)
-
-          default:
-            return nil
-        }
-      }.compactMap({ $0 })
-      return Season(number: seasonIdx + 1, items: items)
-    }
-
-    hookUpBackLinks()
-  }
-
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(id, forKey: .id)
-    try container.encode(title, forKey: .title)
-    try container.encode(tvmazeId, forKey: .tvmazeId)
-
-    if case .favorited = favorite {
-      try container.encode(true, forKey: .favorite)
-    } else {
-      try container.encode(false, forKey: .favorite)
-    }
-
-    try container.encode(location, forKey: .location)
-    try container.encode(episodeLength, forKey: .length)
-
-    func encodeSeason(season: Season) -> String {
-      return season.items.map {
-        switch $0 {
-          case is NumberedEpisode:
-            return "."
-          case is SpecialEpisode:
-            return "S"
-          case is Separator:
-            return "+"
-          default:
-            return ""
-        }
-      }.joined(separator: "")
-    }
-
-    try container.encode(seasons.map(encodeSeason), forKey: .seasonMaps)
-
-    let watchedEpisodeMapStrings = seasons.reduce(into: []) { result, season in
-      result.append(season.items.compactMap { $0 as? Episode }.map { $0.isWatched ? "x" : "." }.joined())
-    }
-    try container.encode(watchedEpisodeMapStrings, forKey: .watchedEpisodeMaps)
   }
 }
 
