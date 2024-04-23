@@ -147,7 +147,7 @@ struct EpisodeDetailMetadataView: View {
     Text("Season \(episode.season.number), \(episodeDescription)")
       .font(.footnote)
 
-    SynopsisView(synopsis: metadata.synopsis?.parseHtml())
+    SynopsisView(synopsisHtml: metadata.synopsis)
       .padding([.top], 10)
 
     Button {
@@ -161,67 +161,43 @@ struct EpisodeDetailMetadataView: View {
 }
 
 struct SynopsisView: View {
-  let synopsis: String?
+  let synopsisHtml: String?
+
+  @State private var parsed: AttributedString? = nil
+
+  func displayableText() -> Text {
+    guard let _ = synopsisHtml else {
+      return Text("No description available").font(.system(size: 15)).italic()
+    }
+    guard let parsed else {  // currently parsing
+      return Text("")
+    }
+    return Text(parsed)
+  }
 
   var body: some View {
-    ScrollView([.vertical], showsIndicators: true) {
-      SynopsisText(synopsis: synopsis)
-        .font(.footnote)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding([.leading, .trailing], 10)
-        .padding([.top, .bottom], 5)
-        .background(.clear)
-        .padding([.top, .bottom], 5)
+    Group {
+      ScrollView([.vertical], showsIndicators: true) {
+        displayableText()
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .padding([.leading, .trailing], 10)
+          .padding([.top, .bottom], 5)
+          .background(.clear)
+          .padding([.top, .bottom], 5)
+      }
+      .scrollIndicators(.visible)
+      .background(.synopsisBackground)
     }
-    .scrollIndicators(.visible)
-    .background(.synopsisBackground)
-  }
-}
-
-struct SynopsisText: View {
-  let synopsis: String?
-
-  var body: some View {
-    if let synopsis {
-      Text(synopsis)
-    } else {
-      Text("No description available").italic()
+    .onChange(of: synopsisHtml, initial: true) {
+      Task {
+        parsed = nil
+        let newParsed = await synopsisHtml?.parseSynopsisHtml()
+        parsed = newParsed
+      }
     }
   }
 }
 
-extension String {
-  fileprivate func parseHtml() -> String {
-    // Ideally this parses an AttributedString out of HTML more or less as follows:
-    //
-    //  let data = Data(html.utf8)
-    //  let documentType = NSAttributedString.DocumentType.html
-    //  let encoding = String.Encoding.utf8.rawValue
-    //  if let nsAS = try? NSAttributedString(
-    //    data: data,
-    //    options: [.documentType: documentType, .characterEncoding: encoding],
-    //    documentAttributes: nil
-    //  ) {
-    //    return AttributedString(nsAS)
-    //  } else {
-    //    return nil
-    //  }
-    //
-    // However, this currently fails (iOS 17), because the call to the NSAttributedString
-    // initializer -- even if ignored -- causes an "AttributeGraph: cycle detected in
-    // attribute..." error, and in some cases prevents the view from being reevaluated going
-    // forward, causing display bugs.
-    //
-    // The cause is mysterious. It's specific to html decoding; if documentType is set to
-    // plain, the problem disappears. The issue is attested a few times on the Internet, with
-    // no solutions I could find:
-    // https://www.google.com/search?q=%22nsattributedstring%22+%22html%22+%22cycle+detected%22
-
-    // Workaround: just replace the newlines, which are the most common (only?) case where
-    // it matters
-    return self.replacing(#/</?(br|p)\s*/?>/#, with: "\n")
-  }
-}
 
 
 #Preview {
