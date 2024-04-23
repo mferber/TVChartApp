@@ -106,6 +106,7 @@ struct EpisodeDetailMetadataView: View {
   @Environment(TVChartApp.AppState.self) var appState
   @Environment(ContentView.DisplayState.self) var displayState
 
+  @MainActor
   private var episodeDescription: String {
     let desc: String
     switch episode {
