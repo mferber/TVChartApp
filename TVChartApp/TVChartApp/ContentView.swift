@@ -304,6 +304,7 @@ struct FavoritesToggle: View {
 // MARK: - Previews
 
 #if DEBUG
+@MainActor
 private func previewData() throws -> [Show] {
   let sampleDataUrl = Bundle.main.url(forResource: "previewData", withExtension: "json")
   guard let sampleDataUrl else {
@@ -324,21 +325,25 @@ private func previewData() throws -> [Show] {
 #endif
 
 #Preview {
-  do {
-    let shows = try previewData()
-    let backend = BackendStub()
-    backend.fetchResult = shows
+    do {
+      var shows: [Show] = []
+      try MainActor.assumeIsolated {
+        shows = try previewData()
+      }
+      let backend = BackendStub()
+      backend.fetchResult = shows
 
-    return ContentView(backend: backend, metadataService: MetadataServiceStub())
-      .environment(TVChartApp.AppState())
-      .tint(.accent)
+      return ContentView(backend: backend, metadataService: MetadataServiceStub())
+        .environment(TVChartApp.AppState())
+        .tint(.accent)
 
-  } catch {
-    let desc = switch error {
+    } catch {
+      let desc = switch error {
       case let e as DisplayableError: e.displayDescription
       default: "\(error)"
+      }
+      print(desc)
+      return Text(desc)
     }
-    print(desc)
-    return Text(desc)
-  }
+
 }

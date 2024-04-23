@@ -44,7 +44,9 @@ class BackendClient {
     do {
       let (data, rsp) = try await URLSession.shared.data(for: req)
       try rsp.validate(data)
-      return try JSONDecoder().decode([ShowDTO].self, from: data).map { $0.toShow() }
+      return try await MainActor.run {
+        try JSONDecoder().decode([ShowDTO].self, from: data).map { $0.toShow() }
+      }
     } catch {
       throw ConnectionError.loadShowsFailed(cause: error)
     }
@@ -64,7 +66,9 @@ class BackendClient {
       req.httpBody = try JSONEncoder().encode(body)
       let (data, rsp) = try await URLSession.shared.data(for: req)
       try rsp.validate(data)
-      return try JSONDecoder().decode(ShowDTO.self, from: data).toShow()
+      return try await MainActor.run {
+        try JSONDecoder().decode(ShowDTO.self, from: data).toShow()
+      }
     } catch {
       throw ConnectionError.updateStatusFailed(cause: error)
     }

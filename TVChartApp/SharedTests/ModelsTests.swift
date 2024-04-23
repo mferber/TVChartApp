@@ -4,6 +4,7 @@ import Nimble
 
 final class ModelsTests: XCTestCase {
 
+  @MainActor
   func test_Show_deserializesCorrectly() {
     let json = """
       {
@@ -18,51 +19,52 @@ final class ModelsTests: XCTestCase {
       }
       """.data(using: .utf8)!
 
-    let show: Show = try! JSONDecoder().decode(ShowDTO.self, from: json).toShow()
-    expect(show.title).to(equal("For All Mankind"))
-    expect(show.favorite).to(equal(.favorited))
-    expect(show.tvmazeId).to(equal("41414"))
-    expect(show.location).to(equal("Apple TV+"))
-    expect(show.episodeLength).to(equal("1 hour"))
+      let show: Show = try! JSONDecoder().decode(ShowDTO.self, from: json).toShow()
+      expect(show.title).to(equal("For All Mankind"))
+      expect(show.favorite).to(equal(.favorited))
+      expect(show.tvmazeId).to(equal("41414"))
+      expect(show.location).to(equal("Apple TV+"))
+      expect(show.episodeLength).to(equal("1 hour"))
 
-    let seasons = show.seasons
-    expect(seasons).to(haveCount(2))
+      let seasons = show.seasons
+      expect(seasons).to(haveCount(2))
 
-    expect(seasons[0].show).to(be(show))
-    expect(seasons[0].number).to(equal(1))
-    expect(seasons[0].items).to(haveCount(4))
-    for item in seasons[0].items {
-      expect(item.season).to(be(seasons[0]))
-      expect(item).to(beAnInstanceOf(NumberedEpisode.self))
-    }
-    expect((seasons[0].items[0] as! Episode).isWatched).to(beTrue())
-    expect((seasons[0].items[1] as! Episode).isWatched).to(beTrue())
-    expect((seasons[0].items[2] as! Episode).isWatched).to(beFalse())
-    expect((seasons[0].items[3] as! Episode).isWatched).to(beFalse())
-
-    expect(seasons[1].number).to(equal(2))
-    expect(seasons[1].items).to(haveCount(5))
-    for (index, item) in seasons[1].items.enumerated() {
-      expect(item.id).to(equal(index))
-      expect(item.season).to(be(seasons[1]))
-
-      switch index {
-        case 0:
-          expect(item).to(beAnInstanceOf(SpecialEpisode.self))
-        case 1, 3, 4:
-          expect(item).to(beAnInstanceOf(NumberedEpisode.self))
-        case 2:
-          expect(item).to(beAnInstanceOf(Separator.self))
-        default:
-          fail("Unexpected index")
+      expect(seasons[0].show).to(be(show))
+      expect(seasons[0].number).to(equal(1))
+      expect(seasons[0].items).to(haveCount(4))
+      for item in seasons[0].items {
+        expect(item.season).to(be(seasons[0]))
+        expect(item).to(beAnInstanceOf(NumberedEpisode.self))
       }
-    }
-    expect((seasons[1].items[0] as! Episode).isWatched).to(beFalse())
-    expect((seasons[1].items[1] as! Episode).isWatched).to(beFalse())
-    expect((seasons[1].items[3] as! Episode).isWatched).to(beFalse())
-    expect((seasons[1].items[4] as! Episode).isWatched).to(beTrue())
+      expect((seasons[0].items[0] as! Episode).isWatched).to(beTrue())
+      expect((seasons[0].items[1] as! Episode).isWatched).to(beTrue())
+      expect((seasons[0].items[2] as! Episode).isWatched).to(beFalse())
+      expect((seasons[0].items[3] as! Episode).isWatched).to(beFalse())
+
+      expect(seasons[1].number).to(equal(2))
+      expect(seasons[1].items).to(haveCount(5))
+      for (index, item) in seasons[1].items.enumerated() {
+        expect(item.id).to(equal(index))
+        expect(item.season).to(be(seasons[1]))
+
+        switch index {
+          case 0:
+            expect(item).to(beAnInstanceOf(SpecialEpisode.self))
+          case 1, 3, 4:
+            expect(item).to(beAnInstanceOf(NumberedEpisode.self))
+          case 2:
+            expect(item).to(beAnInstanceOf(Separator.self))
+          default:
+            fail("Unexpected index")
+        }
+      }
+      expect((seasons[1].items[0] as! Episode).isWatched).to(beFalse())
+      expect((seasons[1].items[1] as! Episode).isWatched).to(beFalse())
+      expect((seasons[1].items[3] as! Episode).isWatched).to(beFalse())
+      expect((seasons[1].items[4] as! Episode).isWatched).to(beTrue())
   }
 
+  @MainActor
   func test_Show_typicalShowSerializesCorrectly() {
     let show = Show(
       id: 0,
@@ -106,6 +108,7 @@ final class ModelsTests: XCTestCase {
     expect(decoded["watchedEpisodeMaps"] as? [String]).to(equal([".xx", "xxx."]))
   }
 
+  @MainActor
   func test_Show_unstartedShowSerializesCorrectly() {
     let seasons: [Season] = [
       Season(
@@ -129,6 +132,7 @@ final class ModelsTests: XCTestCase {
     expect(decoded["watchedEpisodeMaps"] as? [String]).to(equal(["..", ".."]))
   }
 
+  @MainActor
   func test_Show_unstartedSeasonSerializesCorrectly() {
     let seasons: [Season] = [
       Season(
@@ -154,6 +158,7 @@ final class ModelsTests: XCTestCase {
     expect(decoded["watchedEpisodeMaps"] as? [String]).to(equal(["xx", ".."]))
   }
 
+  @MainActor
   func test_Season_fullyWatchedSeasonIsComplete() {
     let seasonItems: [SeasonItem] = [
       NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: true),
@@ -165,6 +170,7 @@ final class ModelsTests: XCTestCase {
     expect(season.isCompleted).to(beTrue())
   }
 
+  @MainActor
   func test_Season_fullyWatchedSeasonIsIncomplete() {
     let seasonItems: [SeasonItem] = [
       NumberedEpisode(index: 0, episodeIndex: 0, episodeNumber: 1, isWatched: false),
@@ -176,6 +182,7 @@ final class ModelsTests: XCTestCase {
     expect(season.isCompleted).to(beFalse())
   }
 
+  @MainActor
   func test_Show_markWatchedUpToEpisode() {
     let seasons: [Season] = [
       Season(

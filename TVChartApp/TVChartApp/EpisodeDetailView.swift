@@ -66,10 +66,12 @@ struct EpisodeDetailView: View {
       }
     }
     .onChange(of: episodeDescriptor, initial: true) {
-      // user selected a different episode in the main view
-      episode = appData.findEpisode(descriptor: episodeDescriptor)
-      if episode != nil {
-        fetchMetadata()
+      Task {
+        // user selected a different episode in the main view
+        episode = await appData.findEpisode(descriptor: episodeDescriptor)
+        if episode != nil {
+          fetchMetadata()
+        }
       }
     }
   }
@@ -120,7 +122,7 @@ struct EpisodeDetailMetadataView: View {
   func handleMarkWatchedToEpisode(episode: Episode, backend: BackendProtocol) {
     Task {
       do {
-        let updatedEpisodes = episode.season.show.markWatchedUpTo(targetEpisode: episode)
+        let updatedEpisodes = await episode.season.show.markWatchedUpTo(targetEpisode: episode)
         let _ = try await backend.updateEpisodeStatus(
           show: episode.season.show,
           watched: updatedEpisodes,

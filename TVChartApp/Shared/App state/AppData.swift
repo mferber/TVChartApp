@@ -8,8 +8,8 @@ class AppData {
     self.shows = shows
   }
 
-  func findEpisode(descriptor: EpisodeDescriptor) -> Episode? {
-    return shows
+  func findEpisode(descriptor: EpisodeDescriptor) async -> Episode? {
+    return await shows
       .first { $0.id == descriptor.showId }?
       .seasons[safe: descriptor.season - 1]?
       .items.compactMap { $0 as? Episode }

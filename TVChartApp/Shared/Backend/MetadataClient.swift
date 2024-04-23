@@ -18,7 +18,7 @@ struct MetadataClient {
   let urls = URLs()
 
   func fetchShowMetadata(show: Show) async throws -> [EpisodeMetadata] {
-    let url = urls.show(showId: show.tvmazeId)
+    let url = urls.show(showId: await show.tvmazeId)
 
     do {
       let (data, rsp) = try await URLSession.shared.data(from: url)

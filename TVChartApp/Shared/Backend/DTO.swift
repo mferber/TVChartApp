@@ -10,6 +10,7 @@ struct ShowDTO: Codable {
   let seasonMaps: [String]
   let watchedEpisodeMaps: [String]
 
+  @MainActor
   static func from(_ show: Show) -> ShowDTO {
     let seasonMaps = show.seasons.map { season in
       season.items.map {
@@ -44,6 +45,7 @@ struct ShowDTO: Codable {
     )
   }
 
+  @MainActor
   func toShow() -> Show {
     let favorite: FavoriteStatus = self.favorite ? .favorited : .unfavorited
 
@@ -76,6 +78,7 @@ struct ShowDTO: Codable {
   // . = numbered episode
   // S = special episode
   // + = separator
+  @MainActor
   private func parseSeasonItems(_ seasonMap: String) -> [SeasonItem] {
     var episodeIndex = 0, nextEpisodeNumber = 1
 
@@ -114,6 +117,7 @@ struct ShowDTO: Codable {
   // decode a string of characters, each representing one season item -- SPECIALS ARE OMITTED
   // . = unwatched episode
   // x = watched episode
+  @MainActor
   private func updateEpisodeWatchedStatus(_ season: Season, seasonIndex: Int, watchedEpisodeMap: String) {
     let episodes = season.items.compactMap({ $0 as? Episode })
     for (index, episodeIndicator) in watchedEpisodeMap.enumerated() {

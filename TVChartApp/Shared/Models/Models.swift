@@ -6,8 +6,9 @@ enum FavoriteStatus: Codable {
   case unfavorited
 }
 
+@MainActor
 class SeasonItem: Identifiable {
-  var id: Int { index }
+  nonisolated var id: Int { index }
   let index: Int
   var season: Season!
 
@@ -17,6 +18,7 @@ class SeasonItem: Identifiable {
 }
 
 @Observable
+@MainActor
 class Episode: SeasonItem {
   // 0-based, episode counter (ignoring separators)
   let episodeIndex: Int
@@ -34,7 +36,9 @@ class Episode: SeasonItem {
   }
 }
 
-class NumberedEpisode: Episode, CustomStringConvertible {
+@Observable
+@MainActor
+class NumberedEpisode: Episode {
   let episodeNumber: Int  // official episode number; specials aren't numbered
 
   init(index: Int, episodeIndex: Int, episodeNumber: Int, isWatched: Bool) {
@@ -42,31 +46,29 @@ class NumberedEpisode: Episode, CustomStringConvertible {
 
     super.init(index: index, episodeIndex: episodeIndex, isWatched: isWatched)
   }
-
-  var description: String {
-    "NumberedEpisode { \(season.show.title), season \(season.number), index \(episodeIndex), number \(episodeNumber) }"
-  }
 }
 
-class SpecialEpisode: Episode, CustomStringConvertible {
+@Observable
+@MainActor
+class SpecialEpisode: Episode {
   override init(index: Int, episodeIndex: Int, isWatched: Bool) {
     super.init(index: index, episodeIndex: episodeIndex, isWatched: isWatched)
   }
-  
-  var description: String {
-    "SpecialEpisode { \(season.show.title), season \(season.number), index \(episodeIndex) }"
-  }
 }
 
+@Observable
+@MainActor
 class Separator: SeasonItem {
   override init(index: Int) {
     super.init(index: index)
   }
 }
 
+@Observable
+@MainActor
 class Season: Identifiable {
-  var id: Int { number }
-  var number: Int
+  nonisolated var id: Int { number }
+  nonisolated let number: Int
   var items: [SeasonItem]
   var show: Show!
 
@@ -80,8 +82,10 @@ class Season: Identifiable {
   }
 }
 
+@Observable
+@MainActor
 class Show: Identifiable {
-  var id: Int
+  nonisolated let id: Int
   var tvmazeId: String
   var title: String
   var favorite: FavoriteStatus
@@ -142,13 +146,12 @@ class Show: Identifiable {
   }
 }
 
+@MainActor
 extension [Show] {
   var favoritesOnly: [Show] {
     return self.filter { $0.isFavorite }
   }
-}
 
-extension [Show] {
   var sortedByTitle: [Show] {
     let leadingArticlePat = /^(a|an|the)\s+/.ignoresCase()
     return self
@@ -158,6 +161,7 @@ extension [Show] {
   }
 }
 
+@MainActor
 struct EpisodeDescriptor: Equatable {
   let showId: Int
   let season: Int
