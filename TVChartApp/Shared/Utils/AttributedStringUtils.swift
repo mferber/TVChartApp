@@ -2,10 +2,10 @@ import Foundation
 import UIKit
 
 extension NSMutableAttributedString {
-  // Converts the attributed string's base font to the provided font, preserving all traits listed
-  // in applyTraitsFromFont()
-  // Modified from code at: https://stackoverflow.com/a/58996779
-  func using(baseFont: UIFont) -> NSMutableAttributedString {
+  // Converts the attributed string's base font to the provided font and color, preserving
+  // all traits listed in applyTraitsFromFont()
+  // Based on code from https://stackoverflow.com/a/58996779
+  func using(baseFont: UIFont, color: UIColor = .label) -> NSMutableAttributedString {
     enumerateAttribute(
       NSAttributedString.Key.font,
       in: NSMakeRange(0, length),
@@ -13,6 +13,7 @@ extension NSMutableAttributedString {
     ) { (value, range, stop) in
       if let originalFont = value as? UIFont, let newFont = applyTraitsFromFont(originalFont, to: baseFont) {
         addAttribute(NSAttributedString.Key.font, value: newFont, range: range)
+        addAttribute(NSAttributedString.Key.foregroundColor, value: color, range: range)
       }
     }
     return self
