@@ -186,7 +186,8 @@ struct SynopsisView: View {
           .padding([.top, .bottom], 5)
       }
       .scrollIndicators(.visible)
-      .background(.synopsisBackground)
+      .background(.ultraThinMaterial)
+      .background(.synopsisBackground.opacity(0.7))
     }
     .onChange(of: synopsisHtml, initial: true) {
       Task {

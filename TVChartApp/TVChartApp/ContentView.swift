@@ -123,6 +123,7 @@ struct ShowList: View {
         .presentationContentInteraction(.scrolls)
         .presentationBackgroundInteraction(.enabled(upThrough: .large))
         .presentationDragIndicator(.automatic)
+        .presentationBackground(.thinMaterial)
       }
       Spacer()
     }
