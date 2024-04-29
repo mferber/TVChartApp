@@ -150,8 +150,8 @@ struct SeasonRow: View {
                 endPoint: .trailing
               )
             )
-
         )
+        .zIndex(1)
 
       ScrollView([.horizontal], showsIndicators: false) {
         HStack(spacing: EpisodeBoxSpecs.size / 4.0) {
