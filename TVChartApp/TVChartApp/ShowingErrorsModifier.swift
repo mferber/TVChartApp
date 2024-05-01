@@ -19,14 +19,18 @@ struct ShowingErrorsModifier: ViewModifier {
   func body(content: Content) -> some View {
     ZStack {
       content
+
       if (!errorList.isEmpty) {
-        VStack {
+        VStack(spacing: 5) {
           ForEach(errorList.allItems.reversed()) { item in
             ErrorView(item: item, errorList: errorList)
           }
         }
-        .background(.accent)
-        .frame(maxHeight: .infinity, alignment: .top)
+        .padding(8)
+        .background(Color.gray.opacity(0.3))
+        .cornerRadius(15)
+        .padding([.leading, .trailing, .bottom])
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
       }
     }
   }
@@ -38,7 +42,7 @@ struct ErrorView: View {
   let errorList: ErrorDisplayList
 
   var body: some View {
-    VStack(spacing: 10) {
+    VStack {
       HStack {
         Button {
           withAnimation {
@@ -55,8 +59,10 @@ struct ErrorView: View {
         Text(details).font(.caption).foregroundStyle(.white)
       }
     }
-    .padding()
-    .frame(maxWidth: .infinity, alignment: .top)
+    .padding(10)
+    .frame(maxWidth: .infinity)
+    .background(.accent)
+    .cornerRadius(10)
   }
 }
 
