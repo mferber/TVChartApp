@@ -120,22 +120,6 @@ struct EpisodeDetailMetadataView: View {
     return "\(desc) — \(metadata.length)"
   }
 
-  func handleMarkWatchedToEpisode(episode: Episode, backend: BackendProtocol) {
-    Task {
-      do {
-        let updatedEpisodes = await episode.season.show.markWatchedUpTo(targetEpisode: episode)
-        try await backend.updateEpisodeStatuses(
-          watched: updatedEpisodes,
-          unwatched: []
-        )
-      } catch {
-        withAnimation {
-          appState.errorDisplayList.add(error)
-        }
-      }
-    }
-  }
-
   var body: some View {
     HStack(alignment: .top) {
       Text(metadata.title).font(.title3).fontWeight(.heavy)
@@ -152,7 +136,7 @@ struct EpisodeDetailMetadataView: View {
       .padding([.top], 10)
 
     Button {
-//      handleMarkWatchedToEpisode(episode: episode, backend: displayState.backend)
+      submitStatusWatchedUpTo(episode: episode)
     } label: {
       Text("Mark all episodes watched up to here")
         .frame(maxWidth: .infinity)
@@ -164,6 +148,20 @@ struct EpisodeDetailMetadataView: View {
     Task {
       do {
         try await displayState.commandExecutor.execute(UpdateEpisodeStatus(episode: episode, watched: watched))
+      } catch {
+        await MainActor.run {
+          withAnimation {
+            appState.errorDisplayList.add(error)
+          }
+        }
+      }
+    }
+  }
+
+  func submitStatusWatchedUpTo(episode: Episode) {
+    Task {
+      do {
+        try await displayState.commandExecutor.execute(MarkWatchedUpTo(episode: episode))
       } catch {
         await MainActor.run {
           withAnimation {
