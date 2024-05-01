@@ -5,7 +5,7 @@ extension View {
   
   /// Runs a `Task` executing the given closure; trap errors and add them to the provided list
   /// for display in the UI.
-  func runTaskWithErrorReporting(using errorDisplayList: ErrorDisplayList, task: @escaping () async throws -> Void) {
+  func startTask(sendingErrorsTo errorDisplayList: ErrorDisplayList, task: @escaping () async throws -> Void) {
     Task {
       do {
         try await task()

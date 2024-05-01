@@ -147,13 +147,13 @@ struct EpisodeDetailMetadataView: View {
   }
 
   func submitStatusUpdate(episode: Episode, watched: Bool) {
-    runTaskWithErrorReporting(using: appState.errorDisplayList) {
+    startTask(sendingErrorsTo: appState.errorDisplayList) {
       try await cmdExecutor.execute(UpdateEpisodeStatus(episode: episode, watched: watched))
     }
   }
 
   func submitStatusWatchedUpTo(episode: Episode) {
-    runTaskWithErrorReporting(using: appState.errorDisplayList) {
+    startTask(sendingErrorsTo: appState.errorDisplayList) {
       try await cmdExecutor.execute(MarkWatchedUpTo(episode: episode))
     }
   }
