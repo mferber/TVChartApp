@@ -21,6 +21,12 @@ protocol Command {
   func execute(context: CommandContext) async throws -> Output
 }
 
+struct LoadDataCommand: Command {
+  func execute(context: CommandContext) async throws -> AppData {
+    return AppData(shows: try await context.backend.fetch())
+  }
+}
+
 struct MarkEpisodeWatchedCommand: Command {
   let episode: Episode
   let watched: Bool
