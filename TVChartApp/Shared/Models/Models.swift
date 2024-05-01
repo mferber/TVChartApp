@@ -10,7 +10,7 @@ enum FavoriteStatus: Codable {
 class SeasonItem: Identifiable {
   nonisolated var id: Int { index }
   let index: Int
-  var season: Season!
+  weak var season: Season!
 
   fileprivate init(index: Int) {
     self.index = index
@@ -70,7 +70,7 @@ class Season: Identifiable {
   nonisolated var id: Int { number }
   nonisolated let number: Int
   var items: [SeasonItem]
-  var show: Show!
+  weak var show: Show!
 
   var isCompleted: Bool {
     return items.allSatisfy { ($0 as? Episode)?.isWatched ?? true }
