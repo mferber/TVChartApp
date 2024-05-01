@@ -147,30 +147,14 @@ struct EpisodeDetailMetadataView: View {
   }
 
   func submitStatusUpdate(episode: Episode, watched: Bool) {
-    Task {
-      do {
-        try await cmdExecutor.execute(UpdateEpisodeStatus(episode: episode, watched: watched))
-      } catch {
-        await MainActor.run {
-          withAnimation {
-            appState.errorDisplayList.add(error)
-          }
-        }
-      }
+    runTaskWithErrorReporting(using: appState.errorDisplayList) {
+      try await cmdExecutor.execute(UpdateEpisodeStatus(episode: episode, watched: watched))
     }
   }
 
   func submitStatusWatchedUpTo(episode: Episode) {
-    Task {
-      do {
-        try await cmdExecutor.execute(MarkWatchedUpTo(episode: episode))
-      } catch {
-        await MainActor.run {
-          withAnimation {
-            appState.errorDisplayList.add(error)
-          }
-        }
-      }
+    runTaskWithErrorReporting(using: appState.errorDisplayList) {
+      try await cmdExecutor.execute(MarkWatchedUpTo(episode: episode))
     }
   }
 }

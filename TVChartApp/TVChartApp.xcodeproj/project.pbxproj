@@ -45,6 +45,7 @@
 		39EDA51D2BE299C4007FF767 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDA51C2BE299C4007FF767 /* Commands.swift */; };
 		39EDA51F2BE2C2F5007FF767 /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDA51E2BE2C2F5007FF767 /* CustomViews.swift */; };
 		39EDA5212BE2CE1F007FF767 /* CommandExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDA5202BE2CE1F007FF767 /* CommandExecutor.swift */; };
+		39EDA5232BE2D16F007FF767 /* ViewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDA5222BE2D16F007FF767 /* ViewUtils.swift */; };
 		39FD50712BD704BF008E79C3 /* DTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FD50702BD704BF008E79C3 /* DTO.swift */; };
 /* End PBXBuildFile section */
 
@@ -142,6 +143,7 @@
 		39EDA51C2BE299C4007FF767 /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		39EDA51E2BE2C2F5007FF767 /* CustomViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
 		39EDA5202BE2CE1F007FF767 /* CommandExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandExecutor.swift; sourceTree = "<group>"; };
+		39EDA5222BE2D16F007FF767 /* ViewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewUtils.swift; sourceTree = "<group>"; };
 		39FD50702BD704BF008E79C3 /* DTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTO.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -218,6 +220,7 @@
 				399A61C02B85254A00255BE1 /* HttpUtils.swift */,
 				39B36CF92BD8674200D1BC47 /* StringUtils.swift */,
 				3964E99E2B8F983800C076E8 /* TVChartError.swift */,
+				39EDA5222BE2D16F007FF767 /* ViewUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -602,6 +605,7 @@
 				399A61C12B85254A00255BE1 /* HttpUtils.swift in Sources */,
 				39EDA51D2BE299C4007FF767 /* Commands.swift in Sources */,
 				3964E99D2B8F973E00C076E8 /* ConnectionError.swift in Sources */,
+				39EDA5232BE2D16F007FF767 /* ViewUtils.swift in Sources */,
 				3964E9992B8E576D00C076E8 /* ShowingErrorsModifier.swift in Sources */,
 				39D455872B7FF38300901E0D /* TVChartApp.swift in Sources */,
 				399A61CB2B85B87B00255BE1 /* EpisodeDetailView.swift in Sources */,
