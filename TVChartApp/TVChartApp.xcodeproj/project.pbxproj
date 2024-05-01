@@ -42,6 +42,9 @@
 		39D455D72B7FF55600901E0D /* TVChartAppWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 39D455B42B7FF55500901E0D /* TVChartAppWatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		39D455ED2B7FFAC600901E0D /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 39D455EC2B7FFAC600901E0D /* Nimble */; };
 		39EACF1E2B80216C0050D4DF /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EACF1D2B80216C0050D4DF /* Models.swift */; };
+		39EDA51D2BE299C4007FF767 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDA51C2BE299C4007FF767 /* Commands.swift */; };
+		39EDA51F2BE2C2F5007FF767 /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDA51E2BE2C2F5007FF767 /* CustomViews.swift */; };
+		39EDA5212BE2CE1F007FF767 /* CommandExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDA5202BE2CE1F007FF767 /* CommandExecutor.swift */; };
 		39FD50712BD704BF008E79C3 /* DTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FD50702BD704BF008E79C3 /* DTO.swift */; };
 /* End PBXBuildFile section */
 
@@ -136,6 +139,9 @@
 		39D455D32B7FF55600901E0D /* TVChartAppWatch_Watch_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVChartAppWatch_Watch_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		39DE18242B82A56D00D65CAB /* previewData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = previewData.json; sourceTree = "<group>"; };
 		39EACF1D2B80216C0050D4DF /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		39EDA51C2BE299C4007FF767 /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
+		39EDA51E2BE2C2F5007FF767 /* CustomViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
+		39EDA5202BE2CE1F007FF767 /* CommandExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandExecutor.swift; sourceTree = "<group>"; };
 		39FD50702BD704BF008E79C3 /* DTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTO.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -249,6 +255,7 @@
 			children = (
 				39D455862B7FF38300901E0D /* TVChartApp.swift */,
 				39D455882B7FF38300901E0D /* ContentView.swift */,
+				39EDA51E2BE2C2F5007FF767 /* CustomViews.swift */,
 				399A61CA2B85B87B00255BE1 /* EpisodeDetailView.swift */,
 				3964E9982B8E576D00C076E8 /* ShowingErrorsModifier.swift */,
 				39D4558A2B7FF38400901E0D /* Assets.xcassets */,
@@ -325,6 +332,7 @@
 				391B3EDC2B827621001F5A54 /* App state */,
 				39D455E42B7FF89B00901E0D /* Backend */,
 				391B3EDD2B827635001F5A54 /* Models */,
+				39EDA51B2BE299B4007FF767 /* Commands */,
 				399A61BF2B85253800255BE1 /* Utils */,
 			);
 			path = Shared;
@@ -349,6 +357,15 @@
 				391A75A32B86A95200FBC1DF /* ModelsTests.swift */,
 			);
 			path = SharedTests;
+			sourceTree = "<group>";
+		};
+		39EDA51B2BE299B4007FF767 /* Commands */ = {
+			isa = PBXGroup;
+			children = (
+				39EDA5202BE2CE1F007FF767 /* CommandExecutor.swift */,
+				39EDA51C2BE299C4007FF767 /* Commands.swift */,
+			);
+			path = Commands;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -583,13 +600,16 @@
 				391B3ED92B826171001F5A54 /* BackendClient.swift in Sources */,
 				39D455892B7FF38300901E0D /* ContentView.swift in Sources */,
 				399A61C12B85254A00255BE1 /* HttpUtils.swift in Sources */,
+				39EDA51D2BE299C4007FF767 /* Commands.swift in Sources */,
 				3964E99D2B8F973E00C076E8 /* ConnectionError.swift in Sources */,
 				3964E9992B8E576D00C076E8 /* ShowingErrorsModifier.swift in Sources */,
 				39D455872B7FF38300901E0D /* TVChartApp.swift in Sources */,
 				399A61CB2B85B87B00255BE1 /* EpisodeDetailView.swift in Sources */,
 				399A61B82B84F4C900255BE1 /* MetadataService.swift in Sources */,
+				39EDA51F2BE2C2F5007FF767 /* CustomViews.swift in Sources */,
 				39B36CFA2BD8674200D1BC47 /* StringUtils.swift in Sources */,
 				39B36CF82BD8670900D1BC47 /* AttributedStringUtils.swift in Sources */,
+				39EDA5212BE2CE1F007FF767 /* CommandExecutor.swift in Sources */,
 				39EACF1E2B80216C0050D4DF /* Models.swift in Sources */,
 				391B3EDB2B826481001F5A54 /* Backend.swift in Sources */,
 				39B800112BC20484000C5A84 /* Loadable.swift in Sources */,

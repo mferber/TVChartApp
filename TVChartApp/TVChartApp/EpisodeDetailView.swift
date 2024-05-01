@@ -106,6 +106,8 @@ struct EpisodeDetailMetadataView: View {
   @Environment(TVChartApp.AppState.self) var appState
   @Environment(ContentView.DisplayState.self) var displayState
 
+  private var cmdExecutor: CommandExecutor { displayState.commandExecutor }
+  
   @MainActor
   private var episodeDescription: String {
     let desc: String
@@ -120,38 +122,13 @@ struct EpisodeDetailMetadataView: View {
     return "\(desc) — \(metadata.length)"
   }
 
-  func handleMarkWatchedToEpisode(episode: Episode, backend: BackendProtocol) {
-    Task {
-      do {
-        let updatedEpisodes = await episode.season.show.markWatchedUpTo(targetEpisode: episode)
-        try await backend.updateEpisodeStatuses(
-          watched: updatedEpisodes,
-          unwatched: []
-        )
-      } catch {
-        withAnimation {
-          appState.errorDisplayList.add(error)
-        }
-      }
-    }
-  }
-
   var body: some View {
     HStack(alignment: .top) {
       Text(metadata.title).font(.title3).fontWeight(.heavy)
       Spacer()
-      Toggle("Watched", isOn: $episode.isWatched).labelsHidden()
-        .onChange(of: episode.isWatched) { (old, new) in
-          Task {
-            do {
-              try await displayState.backend.updateEpisodeStatus(episode: episode, watched: new)
-            } catch {
-              withAnimation {
-                appState.errorDisplayList.add(error)
-              }
-            }
-          }
-        }
+      ProgrammaticToggle("Watched", isOn: $episode.isWatched, onUserChange: { newValue in
+        submitStatusUpdate(episode: episode, watched: newValue)
+      }).labelsHidden()
     }
     Text(episode.season.show.title)
     Text("Season \(episode.season.number), \(episodeDescription)")
@@ -161,12 +138,40 @@ struct EpisodeDetailMetadataView: View {
       .padding([.top], 10)
 
     Button {
-      handleMarkWatchedToEpisode(episode: episode, backend: displayState.backend)
+      submitStatusWatchedUpTo(episode: episode)
     } label: {
       Text("Mark all episodes watched up to here")
         .frame(maxWidth: .infinity)
     }.buttonStyle(.borderedProminent)
       .padding([.top], 15)
+  }
+
+  func submitStatusUpdate(episode: Episode, watched: Bool) {
+    Task {
+      do {
+        try await cmdExecutor.execute(UpdateEpisodeStatus(episode: episode, watched: watched))
+      } catch {
+        await MainActor.run {
+          withAnimation {
+            appState.errorDisplayList.add(error)
+          }
+        }
+      }
+    }
+  }
+
+  func submitStatusWatchedUpTo(episode: Episode) {
+    Task {
+      do {
+        try await cmdExecutor.execute(MarkWatchedUpTo(episode: episode))
+      } catch {
+        await MainActor.run {
+          withAnimation {
+            appState.errorDisplayList.add(error)
+          }
+        }
+      }
+    }
   }
 }
 
@@ -233,7 +238,7 @@ struct SynopsisView: View {
     .tint(.accent)
     .padding()
     .environment(TVChartApp.AppState())
-    .environment(ContentView.DisplayState(backend: BackendStub()))
+    .environment(ContentView.DisplayState(commandExecutor: CommandExecutor(backend: BackendStub())))
     .environment(AppData(shows: [show]))
   }
 }
