@@ -32,7 +32,7 @@ struct MarkWatchedUpTo: Command {
   let episode: Episode
 
   func execute(context: CommandExecutor.Context) async throws {
-    var updatedEpisodeDescriptors: [EpisodeDescriptor]?
+    let updatedEpisodeDescriptors: [EpisodeDescriptor]?
     do {
 
       updatedEpisodeDescriptors = await episode.season.show.markWatchedUpTo(targetEpisode: episode)
