@@ -124,10 +124,9 @@ struct EpisodeDetailMetadataView: View {
     Task {
       do {
         let updatedEpisodes = await episode.season.show.markWatchedUpTo(targetEpisode: episode)
-        let _ = try await backend.updateEpisodeStatus(
-          show: episode.season.show,
+        try await backend.updateEpisodeStatuses(
           watched: updatedEpisodes,
-          unwatched: nil
+          unwatched: []
         )
       } catch {
         withAnimation {
@@ -142,6 +141,17 @@ struct EpisodeDetailMetadataView: View {
       Text(metadata.title).font(.title3).fontWeight(.heavy)
       Spacer()
       Toggle("Watched", isOn: $episode.isWatched).labelsHidden()
+        .onChange(of: episode.isWatched) { (old, new) in
+          Task {
+            do {
+              try await displayState.backend.updateEpisodeStatus(episode: episode, watched: new)
+            } catch {
+              withAnimation {
+                appState.errorDisplayList.add(error)
+              }
+            }
+          }
+        }
     }
     Text(episode.season.show.title)
     Text("Season \(episode.season.number), \(episodeDescription)")

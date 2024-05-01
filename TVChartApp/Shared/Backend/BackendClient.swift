@@ -8,6 +8,11 @@ struct ApiStatusUpdate: Encodable {
 struct ApiEpisodeDescriptor: Encodable {
   let seasonIndex: Int
   let episodeIndex: Int
+
+  init(from episodeDescriptor: EpisodeDescriptor) {
+    self.seasonIndex = episodeDescriptor.season - 1
+    self.episodeIndex = episodeDescriptor.episodeIndex
+  }
 }
 
 class BackendClient {
@@ -52,23 +57,16 @@ class BackendClient {
     }
   }
 
-  func updateEpisodeStatus(show: Show, watched: [EpisodeDescriptor]?, unwatched: [EpisodeDescriptor]?) async throws -> Show {
-    var req = URLRequest(url: urls.showUpdatingEpisodeStatus(showId: String(show.id)))
+  func updateEpisodeStatuses(showId: Int, watched: [ApiEpisodeDescriptor], unwatched: [ApiEpisodeDescriptor]) async throws {
+    var req = URLRequest(url: urls.showUpdatingEpisodeStatus(showId: String(showId)))
     req.httpMethod = "POST"
     req.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-    let body = ApiStatusUpdate(
-      watched: watched?.map { ApiEpisodeDescriptor(seasonIndex: $0.season - 1, episodeIndex: $0.episodeIndex) },
-      unwatched: unwatched?.map { ApiEpisodeDescriptor(seasonIndex: $0.season - 1, episodeIndex: $0.episodeIndex) }
-    )
-
+    let body = ApiStatusUpdate(watched: watched, unwatched: unwatched)
     do {
       req.httpBody = try JSONEncoder().encode(body)
       let (data, rsp) = try await URLSession.shared.data(for: req)
       try rsp.validate(data)
-      return try await MainActor.run {
-        try JSONDecoder().decode(ShowDTO.self, from: data).toShow()
-      }
     } catch {
       throw ConnectionError.updateStatusFailed(cause: error)
     }
