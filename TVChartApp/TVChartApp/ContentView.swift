@@ -48,7 +48,7 @@ struct ContentView: View {
 
   func loadData() async {
     do {
-      loadableAppData = .ready(try await displayState.commandExecutor.execute(command: LoadDataCommand()))
+      loadableAppData = .ready(try await displayState.commandExecutor.execute(LoadData()))
     } catch {
       loadableAppData = .error(error)
       handleError(error)
