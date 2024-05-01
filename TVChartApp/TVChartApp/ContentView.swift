@@ -109,6 +109,8 @@ struct ShowList: View {
       }
     }
     .padding([.top, .bottom])
+    .background()
+    .onTapGesture { displayState.isPresentingSelectedEpisode = false }
     .sheet(
       isPresented: $displayState.isPresentingSelectedEpisode,
       onDismiss: { displayState.selectedEpisodeDescriptor = nil }
