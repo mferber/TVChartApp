@@ -46,6 +46,7 @@
 		39EDA51F2BE2C2F5007FF767 /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDA51E2BE2C2F5007FF767 /* CustomViews.swift */; };
 		39EDA5212BE2CE1F007FF767 /* CommandExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDA5202BE2CE1F007FF767 /* CommandExecutor.swift */; };
 		39EDA5232BE2D16F007FF767 /* ViewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDA5222BE2D16F007FF767 /* ViewUtils.swift */; };
+		39EDA5252BE2D584007FF767 /* TaskUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDA5242BE2D584007FF767 /* TaskUtils.swift */; };
 		39FD50712BD704BF008E79C3 /* DTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FD50702BD704BF008E79C3 /* DTO.swift */; };
 /* End PBXBuildFile section */
 
@@ -144,6 +145,7 @@
 		39EDA51E2BE2C2F5007FF767 /* CustomViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
 		39EDA5202BE2CE1F007FF767 /* CommandExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandExecutor.swift; sourceTree = "<group>"; };
 		39EDA5222BE2D16F007FF767 /* ViewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewUtils.swift; sourceTree = "<group>"; };
+		39EDA5242BE2D584007FF767 /* TaskUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskUtils.swift; sourceTree = "<group>"; };
 		39FD50702BD704BF008E79C3 /* DTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTO.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -219,6 +221,7 @@
 				399A61C22B8527A300255BE1 /* ErrorHandling.swift */,
 				399A61C02B85254A00255BE1 /* HttpUtils.swift */,
 				39B36CF92BD8674200D1BC47 /* StringUtils.swift */,
+				39EDA5242BE2D584007FF767 /* TaskUtils.swift */,
 				3964E99E2B8F983800C076E8 /* TVChartError.swift */,
 				39EDA5222BE2D16F007FF767 /* ViewUtils.swift */,
 			);
@@ -614,6 +617,7 @@
 				39B36CFA2BD8674200D1BC47 /* StringUtils.swift in Sources */,
 				39B36CF82BD8670900D1BC47 /* AttributedStringUtils.swift in Sources */,
 				39EDA5212BE2CE1F007FF767 /* CommandExecutor.swift in Sources */,
+				39EDA5252BE2D584007FF767 /* TaskUtils.swift in Sources */,
 				39EACF1E2B80216C0050D4DF /* Models.swift in Sources */,
 				391B3EDB2B826481001F5A54 /* Backend.swift in Sources */,
 				39B800112BC20484000C5A84 /* Loadable.swift in Sources */,
