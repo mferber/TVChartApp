@@ -7,7 +7,7 @@ struct CommandExecutor {
     return CommandContext(backend: backend)
   }
 
-  func execute(command: Command) async throws {
+  func execute<C: Command>(command: C) async throws -> C.Output {
     return try await command.execute(context: getContext())
   }
 }
@@ -17,7 +17,8 @@ struct CommandContext {
 }
 
 protocol Command {
-  func execute(context: CommandContext) async throws
+  associatedtype Output
+  func execute(context: CommandContext) async throws -> Output
 }
 
 struct MarkEpisodeWatchedCommand: Command {
