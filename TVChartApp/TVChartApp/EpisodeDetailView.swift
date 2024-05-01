@@ -140,10 +140,9 @@ struct EpisodeDetailMetadataView: View {
     HStack(alignment: .top) {
       Text(metadata.title).font(.title3).fontWeight(.heavy)
       Spacer()
-      Toggle("Watched", isOn: $episode.isWatched).labelsHidden()
-        .onChange(of: episode.isWatched) { (old, new) in
-          submitStatusUpdate(episode: episode, watched: new)
-        }
+      ProgrammaticToggle("Watched", isOn: $episode.isWatched, onUserChange: { newValue in
+        submitStatusUpdate(episode: episode, watched: newValue)
+      }).labelsHidden()
     }
     Text(episode.season.show.title)
     Text("Season \(episode.season.number), \(episodeDescription)")

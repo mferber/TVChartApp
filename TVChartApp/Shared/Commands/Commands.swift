@@ -32,7 +32,14 @@ struct UpdateEpisodeStatus: Command {
   let watched: Bool
 
   func execute(context: CommandContext) async throws {
-    try await context.backend.updateEpisodeStatus(episode: episode, watched: watched)
+    do {
+      try await context.backend.updateEpisodeStatus(episode: episode, watched: watched)
+    } catch {
+      await MainActor.run {
+        episode.isWatched = !episode.isWatched
+      }
+      throw error
+    }
   }
 }
 
