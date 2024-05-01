@@ -106,6 +106,8 @@ struct EpisodeDetailMetadataView: View {
   @Environment(TVChartApp.AppState.self) var appState
   @Environment(ContentView.DisplayState.self) var displayState
 
+  private var cmdExecutor: CommandExecutor { displayState.commandExecutor }
+  
   @MainActor
   private var episodeDescription: String {
     let desc: String
@@ -147,7 +149,7 @@ struct EpisodeDetailMetadataView: View {
   func submitStatusUpdate(episode: Episode, watched: Bool) {
     Task {
       do {
-        try await displayState.commandExecutor.execute(UpdateEpisodeStatus(episode: episode, watched: watched))
+        try await cmdExecutor.execute(UpdateEpisodeStatus(episode: episode, watched: watched))
       } catch {
         await MainActor.run {
           withAnimation {
@@ -161,7 +163,7 @@ struct EpisodeDetailMetadataView: View {
   func submitStatusWatchedUpTo(episode: Episode) {
     Task {
       do {
-        try await displayState.commandExecutor.execute(MarkWatchedUpTo(episode: episode))
+        try await cmdExecutor.execute(MarkWatchedUpTo(episode: episode))
       } catch {
         await MainActor.run {
           withAnimation {

@@ -1,32 +1,12 @@
 import Foundation
 
-struct CommandExecutor {
-  private let backend: any BackendProtocol
-
-  init(backend: any BackendProtocol) {
-    self.backend = backend
-  }
-  
-  private func getContext() -> CommandContext {
-    return CommandContext(backend: backend)
-  }
-
-  func execute<C: Command>(_ command: C) async throws -> C.Output {
-    return try await command.execute(context: getContext())
-  }
-}
-
-struct CommandContext {
-  let backend: BackendProtocol
-}
-
 protocol Command {
   associatedtype Output
-  func execute(context: CommandContext) async throws -> Output
+  func execute(context: CommandExecutor.Context) async throws -> Output
 }
 
 struct LoadData: Command {
-  func execute(context: CommandContext) async throws -> AppData {
+  func execute(context: CommandExecutor.Context) async throws -> AppData {
     return AppData(shows: try await context.backend.fetch())
   }
 }
@@ -35,7 +15,7 @@ struct UpdateEpisodeStatus: Command {
   let episode: Episode
   let watched: Bool
 
-  func execute(context: CommandContext) async throws {
+  func execute(context: CommandExecutor.Context) async throws {
     do {
       try await context.backend.updateEpisodeStatus(episode: episode, watched: watched)
     } catch {
@@ -51,7 +31,7 @@ struct UpdateEpisodeStatus: Command {
 struct MarkWatchedUpTo: Command {
   let episode: Episode
 
-  func execute(context: CommandContext) async throws {
+  func execute(context: CommandExecutor.Context) async throws {
     var updatedEpisodeDescriptors: [EpisodeDescriptor]?
     do {
 

@@ -44,6 +44,7 @@
 		39EACF1E2B80216C0050D4DF /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EACF1D2B80216C0050D4DF /* Models.swift */; };
 		39EDA51D2BE299C4007FF767 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDA51C2BE299C4007FF767 /* Commands.swift */; };
 		39EDA51F2BE2C2F5007FF767 /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDA51E2BE2C2F5007FF767 /* CustomViews.swift */; };
+		39EDA5212BE2CE1F007FF767 /* CommandExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDA5202BE2CE1F007FF767 /* CommandExecutor.swift */; };
 		39FD50712BD704BF008E79C3 /* DTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FD50702BD704BF008E79C3 /* DTO.swift */; };
 /* End PBXBuildFile section */
 
@@ -140,6 +141,7 @@
 		39EACF1D2B80216C0050D4DF /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		39EDA51C2BE299C4007FF767 /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		39EDA51E2BE2C2F5007FF767 /* CustomViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
+		39EDA5202BE2CE1F007FF767 /* CommandExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandExecutor.swift; sourceTree = "<group>"; };
 		39FD50702BD704BF008E79C3 /* DTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTO.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -360,6 +362,7 @@
 		39EDA51B2BE299B4007FF767 /* Commands */ = {
 			isa = PBXGroup;
 			children = (
+				39EDA5202BE2CE1F007FF767 /* CommandExecutor.swift */,
 				39EDA51C2BE299C4007FF767 /* Commands.swift */,
 			);
 			path = Commands;
@@ -606,6 +609,7 @@
 				39EDA51F2BE2C2F5007FF767 /* CustomViews.swift in Sources */,
 				39B36CFA2BD8674200D1BC47 /* StringUtils.swift in Sources */,
 				39B36CF82BD8670900D1BC47 /* AttributedStringUtils.swift in Sources */,
+				39EDA5212BE2CE1F007FF767 /* CommandExecutor.swift in Sources */,
 				39EACF1E2B80216C0050D4DF /* Models.swift in Sources */,
 				391B3EDB2B826481001F5A54 /* Backend.swift in Sources */,
 				39B800112BC20484000C5A84 /* Loadable.swift in Sources */,
