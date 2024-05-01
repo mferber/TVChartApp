@@ -164,7 +164,7 @@ struct EpisodeDetailMetadataView: View {
   func submitStatusUpdate(episode: Episode, watched: Bool) {
     Task {
       do {
-        /* FIXME */ try await displayState.commandExecutor.backend.updateEpisodeStatus(episode: episode, watched: watched)
+        try await displayState.commandExecutor.execute(UpdateEpisodeStatus(episode: episode, watched: watched))
       } catch {
         await MainActor.run {
           withAnimation {
