@@ -142,15 +142,7 @@ struct EpisodeDetailMetadataView: View {
       Spacer()
       Toggle("Watched", isOn: $episode.isWatched).labelsHidden()
         .onChange(of: episode.isWatched) { (old, new) in
-          Task {
-            do {
-              try await displayState.backend.updateEpisodeStatus(episode: episode, watched: new)
-            } catch {
-              withAnimation {
-                appState.errorDisplayList.add(error)
-              }
-            }
-          }
+          submitStatusUpdate(episode: episode, watched: new)
         }
     }
     Text(episode.season.show.title)
@@ -161,12 +153,26 @@ struct EpisodeDetailMetadataView: View {
       .padding([.top], 10)
 
     Button {
-      handleMarkWatchedToEpisode(episode: episode, backend: displayState.backend)
+//      handleMarkWatchedToEpisode(episode: episode, backend: displayState.backend)
     } label: {
       Text("Mark all episodes watched up to here")
         .frame(maxWidth: .infinity)
     }.buttonStyle(.borderedProminent)
       .padding([.top], 15)
+  }
+
+  func submitStatusUpdate(episode: Episode, watched: Bool) {
+    Task {
+      do {
+        /* FIXME */ try await displayState.commandExecutor.backend.updateEpisodeStatus(episode: episode, watched: watched)
+      } catch {
+        await MainActor.run {
+          withAnimation {
+            appState.errorDisplayList.add(error)
+          }
+        }
+      }
+    }
   }
 }
 
@@ -233,7 +239,7 @@ struct SynopsisView: View {
     .tint(.accent)
     .padding()
     .environment(TVChartApp.AppState())
-    .environment(ContentView.DisplayState(backend: BackendStub()))
+    .environment(ContentView.DisplayState(commandExecutor: CommandExecutor(backend: BackendStub())))
     .environment(AppData(shows: [show]))
   }
 }

@@ -11,13 +11,13 @@ struct ContentView: View {
 
   @Observable
   class DisplayState {
-    var backend: BackendProtocol
+    var commandExecutor: CommandExecutor
     var showFavoritesOnly = true
     var isPresentingSelectedEpisode = false
     var selectedEpisodeDescriptor: EpisodeDescriptor? = nil
 
-    init(backend: BackendProtocol) {
-      self.backend = backend
+    init(commandExecutor: CommandExecutor) {
+      self.commandExecutor = commandExecutor
     }
   }
 
@@ -27,8 +27,8 @@ struct ContentView: View {
 
   let metadataService: MetadataServiceProtocol
 
-  init(backend: BackendProtocol, metadataService: MetadataServiceProtocol) {
-    self._displayState = State(initialValue: DisplayState(backend: backend))
+  init(commandExecutor: CommandExecutor, metadataService: MetadataServiceProtocol) {
+    self._displayState = State(initialValue: DisplayState(commandExecutor: commandExecutor))
     self.metadataService = metadataService
   }
 
@@ -48,7 +48,7 @@ struct ContentView: View {
 
   func loadData() async {
     do {
-      loadableAppData = .ready(AppData(shows: try await displayState.backend.fetch()))
+      /* FIXME NOCOMMIT */ loadableAppData = .ready(AppData(shows: try await displayState.commandExecutor.backend.fetch()))
     } catch {
       loadableAppData = .error(error)
       handleError(error)
@@ -334,7 +334,7 @@ private func previewData() throws -> [Show] {
       let backend = BackendStub()
       backend.fetchResult = shows
 
-      return ContentView(backend: backend, metadataService: MetadataServiceStub())
+      return ContentView(commandExecutor: CommandExecutor(backend: backend), metadataService: MetadataServiceStub())
         .environment(TVChartApp.AppState())
         .tint(.accent)
 
