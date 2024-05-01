@@ -1,8 +1,12 @@
 import Foundation
 
 struct CommandExecutor {
-  /* FIXME private */ let backend: any BackendProtocol
+  private let backend: any BackendProtocol
 
+  init(backend: any BackendProtocol) {
+    self.backend = backend
+  }
+  
   private func getContext() -> CommandContext {
     return CommandContext(backend: backend)
   }
