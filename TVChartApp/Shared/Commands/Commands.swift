@@ -11,6 +11,18 @@ struct LoadData: Command {
   }
 }
 
+struct LoadMetadata: Command {
+  let episode: Episode
+
+  func execute(context: CommandExecutor.Context) async throws -> EpisodeMetadata {
+    return try await context.metadataService.getEpisodeMetadata(
+      forShow: episode.season.show,
+      season: episode.season.number,
+      episodeIndex: episode.episodeIndex
+    )
+  }
+}
+
 struct UpdateEpisodeStatus: Command {
   let episode: Episode
   let watched: Bool

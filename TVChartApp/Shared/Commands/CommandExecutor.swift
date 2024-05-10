@@ -3,16 +3,14 @@ import Foundation
 struct CommandExecutor {
   struct Context {
     let backend: BackendProtocol
+    let metadataService: MetadataServiceProtocol
   }
   
-  private let backend: any BackendProtocol
-
-  init(backend: any BackendProtocol) {
-    self.backend = backend
-  }
+  let backend: any BackendProtocol
+  let metadataService: any MetadataServiceProtocol
 
   private func getContext() -> Context {
-    return Context(backend: backend)
+    return Context(backend: backend, metadataService: metadataService)
   }
 
   func execute<C: Command>(_ command: C) async throws -> C.Output {

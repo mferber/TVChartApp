@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+
 enum EpisodeDetailError: DisplayableError {
   case invalidEpisodeDescriptor
 
@@ -15,10 +16,8 @@ enum EpisodeDetailError: DisplayableError {
 }
 
 // State: episode descriptor
-// Requires metadata service to look up episode details
 struct EpisodeDetailView: View {
   let episodeDescriptor: EpisodeDescriptor
-  let metadataService: MetadataServiceProtocol
 
   @State private var episode: Episode?
   @State private var loadableMetadata: Loadable<EpisodeMetadata> = .loading
@@ -37,13 +36,8 @@ struct EpisodeDetailView: View {
           return
         }
 
-        loadableMetadata = .ready(
-          try await metadataService.getEpisodeMetadata(
-            forShow: episode.season.show,
-            season: episode.season.number,
-            episodeIndex: episode.episodeIndex
-          )
-        )
+        let metadata = try await displayState.commandExecutor.execute(LoadMetadata(episode: episode))
+        loadableMetadata = .ready(metadata)
       } catch {
         loadableMetadata = .error(error)
         displayState.isPresentingSelectedEpisode = false
@@ -216,13 +210,14 @@ struct SynopsisView: View {
 
   return VStack {
     EpisodeDetailView(
-      episodeDescriptor: EpisodeDescriptor(showId: 1, season: 1, episodeIndex: 0),
-      metadataService: MetadataServiceStub()
+      episodeDescriptor: EpisodeDescriptor(showId: 1, season: 1, episodeIndex: 0)
     )
     .tint(.accent)
     .padding()
     .environment(TVChartApp.AppState())
-    .environment(ContentView.DisplayState(commandExecutor: CommandExecutor(backend: BackendStub())))
+    .environment(ContentView.DisplayState(
+      commandExecutor: CommandExecutor(backend: BackendStub(), metadataService: MetadataServiceStub()))
+    )
     .environment(AppData(shows: [show]))
   }
 }

@@ -25,18 +25,14 @@ struct ContentView: View {
   @State var displayState: DisplayState
   @Environment(TVChartApp.AppState.self) var appState
 
-  let metadataService: MetadataServiceProtocol
-
-  init(commandExecutor: CommandExecutor, metadataService: MetadataServiceProtocol) {
+  init(commandExecutor: CommandExecutor) {
     self._displayState = State(initialValue: DisplayState(commandExecutor: commandExecutor))
-    self.metadataService = metadataService
   }
 
   var body: some View {
     ZStack {
       NavigationStack {
-        ShowListLoadingView(appData: loadableAppData, metadataService: metadataService)
-          .navigationTitle("All shows")
+        ShowListLoadingView(appData: loadableAppData).navigationTitle("All shows")
       }
       FavoritesToggle(isOn: $displayState.showFavoritesOnly)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
@@ -58,7 +54,6 @@ struct ContentView: View {
 
 struct ShowListLoadingView: View {
   var appData: Loadable<AppData>
-  var metadataService: MetadataServiceProtocol
 
   var body: some View {
     switch appData {
@@ -71,8 +66,7 @@ struct ShowListLoadingView: View {
         }
 
       case .ready(let shows): ScrollView([.vertical]) {
-        ShowList(metadataService: metadataService)
-          .environment(shows)
+        ShowList().environment(shows)
       }.defaultScrollAnchor(.topLeading)
     }
   }
@@ -81,8 +75,6 @@ struct ShowListLoadingView: View {
 struct ShowList: View {
   @Environment(ContentView.DisplayState.self) var displayState
   @Environment(AppData.self) var appData
-
-  let metadataService: MetadataServiceProtocol
 
   var body: some View {
     let displayShows = displayState.showFavoritesOnly ? appData.shows.favoritesOnly : appData.shows
@@ -116,16 +108,13 @@ struct ShowList: View {
       onDismiss: { displayState.selectedEpisodeDescriptor = nil }
     ) {
       if let descriptor = displayState.selectedEpisodeDescriptor {
-        EpisodeDetailView(
-          episodeDescriptor: descriptor,
-          metadataService: metadataService
-        )
-        .padding()
-        .presentationDetents([.fraction(0.4), .large])
-        .presentationContentInteraction(.scrolls)
-        .presentationBackgroundInteraction(.enabled(upThrough: .large))
-        .presentationDragIndicator(.automatic)
-        .presentationBackground(.thinMaterial)
+        EpisodeDetailView(episodeDescriptor: descriptor)
+          .padding()
+          .presentationDetents([.fraction(0.4), .large])
+          .presentationContentInteraction(.scrolls)
+          .presentationBackgroundInteraction(.enabled(upThrough: .large))
+          .presentationDragIndicator(.automatic)
+          .presentationBackground(.thinMaterial)
       }
       Spacer()
     }
@@ -336,7 +325,7 @@ private func previewData() throws -> [Show] {
       let backend = BackendStub()
       backend.fetchResult = shows
 
-      return ContentView(commandExecutor: CommandExecutor(backend: backend), metadataService: MetadataServiceStub())
+      return ContentView(commandExecutor: CommandExecutor(backend: backend, metadataService: MetadataServiceStub()))
         .environment(TVChartApp.AppState())
         .tint(.accent)
 

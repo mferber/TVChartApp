@@ -14,14 +14,16 @@ struct TVChartApp: App {
     private(set) var errorDisplayList = ErrorDisplayList()
   }
 
-  private let commandExecutor = CommandExecutor(backend: Backend(baseURL: URL(string: serverUrl)!))
-  private let metadataService = MetadataService()
+  private let commandExecutor = CommandExecutor(
+    backend: Backend(baseURL: URL(string: serverUrl)!),
+    metadataService: MetadataService()
+  )
 
   @State var appState = AppState()
 
   var body: some Scene {
     WindowGroup {
-      ContentView(commandExecutor: commandExecutor, metadataService: metadataService)
+      ContentView(commandExecutor: commandExecutor)
         .tint(.accent)
         .showingErrors(from: appState.errorDisplayList)
         .environment(appState)
