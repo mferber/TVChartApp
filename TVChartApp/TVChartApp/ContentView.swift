@@ -65,8 +65,8 @@ struct ShowListLoadingView: View {
           Text("Pull to refresh to try again").font(.body)
         }
 
-      case .ready(let shows): ScrollView([.vertical]) {
-        ShowList().environment(shows)
+      case .ready(let appData): ScrollView([.vertical]) {
+        ShowList().environment(appData)
       }.defaultScrollAnchor(.topLeading)
     }
   }
