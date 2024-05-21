@@ -32,7 +32,8 @@ struct ContentView: View {
   var body: some View {
     ZStack {
       NavigationStack {
-        ShowListLoadingView(appData: loadableAppData).navigationTitle("All shows")
+        ShowListLoadingView(appData: loadableAppData, offset: displayState.isPresentingSelectedEpisode ? 400 : 0)
+          .navigationTitle(displayState.showFavoritesOnly ? "Favorite shows" : "All shows")
       }
       FavoritesToggle(isOn: $displayState.showFavoritesOnly)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
