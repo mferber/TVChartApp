@@ -1,7 +1,6 @@
 import Foundation
 import SwiftUI
 
-
 enum EpisodeDetailError: DisplayableError {
   case invalidEpisodeDescriptor
 
