@@ -14,6 +14,17 @@ enum EpisodeDetailError: DisplayableError {
   var displayDetails: String? { nil }
 }
 
+// report height of this view so the main view can adjust its offsets accordingly
+struct EpisodeDetailViewHeightPreferenceKey: PreferenceKey {
+  typealias Value = CGFloat
+
+  static var defaultValue: CGFloat = .zero
+
+  static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+    value = max(value, nextValue())
+  }
+}
+
 // State: episode descriptor
 struct EpisodeDetailView: View {
   let episodeDescriptor: EpisodeDescriptor
@@ -56,6 +67,14 @@ struct EpisodeDetailView: View {
       } else {
         Text("Selected episode not found")
           .frame(maxWidth: .infinity, maxHeight: .infinity)
+      }
+    }
+    .padding()
+    .overlay {
+      GeometryReader { geometry in
+        Rectangle()
+          .fill(.clear)
+          .preference(key: EpisodeDetailViewHeightPreferenceKey.self, value: geometry.size.height)
       }
     }
     .onChange(of: episodeDescriptor, initial: true) {

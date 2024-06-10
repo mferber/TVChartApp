@@ -36,11 +36,15 @@ struct ContentView: View {
   var body: some View {
     ZStack {
       NavigationStack {
-        ShowListLoadingView(appData: loadableAppData, offset: displayState.isPresentingSelectedEpisode ? 400 : 0)
+        // leave a little extra room above the presentation height for the UI sheet chrome
+        ShowListLoadingView(appData: loadableAppData, contentMarginBottom: presentationHeight + EpisodeBoxSpecs.size / 2.0)
           .navigationTitle(displayState.showFavoritesOnly ? "Favorite shows" : "All shows")
       }
       FavoritesToggle(isOn: $displayState.showFavoritesOnly)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+    }
+    .onPreferenceChange(EpisodeDetailViewHeightPreferenceKey.self) { prefValue in
+      presentationHeight = prefValue
     }
     .task { await self.loadData() }
     .refreshable { await self.loadData() }
@@ -58,7 +62,10 @@ struct ContentView: View {
 }
 
 struct ShowListLoadingView: View {
-  var appData: Loadable<AppData>
+  let appData: Loadable<AppData>
+  let contentMarginBottom: CGFloat
+
+  @Environment(ContentView.DisplayState.self) var displayState
 
   var body: some View {
     switch appData {
@@ -70,9 +77,22 @@ struct ShowListLoadingView: View {
           Text("Pull to refresh to try again").font(.body)
         }
 
-      case .ready(let appData): ScrollView([.vertical]) {
-        ShowList().environment(appData)
-      }.defaultScrollAnchor(.topLeading)
+      case .ready(let appData): 
+        ScrollViewReader { proxy in
+          ScrollView([.vertical]) {
+            ShowList().environment(appData)
+          }
+          .onChange(of: contentMarginBottom) {
+            // ensure selected episode stays visible even when sheet is presented
+            if let descriptor = displayState.selectedEpisodeDescriptor {
+              withAnimation {
+                proxy.scrollTo(seasonRowId(showId: descriptor.showId, season: descriptor.season))
+              }
+            }
+          }
+          .defaultScrollAnchor(.topLeading)
+          .contentMargins(.bottom, contentMarginBottom, for: .automatic)
+        }
     }
   }
 }
@@ -88,10 +108,13 @@ struct ShowList: View {
     VStack(alignment: .leading, spacing: 20) {
       ForEach(displayShows) { show in
         VStack(alignment: .leading) {
+          
+          // Show header view id is the show title
           Text(show.title)
             .font(.title2)
             .bold()
             .padding([.leading])
+            .id(show.title)
 
           HStack(spacing: 5) {
             Image(systemName: show.isFavorite ? "heart.fill" : "heart")
@@ -114,7 +137,6 @@ struct ShowList: View {
     ) {
       if let descriptor = displayState.selectedEpisodeDescriptor {
         EpisodeDetailView(episodeDescriptor: descriptor)
-          .padding()
           .presentationDetents([.fraction(0.4), .large])
           .presentationContentInteraction(.scrolls)
           .presentationBackgroundInteraction(.enabled(upThrough: .large))
@@ -133,6 +155,8 @@ struct SeasonRow: View {
 
   var body: some View {
     let maxOpacity = colorScheme == .dark ? 0.5 : 0.9
+
+    // SeasonRow view id uses showId and seasonId
     HStack(spacing: 0) {
       Text(String(season.id))
         .bold()
@@ -159,6 +183,7 @@ struct SeasonRow: View {
       .defaultScrollAnchor(.leading)
       .scrollClipDisabled()  // permit scrolling behind season numbers
     }
+    .id(seasonRowId(showId: show.id, season: season.number))
   }
 }
 
@@ -296,6 +321,10 @@ struct FavoritesToggle: View {
       .clipped(antialiased: false)
       .cornerRadius(20.0)
   }
+}
+
+private func seasonRowId(showId: Int, season: Int) -> String {
+  return "\(showId).\(season)"
 }
 
 // MARK: - Previews
