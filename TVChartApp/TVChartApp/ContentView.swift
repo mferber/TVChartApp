@@ -21,8 +21,12 @@ struct ContentView: View {
     }
   }
 
-  @State var loadableAppData: Loadable<AppData> = .loading
-  @State var displayState: DisplayState
+  @State private var loadableAppData: Loadable<AppData> = .loading
+  @State private var displayState: DisplayState
+
+  // height of the episode-details value; scroll view will be adjusted to leave room
+  @State private var presentationHeight: CGFloat = 0
+
   @Environment(TVChartApp.AppState.self) var appState
 
   init(commandExecutor: CommandExecutor) {

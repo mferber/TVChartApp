@@ -19,7 +19,7 @@ struct TVChartApp: App {
     metadataService: MetadataService()
   )
 
-  @State var appState = AppState()
+  @State private var appState = AppState()
 
   var body: some Scene {
     WindowGroup {
