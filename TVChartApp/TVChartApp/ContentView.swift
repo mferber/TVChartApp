@@ -34,11 +34,17 @@ struct ContentView: View {
   }
 
   var body: some View {
+    // leave a little extra room above the presentation height for the UI sheet chrome
+    let contentMarginBottom = (displayState.isPresentingSelectedEpisode ?
+                               presentationHeight + EpisodeBoxSpecs.size / 2.0 :
+                                0)
     ZStack {
       NavigationStack {
-        // leave a little extra room above the presentation height for the UI sheet chrome
-        ShowListLoadingView(appData: loadableAppData, contentMarginBottom: presentationHeight + EpisodeBoxSpecs.size / 2.0)
-          .navigationTitle(displayState.showFavoritesOnly ? "Favorite shows" : "All shows")
+        ShowListLoadingView(
+          appData: loadableAppData,
+          contentMarginBottom: contentMarginBottom
+        )
+        .navigationTitle(displayState.showFavoritesOnly ? "Favorite shows" : "All shows")
       }
       FavoritesToggle(isOn: $displayState.showFavoritesOnly)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
@@ -78,20 +84,34 @@ struct ShowListLoadingView: View {
         }
 
       case .ready(let appData): 
-        ScrollViewReader { proxy in
-          ScrollView([.vertical]) {
-            ShowList().environment(appData)
-          }
-          .onChange(of: contentMarginBottom) {
-            // ensure selected episode stays visible even when sheet is presented
-            if let descriptor = displayState.selectedEpisodeDescriptor {
-              withAnimation {
-                proxy.scrollTo(seasonRowId(showId: descriptor.showId, season: descriptor.season))
+        VStack {
+          ScrollViewReader { proxy in
+            ScrollView([.vertical]) {
+              ShowList().environment(appData)
+            }
+            .onChange(of: contentMarginBottom) {
+              // ensure selected episode stays visible even when sheet is presented
+              if let descriptor = displayState.selectedEpisodeDescriptor {
+                withAnimation {
+                  proxy.scrollTo(seasonRowId(showId: descriptor.showId, season: descriptor.season))
+                }
               }
             }
+            .defaultScrollAnchor(.topLeading)
+            .scrollClipDisabled()
           }
-          .defaultScrollAnchor(.topLeading)
-          .contentMargins(.bottom, contentMarginBottom, for: .automatic)
+
+          // This rectangle insets the show listings to make room for the presented
+          // episode details sheet, so that the full listings can still be viewed
+          // while the sheet is open.
+          // This would be better done with contentMargins, but there's a bug where,
+          // if the sheet is open and the view is scrolled to the very bottom, when
+          // the sheet is closed and the contentMargins return to normal, the view
+          // doesn't redraw until dragged, leaving a big empty space where the sheet
+          // was. This is a workaround.
+          Rectangle()
+            .fill(.clear)
+            .frame(minHeight: contentMarginBottom, maxHeight: contentMarginBottom)
         }
     }
   }
