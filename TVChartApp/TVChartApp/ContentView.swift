@@ -83,10 +83,7 @@ struct ShowListLoadingView: View {
             // center text vertically in scroll view
             ZStack {
               Spacer().frame(width: geometry.size.width, height: geometry.size.height)
-              VStack {
-                Text("Failed to load data").font(.body)
-                Text("Pull to refresh to try again").font(.body)
-              }
+              ContentUnavailableView("Can't connect", systemImage: "cloud.bolt", description: Text("Pull to refresh to try again"))
             }
           }
         }
