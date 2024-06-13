@@ -78,12 +78,20 @@ struct ShowListLoadingView: View {
       case .loading: ProgressView().controlSize(.extraLarge)
 
       case .error:
-        VStack {
-          Text("Failed to load data").font(.body)
-          Text("Pull to refresh to try again").font(.body)
+        GeometryReader { geometry in
+          ScrollView {
+            // center text vertically in scroll view
+            ZStack {
+              Spacer().frame(width: geometry.size.width, height: geometry.size.height)
+              VStack {
+                Text("Failed to load data").font(.body)
+                Text("Pull to refresh to try again").font(.body)
+              }
+            }
+          }
         }
 
-      case .ready(let appData): 
+      case .ready(let appData):
         VStack {
           ScrollViewReader { proxy in
             ScrollView([.vertical]) {
