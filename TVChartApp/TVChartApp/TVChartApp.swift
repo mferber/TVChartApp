@@ -3,14 +3,14 @@ import SwiftUI
 
 #if DEV_SERVER
 
-private let devURL = "http://localhost:8000/v0.1/"
-private let serverURLs = [ devURL ]
+private let serverURLs = [ "http://localhost:8000/v0.1/" ]
 
 #else
 
-private let internalURL = "http://taskmaster.local:8000/v0.1/"
-private let externalURL = "http://73.17.150.67:8000/v0.1/"
-private let serverURLs = [ internalURL, externalURL ]
+private let serverURLs = [
+  "http://taskmaster.local:8000/v0.1/",  // internal hostname
+  "http://73.17.150.67:8000/v0.1/"  // external address via port forwarding
+]
 //private let serverURLs = [ "http://192.168.0.220/", "http://192.168.0.221/" ]  // invalid: for failure testing
 
 #endif
