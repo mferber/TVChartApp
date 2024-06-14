@@ -133,7 +133,7 @@ class BackendClient {
             await hostList.anointWinner(baseURL)
             return (data, rsp)
           }
-        } catch let InternalBackendError.individualHostFailed(baseURL, underlying) {
+        } catch let InternalBackendError.individualHostFailed(baseURL, _) {
           await hostList.removeLoser(baseURL)
         }
       }
