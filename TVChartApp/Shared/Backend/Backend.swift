@@ -14,8 +14,8 @@ protocol BackendProtocol {
 class Backend: BackendProtocol {
   private var client: BackendClient
 
-  init(baseURL: URL) {
-    client = BackendClient(baseURL: baseURL)
+  init(baseURLs: [URL]) {
+    client = BackendClient(baseURLs: baseURLs)
   }
 
   func fetch() async throws -> [Show] {

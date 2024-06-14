@@ -1,10 +1,20 @@
 import SwiftUI
 
+
 #if DEV_SERVER
-fileprivate let serverUrl = "http://localhost:8000/v0.1/"
+
+private let devURL = "http://localhost:8000/v0.1/"
+private let serverURLs = [ devURL ]
+
 #else
-fileprivate let serverUrl = "http://taskmaster.local:8000/v0.1/"
+
+private let internalURL = "http://taskmaster.local:8000/v0.1/"
+private let externalURL = "http://73.17.150.67:8000/v0.1/"
+private let serverURLs = [ internalURL, externalURL ]
+//private let serverURLs = [ "http://192.168.0.220/", "http://192.168.0.221/" ]  // invalid: for failure testing
+
 #endif
+
 
 @main
 struct TVChartApp: App {
@@ -15,7 +25,7 @@ struct TVChartApp: App {
   }
 
   private let commandExecutor = CommandExecutor(
-    backend: Backend(baseURL: URL(string: serverUrl)!),
+    backend: Backend(baseURLs: serverURLs.map { URL(string: $0)! }),
     metadataService: MetadataService()
   )
 
