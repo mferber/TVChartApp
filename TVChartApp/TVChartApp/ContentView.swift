@@ -62,6 +62,7 @@ struct ContentView: View {
       loadableAppData = .ready(try await displayState.commandExecutor.execute(LoadData()))
     } catch {
       loadableAppData = .error(error)
+      // the UI will show an appropriate placeholder, so don't funnel this to the error display mechanism
       handleError(error)
     }
   }
