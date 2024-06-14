@@ -23,3 +23,16 @@ enum ConnectionError: DisplayableError {
     }
   }
 }
+
+enum BackendError: DisplayableError {
+  case noReachableServers
+
+  var displayDescription: String {
+    switch self {
+      case .noReachableServers:
+        "No servers were reachable"
+    }
+  }
+
+  var displayDetails: String? { nil }
+}

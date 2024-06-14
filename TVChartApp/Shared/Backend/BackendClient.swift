@@ -2,34 +2,6 @@ import Foundation
 
 private let reqTimeoutSecs = 10.0
 
-struct ApiStatusUpdate: Encodable {
-  let watched: [ApiEpisodeDescriptor]?
-  let unwatched: [ApiEpisodeDescriptor]?
-}
-
-struct ApiEpisodeDescriptor: Encodable {
-  let seasonIndex: Int
-  let episodeIndex: Int
-
-  init(from episodeDescriptor: EpisodeDescriptor) {
-    self.seasonIndex = episodeDescriptor.season - 1
-    self.episodeIndex = episodeDescriptor.episodeIndex
-  }
-}
-
-enum BackendError: DisplayableError {
-  case noReachableServers
-
-  var displayDescription: String {
-    switch self {
-      case .noReachableServers:
-        "No servers were reachable"
-    }
-  }
-
-  var displayDetails: String? { nil }
-}
-
 private enum InternalBackendError: Error {
   case individualHostFailed(baseURL: URL, underlying: Error)
 }
