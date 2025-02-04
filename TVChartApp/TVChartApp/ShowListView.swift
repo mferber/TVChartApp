@@ -199,3 +199,50 @@ private struct SeparatorView: View {
       .frame(width: EpisodeBoxSpecs.size / 2.0, height: EpisodeBoxSpecs.size / 2.0)
   }
 }
+
+#if DEBUG
+@MainActor
+private func previewData() throws -> [Show] {
+  let sampleDataUrl = Bundle.main.url(forResource: "previewData", withExtension: "json")
+  guard let sampleDataUrl else {
+    throw TVChartError.general("no URL to sample data")
+  }
+  let json = try? Data(contentsOf: sampleDataUrl)
+  guard let json else {
+    throw TVChartError.general("can't read sample data")
+  }
+  var content: [Show]!
+  do {
+    try content = JSONDecoder().decode([ShowDTO].self, from: json).map { $0.toShow() }
+  } catch {
+    throw TVChartError.general("can't parse JSON: \(error)")
+  }
+  return content.sortedByTitle
+}
+#endif
+
+#Preview {
+  do {
+    var shows: [Show] = []
+    try MainActor.assumeIsolated {
+      shows = try previewData()
+    }
+    let backend = BackendStub()
+    backend.fetchResult = shows
+
+    return ScrollView {
+      ShowListView()
+        .environment(TVChartApp.AppState())
+        .environment(ContentView.DisplayState(commandExecutor: CommandExecutor(backend: backend, metadataService: MetadataServiceStub())))
+        .environment(AppData(shows: shows))
+        .tint(.accent)
+    }
+  } catch {
+    let desc = switch error {
+      case let e as DisplayableError: e.displayDescription
+      default: "\(error)"
+    }
+    print(desc)
+    return Text(desc)
+  }
+}
