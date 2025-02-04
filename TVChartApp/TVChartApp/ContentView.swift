@@ -165,25 +165,24 @@ private func previewData() throws -> [Show] {
 #endif
 
 #Preview {
-    do {
-      var shows: [Show] = []
-      try MainActor.assumeIsolated {
-        shows = try previewData()
-      }
-      let backend = BackendStub()
-      backend.fetchResult = shows
+  do {
+    var shows: [Show] = []
+    try MainActor.assumeIsolated {
+      shows = try previewData()
+    }
+    let backend = BackendStub()
+    backend.fetchResult = shows
 
-      return ContentView(commandExecutor: CommandExecutor(backend: backend, metadataService: MetadataServiceStub()))
-        .environment(TVChartApp.AppState())
-        .tint(.accent)
+    return ContentView(commandExecutor: CommandExecutor(backend: backend, metadataService: MetadataServiceStub()))
+      .environment(TVChartApp.AppState())
+      .tint(.accent)
 
-    } catch {
-      let desc = switch error {
+  } catch {
+    let desc = switch error {
       case let e as DisplayableError: e.displayDescription
       default: "\(error)"
-      }
-      print(desc)
-      return Text(desc)
     }
-
+    print(desc)
+    return Text(desc)
+  }
 }
