@@ -45,9 +45,10 @@ struct ContentView: View {
           contentMarginBottom: contentMarginBottom
         )
         .navigationTitle(displayState.showFavoritesOnly ? "Favorite shows" : "All shows")
+        .toolbar {
+          FavoritesToggle(isOn: $displayState.showFavoritesOnly)
+        }
       }
-      FavoritesToggle(isOn: $displayState.showFavoritesOnly)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
     }
     .onPreferenceChange(EpisodeDetailViewHeightPreferenceKey.self) { prefValue in
       presentationHeight = prefValue
@@ -73,12 +74,13 @@ private struct FavoritesToggle: View {
   @Environment(ContentView.DisplayState.self) var displayState
 
   var body: some View {
-    Toggle(isOn: Bindable(displayState).showFavoritesOnly) { }
-      .labelsHidden()
-      .padding(20)
-      .background(Color.white.opacity(0.5))
-      .clipped(antialiased: false)
-      .cornerRadius(20.0)
+    Button {
+      withAnimation {
+        isOn = !isOn
+      }
+    } label: {
+      Image(systemName: isOn ? "heart.fill" : "heart")
+    }
   }
 }
 
