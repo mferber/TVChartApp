@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ShowList: View {
+struct ShowListView: View {
   @Environment(ContentView.DisplayState.self) var displayState
   @Environment(AppData.self) var appData
 
@@ -51,7 +51,7 @@ struct ShowList: View {
   }
 }
 
-struct SeasonRow: View {
+private struct SeasonRow: View {
   let show: Show
   let season: Season
   @Environment(\.colorScheme) var colorScheme
@@ -90,7 +90,7 @@ struct SeasonRow: View {
   }
 }
 
-struct EpisodeRow: View {
+private struct EpisodeRow: View {
   let items: [SeasonItem]
 
   var body: some View {
@@ -109,7 +109,7 @@ struct EpisodeRow: View {
   }
 }
 
-struct SeasonEnd: View {
+private struct SeasonEnd: View {
   var filled: Bool
 
   var body: some View {
@@ -118,7 +118,7 @@ struct SeasonEnd: View {
   }
 }
 
-struct EpisodeButton: View {
+private struct EpisodeButton: View {
   let episode: Episode
   @Environment(ContentView.DisplayState.self) var displayState
 
@@ -135,7 +135,7 @@ struct EpisodeButton: View {
   }
 }
 
-struct EpisodeView: View {
+private struct EpisodeView: View {
   let episode: Episode
   let isSelected: Bool
 
@@ -157,7 +157,7 @@ struct EpisodeView: View {
   }
 }
 
-struct EpisodeBox: View {
+private struct EpisodeBox: View {
   let episode: Episode
   let isSelected: Bool
 
@@ -186,7 +186,7 @@ struct EpisodeBox: View {
   }
 }
 
-struct EpisodeLabel: View {
+private struct EpisodeLabel: View {
   let episode: Episode
   let caption: AnyView
   let isSelected: Bool
@@ -203,25 +203,11 @@ struct EpisodeLabel: View {
   }
 }
 
-struct SeparatorView: View {
+private struct SeparatorView: View {
   var body: some View {
     Image(systemName: "plus")
       .imageScale(.small)
       .foregroundColor(.episodeBox)
       .frame(width: EpisodeBoxSpecs.size / 2.0, height: EpisodeBoxSpecs.size / 2.0)
-  }
-}
-
-struct FavoritesToggle: View {
-  @Binding var isOn: Bool
-  @Environment(ContentView.DisplayState.self) var displayState
-
-  var body: some View {
-    Toggle(isOn: Bindable(displayState).showFavoritesOnly) { }
-      .labelsHidden()
-      .padding(20)
-      .background(Color.white.opacity(0.5))
-      .clipped(antialiased: false)
-      .cornerRadius(20.0)
   }
 }

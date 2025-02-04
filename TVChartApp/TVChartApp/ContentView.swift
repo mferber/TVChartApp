@@ -68,6 +68,20 @@ struct ContentView: View {
   }
 }
 
+private struct FavoritesToggle: View {
+  @Binding var isOn: Bool
+  @Environment(ContentView.DisplayState.self) var displayState
+
+  var body: some View {
+    Toggle(isOn: Bindable(displayState).showFavoritesOnly) { }
+      .labelsHidden()
+      .padding(20)
+      .background(Color.white.opacity(0.5))
+      .clipped(antialiased: false)
+      .cornerRadius(20.0)
+  }
+}
+
 struct ShowListLoadingView: View {
   let appData: Loadable<AppData>
   let contentMarginBottom: CGFloat
@@ -93,7 +107,7 @@ struct ShowListLoadingView: View {
         VStack {
           ScrollViewReader { proxy in
             ScrollView([.vertical]) {
-              ShowList().environment(appData)
+              ShowListView().environment(appData)
             }
             .onChange(of: contentMarginBottom) {
               // ensure selected episode stays visible even when sheet is presented
