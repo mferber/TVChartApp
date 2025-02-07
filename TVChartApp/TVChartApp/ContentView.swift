@@ -44,6 +44,7 @@ struct ContentView: View {
           appData: loadableAppData,
           contentMarginBottom: contentMarginBottom
         )
+        .background(displayState.showFavoritesOnly ? .accent.opacity(0.1) : .clear)
         .navigationTitle(displayState.showFavoritesOnly ? "Favorite shows" : "All shows")
         .toolbar {
           FavoritesToggle(isOn: $displayState.showFavoritesOnly)

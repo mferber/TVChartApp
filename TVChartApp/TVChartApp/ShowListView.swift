@@ -32,7 +32,7 @@ struct ShowListView: View {
       }
     }
     .padding([.top, .bottom])
-    .background()
+    .contentShape(Rectangle())  // maximizes tappable background area
     .onTapGesture { displayState.isPresentingSelectedEpisode = false }
     .sheet(
       isPresented: $displayState.isPresentingSelectedEpisode,
@@ -65,17 +65,6 @@ private struct SeasonRow: View {
         .bold()
         .frame(width: EpisodeBoxSpecs.size, height: EpisodeBoxSpecs.size, alignment: .trailing)
         .padding(.trailing, EpisodeBoxSpecs.size / 2.0)
-        .background(
-          Color(UIColor.systemBackground)
-            .mask(
-              LinearGradient(
-                gradient: Gradient(colors: [Color.black.opacity(maxOpacity), Color.clear]),
-                startPoint: .center,
-                endPoint: .trailing
-              )
-            )
-        )
-        .zIndex(1)
 
       ScrollView([.horizontal], showsIndicators: false) {
         HStack(spacing: EpisodeBoxSpecs.size / 4.0) {
@@ -84,7 +73,6 @@ private struct SeasonRow: View {
         }
       }
       .defaultScrollAnchor(.leading)
-      .scrollClipDisabled()  // permit scrolling behind season numbers
     }
     .id(seasonRowId(showId: show.id, season: season.number))
   }
