@@ -57,8 +57,6 @@ private struct SeasonRow: View {
   @Environment(\.colorScheme) var colorScheme
 
   var body: some View {
-    let maxOpacity = colorScheme == .dark ? 0.5 : 0.9
-
     // SeasonRow view id uses showId and seasonId
     HStack(spacing: 0) {
       Text(String(season.id))
