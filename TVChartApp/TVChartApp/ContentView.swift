@@ -113,10 +113,16 @@ struct ShowListLoadingView: View {
               ShowListView().environment(appData)
             }
             .onChange(of: contentMarginBottom) {
-              // ensure selected episode stays visible even when sheet is presented
+              // scroll selected show to be visible
+              // REGRESSION: originally we scrolled so the selected episode
+              // (season), but restructuring the view hierarchy meant that
+              // individual seasons are no longer the scrollview's children
+              // and can't be targeted directly.
+              // Possibly fixable using GeometryReader and preferences to
+              // locate the selected season?
               if let descriptor = displayState.selectedEpisodeDescriptor {
                 withAnimation {
-                  proxy.scrollTo(seasonRowId(showId: descriptor.showId, season: descriptor.season))
+                  proxy.scrollTo(descriptor.showId, anchor: .top)
                 }
               }
             }

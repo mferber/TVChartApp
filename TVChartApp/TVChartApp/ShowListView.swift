@@ -25,10 +25,11 @@ struct ShowListView: View {
             Text(show.location + ", " + show.episodeLength)
           }.padding([.leading])
 
-          ForEach(show.seasons) {
-            SeasonRow(show: show, season: $0)
+          HStack {
+            SeasonHeadingsColumn(seasonCount: show.seasons.count)
+            SeasonRowsColumn(seasons: show.seasons)
           }
-        }
+        }.id(show.id)
       }
     }
     .padding([.top, .bottom])
@@ -51,28 +52,46 @@ struct ShowListView: View {
   }
 }
 
+private struct SeasonHeadingsColumn: View {
+  let seasonCount: Int
+
+  var body: some View {
+    VStack {
+      ForEach(1...seasonCount, id: \.self) {
+        Text(String($0))
+          .bold()
+          .frame(width: EpisodeBoxSpecs.size, height: EpisodeBoxSpecs.size, alignment: .trailing)
+          .padding(.trailing, EpisodeBoxSpecs.size / 2.0)
+      }
+    }
+  }
+}
+
+private struct SeasonRowsColumn: View {
+  let seasons: [Season]
+
+  var body: some View {
+    ScrollView(.horizontal, showsIndicators: false) {
+      VStack(alignment: .leading) {
+        ForEach(seasons) { season in
+          SeasonRow(season: season)
+        }
+      }
+    }
+    .defaultScrollAnchor(.leading)
+  }
+}
+
 private struct SeasonRow: View {
-  let show: Show
   let season: Season
   @Environment(\.colorScheme) var colorScheme
 
   var body: some View {
     // SeasonRow view id uses showId and seasonId
-    HStack(spacing: 0) {
-      Text(String(season.id))
-        .bold()
-        .frame(width: EpisodeBoxSpecs.size, height: EpisodeBoxSpecs.size, alignment: .trailing)
-        .padding(.trailing, EpisodeBoxSpecs.size / 2.0)
-
-      ScrollView([.horizontal], showsIndicators: false) {
-        HStack(spacing: EpisodeBoxSpecs.size / 4.0) {
-          EpisodeRow(items: season.items)
-          SeasonEnd(filled: season.isCompleted)
-        }
-      }
-      .defaultScrollAnchor(.leading)
+    HStack(spacing: EpisodeBoxSpecs.size / 4.0) {
+      EpisodeRow(items: season.items)
+      SeasonEnd(filled: season.isCompleted)
     }
-    .id(seasonRowId(showId: show.id, season: season.number))
   }
 }
 
