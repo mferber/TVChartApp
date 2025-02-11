@@ -93,7 +93,10 @@ struct ShowListLoadingView: View {
 
   var body: some View {
     switch appData {
-      case .loading: ProgressView().controlSize(.extraLarge)
+      case .loading:
+        ProgressView()
+          .controlSize(.extraLarge)
+          .frame(maxWidth: .infinity, maxHeight: .infinity)
 
       case .error:
         GeometryReader { geometry in
