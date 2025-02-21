@@ -43,6 +43,7 @@
 		39D455D72B7FF55600901E0D /* TVChartAppWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 39D455B42B7FF55500901E0D /* TVChartAppWatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		39E0FDA72C1CBC1E009F36F1 /* BackendModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0FDA62C1CBC1E009F36F1 /* BackendModels.swift */; };
 		39E0FDA92C1CBC83009F36F1 /* BackendErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0FDA82C1CBC83009F36F1 /* BackendErrors.swift */; };
+		39E6C9F82D67F24100A4801A /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E6C9F72D67F23A00A4801A /* Toast.swift */; };
 		39EACF1E2B80216C0050D4DF /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EACF1D2B80216C0050D4DF /* Models.swift */; };
 		39EDA51D2BE299C4007FF767 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDA51C2BE299C4007FF767 /* Commands.swift */; };
 		39EDA51F2BE2C2F5007FF767 /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDA51E2BE2C2F5007FF767 /* CustomViews.swift */; };
@@ -146,6 +147,7 @@
 		39DE18242B82A56D00D65CAB /* previewData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = previewData.json; sourceTree = "<group>"; };
 		39E0FDA62C1CBC1E009F36F1 /* BackendModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendModels.swift; sourceTree = "<group>"; };
 		39E0FDA82C1CBC83009F36F1 /* BackendErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendErrors.swift; sourceTree = "<group>"; };
+		39E6C9F72D67F23A00A4801A /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		39EACF1D2B80216C0050D4DF /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		39EDA51C2BE299C4007FF767 /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		39EDA51E2BE2C2F5007FF767 /* CustomViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
@@ -272,6 +274,7 @@
 				399A61CA2B85B87B00255BE1 /* EpisodeDetailView.swift */,
 				3964E9982B8E576D00C076E8 /* ShowingErrorsModifier.swift */,
 				39D299042D52932A003E184D /* ShowListView.swift */,
+				39E6C9F72D67F23A00A4801A /* Toast.swift */,
 				39D4558A2B7FF38400901E0D /* Assets.xcassets */,
 				39D4558C2B7FF38400901E0D /* Preview Content */,
 			);
@@ -629,6 +632,7 @@
 				39EDA5252BE2D584007FF767 /* TaskUtils.swift in Sources */,
 				39EACF1E2B80216C0050D4DF /* Models.swift in Sources */,
 				39E0FDA72C1CBC1E009F36F1 /* BackendModels.swift in Sources */,
+				39E6C9F82D67F24100A4801A /* Toast.swift in Sources */,
 				39E0FDA92C1CBC83009F36F1 /* BackendErrors.swift in Sources */,
 				391B3EDB2B826481001F5A54 /* Backend.swift in Sources */,
 				39B800112BC20484000C5A84 /* Loadable.swift in Sources */,

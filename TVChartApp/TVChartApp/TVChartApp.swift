@@ -22,6 +22,11 @@ struct TVChartApp: App {
   @Observable
   class AppState {
     private(set) var errorDisplayList = ErrorDisplayList()
+    var pendingToasts: [ToastItem] = []
+
+    func showToast(message: String) {
+      pendingToasts.append(ToastItem(message: message, id: UUID()))
+    }
   }
 
   private let commandExecutor = CommandExecutor(
@@ -36,6 +41,9 @@ struct TVChartApp: App {
       ContentView(commandExecutor: commandExecutor)
         .tint(.accent)
         .showingErrors(from: appState.errorDisplayList)
+        .overlay {
+          Toast(pendingToasts: $appState.pendingToasts)
+        }
         .environment(appState)
     }
   }

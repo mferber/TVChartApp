@@ -72,12 +72,14 @@ struct ContentView: View {
 
 private struct FavoritesToggle: View {
   @Binding var isOn: Bool
+  @Environment(TVChartApp.AppState.self) var appState
   @Environment(ContentView.DisplayState.self) var displayState
 
   var body: some View {
     Button {
       withAnimation {
         isOn = !isOn
+        appState.showToast(message: isOn ? "Showing favorites only" : "Showing all shows")
       }
     } label: {
       Image(systemName: isOn ? "heart.fill" : "heart")
