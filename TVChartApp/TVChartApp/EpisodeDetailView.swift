@@ -138,7 +138,7 @@ struct EpisodeDetailMetadataView: View {
     HStack(alignment: .top) {
       Text(metadata.title).font(.title3).fontWeight(.heavy)
       Spacer()
-      ProgrammaticToggle("Watched", isOn: $episode.isWatched, onUserChange: { newValue in
+      UserControlledToggle("Watched", isOn: $episode.isWatched, onUserChange: { newValue in
         submitStatusUpdate(episode: episode, watched: newValue)
       }).labelsHidden()
     }
