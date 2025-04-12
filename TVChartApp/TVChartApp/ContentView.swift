@@ -76,6 +76,8 @@ private struct FavoritesToggle: View {
   @Environment(ContentView.DisplayState.self) var displayState
 
   var body: some View {
+    Button { } label: { Text("Undo") }
+    Button { } label: { Image(systemName: "arrow.trianglehead.counterclockwise") }
     Button {
       withAnimation {
         isOn = !isOn
