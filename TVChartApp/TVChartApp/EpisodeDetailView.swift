@@ -112,14 +112,22 @@ struct EpisodeDetailMetadataLoadingView: View {
 
 // Displays episode metadata
 struct EpisodeDetailMetadataView: View {
+  struct MarkWatchedDetails {
+    let showTitle: String
+    let episodeCount: Int
+  }
+
   @Bindable var episode: Episode
   var metadata: EpisodeMetadata
+
+  @State private var isPresentingMarkWatchedConfirmation = false
+  @State private var markWatchedDetails: MarkWatchedDetails?
 
   @Environment(TVChartApp.AppState.self) var appState
   @Environment(ContentView.DisplayState.self) var displayState
 
   private var cmdExecutor: CommandExecutor { displayState.commandExecutor }
-  
+
   @MainActor
   private var episodeDescription: String {
     let desc: String
@@ -150,12 +158,31 @@ struct EpisodeDetailMetadataView: View {
       .padding([.top], 10)
 
     Button {
-      submitStatusWatchedUpTo(episode: episode)
+      markWatchedDetails = MarkWatchedDetails(
+        showTitle: episode.season.show.title,
+        episodeCount: episode.season.show.countUnwatchedUpTo(targetEpisode: episode)
+      )
+      isPresentingMarkWatchedConfirmation = true
     } label: {
       Text("Mark all episodes watched up to here")
         .frame(maxWidth: .infinity)
     }.buttonStyle(.borderedProminent)
       .padding([.top], 15)
+      .confirmationDialog(
+        "Mark episodes watched?",
+        isPresented: $isPresentingMarkWatchedConfirmation,
+        titleVisibility: .visible,
+        presenting: markWatchedDetails
+      ) { details in
+        Button("Mark watched") {
+          submitStatusWatchedUpTo(episode: episode)
+        }
+        Button("Cancel", role: .cancel) { }
+      } message: { details in
+        let count = details.episodeCount
+        Text("\(count) episode\(count != 1 ? "s" : "") of \"\(details.showTitle)\" will be affected.")
+      }
+
   }
 
   func submitStatusUpdate(episode: Episode, watched: Bool) {

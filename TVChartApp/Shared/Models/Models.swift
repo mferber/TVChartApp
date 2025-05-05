@@ -122,6 +122,24 @@ class Show: Identifiable {
     }
   }
 
+  func countUnwatchedUpTo(targetEpisode: Episode) -> Int {
+    var count = 0
+  outer:
+    for season in self.seasons {
+      for episode in season.items.compactMap({ $0 as? Episode }) {
+        if (season.number < targetEpisode.season.number ||
+            season.number == targetEpisode.season.number && episode.episodeIndex <= targetEpisode.episodeIndex) {
+          if !episode.isWatched {
+            count += 1
+          }
+        } else {
+          break outer
+        }
+      }
+    }
+    return count
+  }
+
   func markWatchedUpTo(targetEpisode: Episode) -> [EpisodeDescriptor] {
     var updatedEpisodes: [EpisodeDescriptor] = []
   outer:
