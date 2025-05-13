@@ -13,7 +13,7 @@ struct ToastItem {
 struct Toast: View {
   @Binding var pendingToasts: [ToastItem]
 
-  private static let messageDuration = 1.0
+  private static let messageDuration = 2.0
 
   var body: some View {
     if let msg = pendingToasts.first {

@@ -29,7 +29,7 @@ struct TVChartApp: App {
     }
   }
 
-  private let commandExecutor = CommandExecutor(
+  @State private var commandExecutor = CommandExecutor(
     backend: Backend(baseURLs: serverURLs.map { URL(string: $0)! }),
     metadataService: MetadataService()
   )

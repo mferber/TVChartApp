@@ -1,20 +1,47 @@
 import Foundation
 
-struct CommandExecutor {
+@Observable
+class CommandExecutor {
   struct Context {
     let backend: BackendProtocol
     let metadataService: MetadataServiceProtocol
   }
   
-  let backend: any BackendProtocol
-  let metadataService: any MetadataServiceProtocol
+  @ObservationIgnored let backend: any BackendProtocol
+  @ObservationIgnored let metadataService: any MetadataServiceProtocol
+
+  var undoStack: [any UndoableCommand]
+  var canUndo: Bool { !undoStack.isEmpty }
+  
+  init(backend: any BackendProtocol, metadataService: any MetadataServiceProtocol) {
+    self.backend = backend
+    self.metadataService = metadataService
+    self.undoStack = []
+  }
 
   private func getContext() -> Context {
     return Context(backend: backend, metadataService: metadataService)
   }
 
   func execute<C: Command>(_ command: C) async throws -> C.Output {
-    return try await command.execute(context: getContext())
+    do {
+      let result = try await command.execute(context: getContext())
+      if let undoable = command as? any UndoableCommand {
+        undoStack.append(undoable)
+      }
+      return result
+    }
+  }
+
+  func undo() async throws -> (any UndoableCommand)? {
+    guard let command = undoStack.popLast() else { return nil }
+    do {
+      try await command.undo(context: getContext())
+      return command
+    } catch {
+      undoStack.append(command)
+      throw error
+    }
   }
 }
 
