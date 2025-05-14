@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - Shake to undo
+
 // For Paul Hudson's shake-to-undo implementation
 // https://www.hackingwithswift.com/quick-start/swiftui/how-to-detect-shake-gestures
 struct DeviceShakeViewModifier: ViewModifier {
@@ -19,4 +21,3 @@ extension View {
     self.modifier(DeviceShakeViewModifier(action: action))
   }
 }
-
