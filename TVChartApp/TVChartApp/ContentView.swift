@@ -15,6 +15,7 @@ struct ContentView: View {
     var showFavoritesOnly = true
     var isPresentingSelectedEpisode = false
     var selectedEpisodeDescriptor: EpisodeDescriptor? = nil
+    var isPresentingUndoConfirmation = false
 
     init(commandExecutor: CommandExecutor) {
       self.commandExecutor = commandExecutor
@@ -47,14 +48,8 @@ struct ContentView: View {
         .background(displayState.showFavoritesOnly ? .accent.opacity(0.1) : .clear)
         .navigationTitle(displayState.showFavoritesOnly ? "Favorite shows" : "All shows")
         .toolbar {
-          Button {
-            startTask(sendingErrorsTo: appState.errorDisplayList) {
-              if let undoneCmd = try await displayState.commandExecutor.undo() {
-                appState.showToast(message: "Undo: \(undoneCmd.undoDescription)")
-              }
-            }
-          } label: {
-            Text("Undo")
+          Button("Undo") {
+            displayState.isPresentingUndoConfirmation = true
           }.disabled(!displayState.commandExecutor.canUndo)
 
           Button { } label: { Image(systemName: "arrow.trianglehead.counterclockwise") }
@@ -69,6 +64,20 @@ struct ContentView: View {
     .task { await self.loadData() }
     .refreshable { await self.loadData() }
     .environment(displayState)
+    .confirmationDialog(
+      "Undo \"\(displayState.commandExecutor.peekUndoDescription ?? "")?",
+      isPresented: $displayState.isPresentingUndoConfirmation,
+      titleVisibility: .visible
+    ) {
+      Button("Undo") {
+        startTask(sendingErrorsTo: appState.errorDisplayList) {
+          if let undoneCmd = try await displayState.commandExecutor.undo() {
+            appState.showToast(message: "Undo: \(undoneCmd.undoDescription)")
+          }
+        }
+      }
+      Button("Cancel", role: .cancel) { }
+    }
   }
 
   func loadData() async {

@@ -10,6 +10,10 @@ class CommandExecutor {
   @ObservationIgnored let backend: any BackendProtocol
   @ObservationIgnored let metadataService: any MetadataServiceProtocol
 
+  @ObservationIgnored var peekUndoDescription: String? {
+    return undoStack.last?.undoDescription
+  }
+
   var undoStack: [any UndoableCommand]
   var canUndo: Bool { !undoStack.isEmpty }
   
