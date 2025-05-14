@@ -177,7 +177,6 @@ struct EpisodeDetailMetadataView: View {
         Button("Mark \(details.episodeCount) episode\(details.episodeCount != 1 ? "s" : "") watched") {
           submitStatusWatchedUpTo(episode: episode)
         }
-        Button("Cancel", role: .cancel) { }
       }
   }
 
