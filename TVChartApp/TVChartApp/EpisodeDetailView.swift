@@ -169,20 +169,16 @@ struct EpisodeDetailMetadataView: View {
     }.buttonStyle(.borderedProminent)
       .padding([.top], 15)
       .confirmationDialog(
-        "Mark episodes watched?",
+        "",
         isPresented: $isPresentingMarkWatchedConfirmation,
-        titleVisibility: .visible,
+        titleVisibility: .hidden,
         presenting: markWatchedDetails
       ) { details in
-        Button("Mark watched") {
+        Button("Mark \(details.episodeCount) episode\(details.episodeCount != 1 ? "s" : "") watched") {
           submitStatusWatchedUpTo(episode: episode)
         }
         Button("Cancel", role: .cancel) { }
-      } message: { details in
-        let count = details.episodeCount
-        Text("\(count) episode\(count != 1 ? "s" : "") of \"\(details.showTitle)\" will be affected.")
       }
-
   }
 
   func submitStatusUpdate(episode: Episode, watched: Bool) {
