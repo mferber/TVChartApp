@@ -48,12 +48,7 @@ struct ContentView: View {
         .background(displayState.showFavoritesOnly ? .accent.opacity(0.1) : .clear)
         .navigationTitle(displayState.showFavoritesOnly ? "Favorite shows" : "All shows")
         .toolbar {
-          Button("Undo") {
-            displayState.isPresentingUndoConfirmation = true
-          }.disabled(!displayState.commandExecutor.canUndo)
-
           Button { } label: { Image(systemName: "arrow.trianglehead.counterclockwise") }
-
           FavoritesToggle(isOn: $displayState.showFavoritesOnly)
         }
       }
@@ -64,15 +59,20 @@ struct ContentView: View {
     .task { await self.loadData() }
     .refreshable { await self.loadData() }
     .environment(displayState)
+    .onShake {
+      if displayState.commandExecutor.canUndo {
+        displayState.isPresentingUndoConfirmation = true
+      }
+    }
     .confirmationDialog(
-      "Undo \"\(displayState.commandExecutor.peekUndoDescription ?? "")?",
+      "Undo \"\(displayState.commandExecutor.peekUndoDescription ?? "")\"?",
       isPresented: $displayState.isPresentingUndoConfirmation,
       titleVisibility: .visible
     ) {
       Button("Undo") {
         startTask(sendingErrorsTo: appState.errorDisplayList) {
           if let undoneCmd = try await displayState.commandExecutor.undo() {
-            appState.showToast(message: "Undo: \(undoneCmd.undoDescription)")
+            appState.showToast(message: "Undone: \(undoneCmd.undoDescription)")
           }
         }
       }
