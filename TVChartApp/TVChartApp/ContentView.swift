@@ -47,6 +47,18 @@ struct ContentView: View {
         .background(displayState.showFavoritesOnly ? .accent.opacity(0.1) : .clear)
         .navigationTitle(displayState.showFavoritesOnly ? "Favorite shows" : "All shows")
         .toolbar {
+          Button {
+            startTask(sendingErrorsTo: appState.errorDisplayList) {
+              if let undoneCmd = try await displayState.commandExecutor.undo() {
+                appState.showToast(message: "Undo: \(undoneCmd.undoDescription)")
+              }
+            }
+          } label: {
+            Text("Undo")
+          }.disabled(!displayState.commandExecutor.canUndo)
+
+          Button { } label: { Image(systemName: "arrow.trianglehead.counterclockwise") }
+
           FavoritesToggle(isOn: $displayState.showFavoritesOnly)
         }
       }
@@ -76,18 +88,6 @@ private struct FavoritesToggle: View {
   @Environment(ContentView.DisplayState.self) var displayState
 
   var body: some View {
-    Button {
-      startTask(sendingErrorsTo: appState.errorDisplayList) {
-        if let undoneCmd = try await displayState.commandExecutor.undo() {
-          appState.showToast(message: "Undo: \(undoneCmd.undoDescription)")
-        }
-      }
-    } label: {
-      Text("Undo")
-    }.disabled(!displayState.commandExecutor.canUndo)
-
-    Button { } label: { Image(systemName: "arrow.trianglehead.counterclockwise") }
-
     Button {
       withAnimation {
         isOn = !isOn
