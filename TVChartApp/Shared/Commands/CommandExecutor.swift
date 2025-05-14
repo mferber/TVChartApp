@@ -15,7 +15,7 @@ class CommandExecutor {
   }
 
   var undoStack: [any UndoableCommand]
-  var canUndo: Bool { !undoStack.isEmpty }
+  @ObservationIgnored var canUndo: Bool { !undoStack.isEmpty }
   
   init(backend: any BackendProtocol, metadataService: any MetadataServiceProtocol) {
     self.backend = backend
