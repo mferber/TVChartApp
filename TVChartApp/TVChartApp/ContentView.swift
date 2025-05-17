@@ -15,7 +15,6 @@ struct ContentView: View {
     var showFavoritesOnly = true
     var isPresentingSelectedEpisode = false
     var selectedEpisodeDescriptor: EpisodeDescriptor? = nil
-    var isPresentingUndoConfirmation = false
 
     init(commandExecutor: CommandExecutor) {
       self.commandExecutor = commandExecutor
@@ -24,6 +23,7 @@ struct ContentView: View {
 
   @State private var loadableAppData: Loadable<AppData> = .loading
   @State private var displayState: DisplayState
+  @State var isPresentingUndoConfirmation = false
 
   // height of the episode-details value; scroll view will be adjusted to leave room
   @State private var presentationHeight: CGFloat = 0
@@ -61,12 +61,12 @@ struct ContentView: View {
     .environment(displayState)
     .onShake {
       if displayState.commandExecutor.canUndo {
-        displayState.isPresentingUndoConfirmation = true
+        isPresentingUndoConfirmation = true
       }
     }
     .confirmationDialog(
       "",
-      isPresented: $displayState.isPresentingUndoConfirmation,
+      isPresented: $isPresentingUndoConfirmation,
       titleVisibility: .hidden
     ) {
       Button("Undo \"\(displayState.commandExecutor.peekUndoDescription ?? "")\"") {
