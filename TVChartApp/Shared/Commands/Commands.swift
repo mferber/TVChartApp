@@ -77,18 +77,12 @@ class MarkWatchedUpTo: UndoableCommand {
   }
 
   func execute(context: CommandExecutor.Context) async throws {
-    //    let updatedEpisodeDescriptors: [EpisodeDescriptor]?
     do {
-
       updatedEpisodeDescriptors = episode.season.show.markWatchedUpTo(targetEpisode: episode)
-      //      if let descriptors = updatedEpisodeDescriptors {
       try await context.backend.updateEpisodeStatuses(watched: updatedEpisodeDescriptors, unwatched: [])
-      //      }
     } catch {
       // revert UI
-      if /*let descriptors = updatedEpisodeDescriptors, */let show = episode.season.show {
-        //        await MainActor.run {
-
+      if let show = episode.season.show {
         let episodes = updatedEpisodeDescriptors.map { descriptor in
           return show.seasons[safe: descriptor.season - 1]?
             .items.compactMap { $0 as? Episode }
@@ -98,7 +92,6 @@ class MarkWatchedUpTo: UndoableCommand {
         for ep in episodes {
           ep.isWatched = false
         }
-        //        }
       }
       throw error
     }
