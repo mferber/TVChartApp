@@ -62,6 +62,8 @@ struct ContentView: View {
     .onShake {
       if displayState.commandExecutor.canUndo {
         isPresentingUndoConfirmation = true
+      } else {
+        appState.showToast(message: "Nothing to undo")
       }
     }
     .alert(
