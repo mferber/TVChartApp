@@ -43,7 +43,7 @@ struct UpdateEpisodeStatus: UndoableCommand {
   let watched: Bool
 
   var undoDescription: String {
-    "Mark episode \(watched ? "" : "un")watched"
+    "Mark Episode \(watched ? "Watched" : "Unwatched")"
   }
 
   func execute(context: CommandExecutor.Context) async throws {
@@ -105,7 +105,7 @@ class MarkWatchedUpTo: UndoableCommand {
   }
 
   var undoDescription: String {
-    "Mark \(updatedEpisodeDescriptors.count) episode\(updatedEpisodeDescriptors.count == 1 ? "" : "s") watched"
+    "Mark \(updatedEpisodeDescriptors.count) Episode\(updatedEpisodeDescriptors.count == 1 ? "" : "s") Watched"
   }
 
   func undo(context: CommandExecutor.Context) async throws {
