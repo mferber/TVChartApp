@@ -64,12 +64,12 @@ struct ContentView: View {
         isPresentingUndoConfirmation = true
       }
     }
-    .confirmationDialog(
-      "",
-      isPresented: $isPresentingUndoConfirmation,
-      titleVisibility: .hidden
+    .alert(
+      "Undo \(displayState.commandExecutor.peekUndoDescription ?? "")",
+      isPresented: $isPresentingUndoConfirmation
     ) {
-      Button("Undo \"\(displayState.commandExecutor.peekUndoDescription ?? "")\"") {
+      Button("Cancel", role: .cancel) { }
+      Button("Undo") {
         startTask(sendingErrorsTo: appState.errorDisplayList) {
           if let undoneCmd = try await displayState.commandExecutor.undo() {
             appState.showToast(message: "Undone: \(undoneCmd.undoDescription)")
