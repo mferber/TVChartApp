@@ -60,6 +60,9 @@ struct ContentView: View {
     .refreshable { await self.loadData() }
     .environment(displayState)
     .onShake {
+      let haptic = UINotificationFeedbackGenerator()
+      haptic.notificationOccurred(.warning)
+
       if displayState.commandExecutor.canUndo {
         isPresentingUndoConfirmation = true
       } else {
